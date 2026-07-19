@@ -23,7 +23,9 @@ export default defineConfig({
     deviceScaleFactor: 2,
     // Entrance animations are motion-safe-gated; reducing motion makes geometry
     // deterministic (no mid-flight boundingBox samples) and proves that path.
-    reducedMotion: 'reduce',
+    // Context-level option — a bare `use.reducedMotion` doesn't exist and was
+    // silently ignored, which is why the specs also emulateMedia per test.
+    contextOptions: { reducedMotion: 'reduce' },
   },
   projects: [
     { name: 'desktop', use: { viewport: { width: 1440, height: 900 } } },
