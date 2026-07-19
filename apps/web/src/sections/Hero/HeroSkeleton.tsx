@@ -3,7 +3,7 @@
 export function HeroSkeleton() {
   return (
     <div aria-hidden className="mx-auto animate-pulse lg:max-w-[1440px]">
-      <div className="mx-auto w-full max-w-[336px] lg:flex lg:h-[400px] lg:max-w-none lg:items-center lg:gap-[180px] lg:px-[50px]">
+      <div className="w-full px-[28.5px] lg:flex lg:h-[400px] lg:items-center lg:gap-[180px] lg:px-[50px]">
         <div className="h-[192px] rounded-card bg-white/10 lg:h-[216px] lg:w-[664px]" />
         <div className="mt-5 lg:mt-0 lg:w-[388px]">
           <div className="h-20 rounded-card bg-white/10 lg:h-[92px]" />
@@ -11,7 +11,7 @@ export function HeroSkeleton() {
           <div className="mt-[50px] size-[100px] rounded-full bg-white/10 lg:hidden" />
         </div>
       </div>
-      <div className="mx-auto mt-5 h-[200px] w-full max-w-[380px] rounded-tile bg-white/10 lg:mx-5 lg:mt-20 lg:h-[571px] lg:w-auto lg:max-w-none lg:rounded-[35px]" />
+      <div className="mx-[6.5px] mt-5 aspect-[380/200] rounded-tile bg-white/10 lg:mx-5 lg:mt-20 lg:aspect-auto lg:h-[571px] lg:rounded-[35px]" />
     </div>
   )
 }
