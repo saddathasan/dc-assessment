@@ -1,6 +1,7 @@
 /// <reference types="vitest/config" />
 // Vite config for the web app: file-based router codegen, React, Tailwind v4,
 // the same-origin /api dev proxy, and the Vitest environment.
+import { configDefaults } from 'vitest/config'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
@@ -23,5 +24,7 @@ export default defineConfig({
     globals: true,
     environment: 'happy-dom',
     setupFiles: './src/test/setup.ts',
+    // tests/ belongs to the Playwright Fidelity Gate, not Vitest.
+    exclude: [...configDefaults.exclude, 'tests/**'],
   },
 })
