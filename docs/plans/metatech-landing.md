@@ -30,7 +30,7 @@ localhost (`pnpm dev` → http://localhost:5173).
 |---|-------|-----------|-------|--------|
 | — | Foundation | MS-0 | #1 | ✅ PR #9 |
 | — | Content API + data layer | MS-1 | #2 | ✅ PR #10/#11 |
-| 1 | Navigation (+ fidelity harness) | MS-2 | #3 | ⬜ |
+| 1 | Navigation (+ fidelity harness) | MS-2 | #3 | ✅ PR #20 |
 | 2 | Hero (incl. video modal) | MS-3 | #4 | ⬜ |
 | 3 | Trusted By | MS-4 | #5 | ⬜ |
 | 4 | We Are | MS-5 | #6 | ⬜ |
@@ -80,21 +80,21 @@ Goal: every Section's real content served, typed, and consumable. → skill: `su
 **AC:** contract tests green · `?delay=2000` shows skeletons, `?fail=true` shows error+retry on
 the proof section.
 
-## MS-2 — Navigation slice + fidelity harness (~3.5h) · `ms/2-navigation` · Issue #3
+## MS-2 — Navigation slice + fidelity harness (~3.5h) · `ms/2-navigation` · Issue #3 — ✅ DONE (PR #20, 2026-07-20)
 
 Goal: the measuring instrument alive, then the first Section lands complete.
 → skills: `superpowers:tdd`, `frontend-design`
 
-- [ ] T2.1 **Harness first:** Playwright fidelity lib (new dependency — ask before install) —
+- [x] T2.1 **Harness first:** Playwright fidelity lib (new dependency — ask before install) —
       Baseline slicing from `design/figma/renders/`, per-Section screenshot ≤5% diff,
       computed-style numeric asserts (D-021)
-- [ ] T2.2 **Tests first:** mega-menu open/close/tile-hover, hamburger open/trap/Esc
-- [ ] T2.3 Nav bar static, both widths: floating rounded bar, logo SVG, links, CTA
-- [ ] T2.4 Mega-menu: panel + 3 tiles, per-tile image reveal, tap-first + `:focus-within` +
+- [x] T2.2 **Tests first:** mega-menu open/close/tile-hover, hamburger open/trap/Esc
+- [x] T2.3 Nav bar static, both widths: floating rounded bar, logo SVG, links, CTA
+- [x] T2.4 Mega-menu: panel + 3 tiles, per-tile image reveal, tap-first + `:focus-within` +
       Esc + `aria-expanded` (notes 1:512/1:514)
-- [ ] T2.5 Hamburger overlay (Authored, open Q1 default): deep-green overlay, staggered link
+- [x] T2.5 Hamburger overlay (Authored, open Q1 default): deep-green overlay, staggered link
       reveal, scroll lock + focus trap
-- [ ] T2.6 Fidelity Gate: Navigation @1440 + @393
+- [x] T2.6 Fidelity Gate: Navigation @1440 + @393
 
 **AC:** gate green · interaction tests green · menus fully alive on localhost.
 
