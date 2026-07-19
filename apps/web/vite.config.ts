@@ -26,5 +26,16 @@ export default defineConfig({
     setupFiles: './src/test/setup.ts',
     // tests/ belongs to the Playwright Fidelity Gate, not Vitest.
     exclude: [...configDefaults.exclude, 'tests/**'],
+    // Unit tests must never touch the network: happy-dom would otherwise
+    // really fetch iframe/script/css URLs (e.g. the video modal's YouTube embed).
+    environmentOptions: {
+      happyDOM: {
+        settings: {
+          disableIframePageLoading: true,
+          disableJavaScriptFileLoading: true,
+          disableCSSFileLoading: true,
+        },
+      },
+    },
   },
 })
