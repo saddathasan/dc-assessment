@@ -329,6 +329,18 @@ assumptions.
    travels with the content so provenance survives any future CMS move.
 **Status:** Accepted.
 
+## D-024 — Commenting standard: mandatory, merge-gating
+
+**Decision (user call, 2026-07-20):** every source file opens with a 1–2 line header stating its
+role in the system; every exported function/component/type carries one concise, definitive line on
+what it does and why it exists (citing decision IDs where they shape the code); non-obvious logic
+gets a why-comment. Prohibited: restating what code plainly shows, narrating changes, comment noise.
+A PR is not mergeable until its files comply.
+**Why:** the codebase must be readable cold — by a reviewer, or by the author months later —
+without reconstructing context from git history or the docs. Comments carry the orientation layer;
+the decision log carries the reasoning layer; they link via D-IDs.
+**Status:** Accepted (applied retroactively to MS-0/MS-1 code in the same change that records it).
+
 ---
 
 ## Open questions (tracked; each resolves into a numbered decision)
