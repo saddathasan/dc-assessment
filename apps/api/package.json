@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@metatech/shared": "workspace:*",
     "express": "^5.2.1",
     "helmet": "^8.3.0"
   },
