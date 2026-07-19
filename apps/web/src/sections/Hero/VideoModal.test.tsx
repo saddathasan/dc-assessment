@@ -4,7 +4,7 @@
 import { useState } from 'react'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import type { VideoSource } from '@metatech/shared'
 import { VideoModal } from './VideoModal'
 
