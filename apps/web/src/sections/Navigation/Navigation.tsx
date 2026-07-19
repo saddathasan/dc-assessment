@@ -73,7 +73,7 @@ function NavigationBar({ content }: { content: NavigationContent }) {
         <div
           data-testid="nav-bar"
           className={`relative z-10 mx-auto flex h-14 max-w-[1400px] items-center justify-between rounded-[5px] p-4 transition-colors duration-200 lg:h-20 lg:rounded-bar lg:px-5 lg:py-[15px] ${
-            megaOpen ? 'bg-transparent' : 'bg-white/25'
+            megaOpen ? 'bg-transparent' : 'bg-[rgba(255,255,255,0.25)]'
           }`}
         >
           <div className="flex items-center lg:gap-[420px]">
@@ -143,7 +143,7 @@ function NavigationBar({ content }: { content: NavigationContent }) {
           </div>
           <a
             href={content.cta.href}
-            className="hidden h-[50px] items-center rounded-card bg-white/25 px-[25px] py-[10px] font-sans text-ui font-extrabold tracking-[-0.05em] text-white transition-colors hover:bg-white/35 lg:inline-flex"
+            className="hidden h-[50px] items-center rounded-card bg-[rgba(255,255,255,0.25)] px-[25px] py-[10px] font-sans text-ui font-extrabold tracking-[-0.05em] text-white transition-colors hover:bg-[rgba(255,255,255,0.35)] lg:inline-flex"
           >
             {content.cta.label}
           </a>

@@ -26,7 +26,7 @@ export function MegaMenuPanel({ tiles }: { tiles: MegaMenuTile[] }) {
             onMouseLeave={() => setRevealed(null)}
             onFocus={() => setRevealed(tile.solution)}
             onBlur={() => setRevealed(null)}
-            className="group relative block h-[339px] w-[450px] overflow-hidden rounded-tile border border-white/25 bg-black"
+            className="group relative block h-[339px] w-[450px] overflow-hidden rounded-tile border border-[rgba(255,255,255,0.25)] bg-black"
           >
             <img
               src={tile.image.src}
@@ -34,7 +34,7 @@ export function MegaMenuPanel({ tiles }: { tiles: MegaMenuTile[] }) {
               className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 ease-out group-data-[revealed=true]:opacity-100"
             />
             {/* 25% scrim (Rectangle 35) keeps the heading legible over the revealed image. */}
-            <span aria-hidden="true" className="absolute inset-0 bg-black/25" />
+            <span aria-hidden="true" className="absolute inset-0 bg-[rgba(0,0,0,0.25)]" />
             <h3 className="absolute left-8 top-[26px] max-w-[250px] font-display text-tile font-extrabold tracking-[-0.05em] text-accent transition-colors duration-200 ease-out group-data-[revealed=true]:text-[#f4f6f5]">
               {tile.title}
             </h3>
