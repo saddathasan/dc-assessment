@@ -78,6 +78,12 @@ export interface LogoTile {
 export interface TrustedByContent {
   heading: RichTextSpan[]
   logos: LogoTile[]
+  /**
+   * The mobile artboard's own wall order — its designed duplicates differ from
+   * desktop's (UiPath/Alteryx twice, Google Cloud once; D-017.4), so one list
+   * cannot drive both breakpoints.
+   */
+  logosMobile: LogoTile[]
 }
 
 export interface WeAreContent {
