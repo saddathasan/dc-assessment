@@ -51,7 +51,9 @@ function HeroLayout({ content }: { content: HeroContent }) {
       {/* Copy block: a single mobile column (336 @ x=28.5); at 1440 a 400px-tall
           row whose items-center produces the design's 212/239 top offsets. */}
       <div className="mx-auto w-full max-w-[336px] lg:flex lg:h-[400px] lg:max-w-none lg:items-center lg:gap-[180px] lg:px-[50px]">
-        <h1 className="font-display text-[48px] leading-[48px] font-extrabold tracking-[-0.05em] capitalize lg:w-[664px] lg:text-hero">
+        {/* Sizes use the slash form (not leading-*): a leading utility would pin
+            --tw-leading globally and defeat the lg token's paired line-height. */}
+        <h1 className="font-display text-[48px]/[48px] font-extrabold tracking-[-0.05em] capitalize lg:w-[664px] lg:text-hero">
           {content.headline.map((span, index) => (
             // Spans have no identity beyond position, so the index is the honest key.
             <span key={index} className={span.accent ? 'text-accent' : undefined}>
@@ -60,12 +62,15 @@ function HeroLayout({ content }: { content: HeroContent }) {
           ))}
         </h1>
         <div className="mt-5 lg:mt-0 lg:w-[388px]">
-          <p className="font-sans text-[14px] leading-5 font-light lg:text-body">
+          <p className="font-sans text-[14px]/[20px] font-light lg:text-body">
             {content.subcopy}
           </p>
+          {/* Both pills are fixed boxes from the design — 130x40 (node 1:319) and
+              160x50 (1:61) — with the label centered, so Chromium's slightly
+              narrower text metrics can't drift the geometry off the Extraction. */}
           <a
             href={content.cta.href}
-            className="mt-[30px] inline-flex h-10 items-center rounded-[10px] bg-accent px-[35px] font-sans text-ui font-bold tracking-[-0.05em] text-ink transition-opacity hover:opacity-85 lg:mt-5 lg:h-[50px] lg:rounded-card lg:px-[35px] lg:py-[10px]"
+            className="mt-[30px] inline-flex h-10 w-[130px] items-center justify-center rounded-[10px] bg-accent font-sans text-ui font-bold tracking-[-0.05em] text-ink transition-opacity hover:opacity-85 lg:mt-5 lg:h-[50px] lg:w-[160px] lg:rounded-card lg:px-[35px] lg:py-[10px]"
           >
             {content.cta.label}
           </a>
