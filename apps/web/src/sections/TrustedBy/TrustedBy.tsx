@@ -25,13 +25,19 @@ export function TrustedBy() {
  * intrinsic ratios, which match the design's targetAspectRatio). Mobile:
  * percentages of the tile's 173x68 CONTENT box (175x70 minus the 1px borders —
  * that's what % widths resolve against) so the wall scales fluidly below lg and
- * lands on the design's exact px at 393. UiPath keeps the design's own
- * off-ratio 96x36 STRETCH (node 1:347).
+ * lands on the design's exact px at 393. UiPath's Figma STRETCH is a CROP, not
+ * a distortion: its imageTransform shows the bitmap's full width x top 83.55%
+ * inside the 96x36 window, keeping the glyphs' natural proportions — hence the
+ * mobileCrop img drawn 1/0.99885 wide x 1/0.83552 tall of its frame (1:347).
  */
-const LOGO_SIZE: Record<string, { desktop: string; mobile: string }> = {
+const LOGO_SIZE: Record<string, { desktop: string; mobile: string; mobileCrop?: string }> = {
   Databricks: { desktop: 'w-[172px]', mobile: 'w-[83.237%]' },
   'Google Cloud': { desktop: 'w-[172px]', mobile: 'w-[77.4566%]' },
-  UiPath: { desktop: 'w-[112px]', mobile: 'h-[52.9412%] w-[55.4913%]' },
+  UiPath: {
+    desktop: 'w-[112px]',
+    mobile: 'h-[52.9412%] w-[55.4913%]',
+    mobileCrop: 'absolute top-[0.6223%] left-[-0.0577%] h-[119.6856%] w-[100.1153%] max-w-none',
+  },
   Alteryx: { desktop: 'w-[132px]', mobile: 'w-[57.2254%]' },
   Figma: { desktop: 'w-[132px]', mobile: 'w-[58.3815%]' },
   'Amazon Web Services': { desktop: 'w-[80px]', mobile: 'w-[28.9017%]' },
@@ -70,18 +76,24 @@ function DesktopWall({ logos }: { logos: LogoTile[] }) {
 function MobileWall({ logos }: { logos: LogoTile[] }) {
   return (
     <div data-testid="trusted-by-wall-mobile" className="mt-[30px] grid grid-cols-2 lg:hidden">
-      {logos.map((logo, index) => (
-        <div
-          key={index}
-          className="flex aspect-[175/70] items-center justify-center border border-[rgba(255,255,255,0.25)]"
-        >
-          <img
-            src={logo.image.src}
-            alt={logo.image.alt}
-            className={LOGO_SIZE[logo.name]?.mobile ?? ''}
-          />
-        </div>
-      ))}
+      {logos.map((logo, index) => {
+        const size = LOGO_SIZE[logo.name]
+        return (
+          <div
+            key={index}
+            className="flex aspect-[175/70] items-center justify-center border border-[rgba(255,255,255,0.25)]"
+          >
+            {size?.mobileCrop ? (
+              // Crop frame: the design windows this bitmap instead of scaling it.
+              <span className={`relative block overflow-hidden ${size.mobile}`}>
+                <img src={logo.image.src} alt={logo.image.alt} className={size.mobileCrop} />
+              </span>
+            ) : (
+              <img src={logo.image.src} alt={logo.image.alt} className={size?.mobile ?? ''} />
+            )}
+          </div>
+        )
+      })}
     </div>
   )
 }

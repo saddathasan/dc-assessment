@@ -168,18 +168,29 @@ test.describe('Trusted By @393', () => {
     await expect(tiles.first()).toHaveCSS('border-color', 'rgba(255, 255, 255, 0.25)')
     await expect(tiles.first()).toHaveCSS('border-width', '1px')
 
-    // Logo rects: Databricks 144 wide (node 1:340); UiPath keeps the design's
-    // off-ratio 96x36 STRETCH (1:347); AWS the 50x50 square (1:352). All
-    // percentage-sized from the 175x70 tile, so exact at the 393 artboard.
+    // Logo rects: Databricks 144 wide (node 1:340); AWS the 50x50 square
+    // (1:352). All percentage-sized from the tile, so exact at the 393 artboard.
     const databricks = await wall.getByAltText('Databricks').boundingBox()
     expect(databricks!.width).toBeCloseTo(144, 1)
     expect(databricks!.x).toBeCloseTo(37, 1)
-    const uipath = await wall.getByAltText('UiPath').first().boundingBox()
-    expect(uipath!.width).toBeCloseTo(96, 1)
-    expect(uipath!.height).toBeCloseTo(36, 1)
     const aws = await wall.getByAltText('Amazon Web Services').boundingBox()
     expect(aws!.width).toBeCloseTo(50, 1)
     expect(aws!.height).toBeCloseTo(50, 1)
+
+    // UiPath (node 1:347): Figma STRETCH here is a CROP, not a distortion —
+    // the 96x36 window shows the bitmap's full width x top 83.55% (its
+    // imageTransform), keeping the glyphs' natural proportions. So the visible
+    // frame is 96x36 while the img inside is drawn 1/0.99885 wide x 1/0.83552
+    // tall (96.11x43.09), offset to the transform's origin. The ≤5% visual
+    // layer cannot see this defect class — these asserts are the guard.
+    const uipathImg = wall.getByAltText('UiPath').first()
+    const uipathFrame = await uipathImg.locator('..').boundingBox()
+    expect(uipathFrame!.width).toBeCloseTo(96, 1)
+    expect(uipathFrame!.height).toBeCloseTo(36, 1)
+    const uipath = await uipathImg.boundingBox()
+    expect(uipath!.width).toBeCloseTo(96.11, 1)
+    expect(uipath!.height).toBeCloseTo(43.09, 1)
+    expect(uipath!.y - uipathFrame!.y).toBeCloseTo(0.22, 1)
   })
 
   test('wall stays fluid and coherent across phone and tablet widths', async ({ page }) => {
@@ -212,13 +223,14 @@ test.describe('Trusted By @393', () => {
         .boundingBox()
       expect(databricks!.width).toBeCloseTo((tile!.width - 2) * 0.83237, 1)
 
-      // The design's deliberate UiPath distortion scales with the tile too.
-      const uipath = await page
+      // UiPath's crop frame keeps its 96:36 tile proportion at every width.
+      const uipathFrame = await page
         .getByTestId('trusted-by-wall-mobile')
         .getByAltText('UiPath')
         .first()
+        .locator('..')
         .boundingBox()
-      expect(uipath!.height / uipath!.width).toBeCloseTo(36 / 96, 2)
+      expect(uipathFrame!.height / uipathFrame!.width).toBeCloseTo(36 / 96, 2)
     }
   })
 })
