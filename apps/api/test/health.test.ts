@@ -1,3 +1,5 @@
+// Foundation contract from MS-0: health endpoint up, unmatched routes answer
+// JSON 404, and the ?fail demo affordance produces the simulated 500.
 import request from 'supertest'
 import { describe, expect, it } from 'vitest'
 import { app } from '../src/app.js'

@@ -1,7 +1,10 @@
+// Content routes: one GET per Section (D-007) — fine-grained, so each Section
+// loads, fails, and demos independently. Payloads come from the typed data
+// barrel (bundled at build time; no fs at runtime — Workers, D-011).
 import { Router } from 'express'
 import * as content from '../data/index.js'
 
-// One endpoint per Section (D-007): fine-grained, independently demo-able.
+// Slug → payload map; the loop below turns each entry into GET /api/<slug>.
 const sections = {
   navigation: content.navigation,
   hero: content.hero,

@@ -1,3 +1,5 @@
+// Smoke-proof from MS-0 that the token/font wiring renders; retires with
+// TokenDemo in MS-2.
 import { render, screen } from '@testing-library/react'
 import { TokenDemo } from './TokenDemo'
 

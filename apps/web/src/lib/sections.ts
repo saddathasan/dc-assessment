@@ -1,3 +1,5 @@
+// Typed fetch layer between the SPA and the content API: maps each Section's
+// endpoint slug to its Contract payload so callers get full inference.
 import type {
   FooterContent,
   HeroContent,
@@ -37,6 +39,7 @@ export function demoQueryString(search: string): string {
   return qs ? `?${qs}` : ''
 }
 
+/** Fetches one Section's payload, carrying the page's demo params through; throws on non-2xx so Query can retry. */
 export async function fetchSection<K extends SectionKey>(section: K): Promise<SectionPayloads[K]> {
   const res = await fetch(`/api/${section}${demoQueryString(window.location.search)}`, {
     headers: { Accept: 'application/json' },
