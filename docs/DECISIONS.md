@@ -341,6 +341,28 @@ without reconstructing context from git history or the docs. Comments carry the 
 the decision log carries the reasoning layer; they link via D-IDs.
 **Status:** Accepted (applied retroactively to MS-0/MS-1 code in the same change that records it).
 
+## D-025 — Build order: full section slices in viewport order
+
+**Chosen over:** the original hybrid (static page frame first, interaction layers after — MS-2/MS-3
+split); an all-sections static sweep followed by an interactions pass.
+**Decision (user call, 2026-07-20):** from MS-2 onward, work proceeds one Section at a time in
+viewport order — Navigation → Hero → Trusted By → We Are → Solutions → Value Cards → Showcase →
+Tech Stack → Footer. A Section's slice includes its statics at both widths, **all** of its
+interactions/animations/functionality, its tests, and its Fidelity Gate — complete before the next
+Section starts. Rationale: the user follows progress on localhost; each Section must land finished,
+once, giving a real visual progress indicator.
+**Mechanics:** the Playwright fidelity harness still precedes everything (it is the instrument that
+proves "pixel perfect" — first task of MS-2); the sticky Tab Bar's release-after-Tech-Stack
+coupling is asserted provisionally in the Solutions slice and re-verified when Tech Stack lands;
+page-wide properties (breakpoint sweep, a11y audit, perf, SEO, x-browser) stay a final polish
+milestone because no single Section owns them. Milestones re-cut to MS-2…MS-12; issues #3–#8
+re-scoped, #13–#17 created, dependency chain preserved.
+**Trade-off accepted:** under deadline pressure a slice order risks a missing page tail (worse for
+a fidelity-scored assessment than missing interactions). Mitigations: the user has granted schedule
+flexibility (the 36h hard deadline stands), and a pre-agreed valve — if the window tightens,
+remaining Sections drop to static-first with interactions in a closing pass, recorded here if used.
+**Status:** Accepted.
+
 ---
 
 ## Open questions (tracked; each resolves into a numbered decision)

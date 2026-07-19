@@ -10,12 +10,37 @@ predecessor. **TDD:** each Milestone's tests are its first task. **Standing skil
 `karpathy-guidelines` (surgical simplicity), `superpowers:verification-before-completion` +
 screenshot self-check before any milestone closes.
 
-**The Window:** 36h hard from 2026-07-19 ~19:00 (+06) · 24h target · estimates below total ~19h.
-**Pre-agreed scope-cut order (TRD §9):** comprehensive→targeted tests, then x-browser depth.
-Never the Fidelity Gate.
+**The Window:** 36h hard from 2026-07-19 ~19:00 (+06) · estimates below total ~22.5h (~19h
+remaining after MS-1). User granted schedule flexibility (D-025); the hard deadline stands.
+**Pre-agreed scope-cut order (TRD §9 + D-025 valve):** comprehensive→targeted tests, then
+x-browser depth; if the window tightens, remaining Sections drop to static-first with
+interactions in a closing pass. Never the Fidelity Gate.
 **Status ritual:** this file is the plan of record — at each milestone close, tick its task
-boxes and mark the heading `✅ DONE (PR #N, date)` in the same session that merges the PR.
-Live narrative status stays in the hub README; issues #1–#8 mirror the milestones on GitHub.
+boxes, mark the heading `✅ DONE (PR #N, date)`, and update the Section tracker below, in the
+same session that merges the PR. Live narrative status stays in the hub README; issues mirror
+the milestones on GitHub.
+
+## Section tracker (D-025 — full slices, viewport order)
+
+One Section at a time, complete before the next: statics at both widths + **all** of the
+Section's interactions/animations/functionality + tests + Fidelity Gate. Watch it land on
+localhost (`pnpm dev` → http://localhost:5173).
+
+| # | Slice | Milestone | Issue | Status |
+|---|-------|-----------|-------|--------|
+| — | Foundation | MS-0 | #1 | ✅ PR #9 |
+| — | Content API + data layer | MS-1 | #2 | ✅ PR #10/#11 |
+| 1 | Navigation (+ fidelity harness) | MS-2 | #3 | ⬜ |
+| 2 | Hero (incl. video modal) | MS-3 | #4 | ⬜ |
+| 3 | Trusted By | MS-4 | #5 | ⬜ |
+| 4 | We Are | MS-5 | #6 | ⬜ |
+| 5 | Solutions (tabs + sticky) | MS-6 | #7 | ⬜ |
+| 6 | Value Cards (hover + carousel) | MS-7 | #8 | ⬜ |
+| 7 | Showcase (carousel) | MS-8 | #13 | ⬜ |
+| 8 | Tech Stack (marquee) | MS-9 | #14 | ⬜ |
+| 9 | Footer (gradient wordmark) | MS-10 | #15 | ⬜ |
+| — | Page polish (a11y/perf/SEO/x-browser) | MS-11 | #16 | ⬜ |
+| — | Ship | MS-12 | #17 | ⬜ |
 
 ---
 
@@ -55,79 +80,129 @@ Goal: every Section's real content served, typed, and consumable. → skill: `su
 **AC:** contract tests green · `?delay=2000` shows skeletons, `?fail=true` shows error+retry on
 the proof section.
 
-## MS-2 — Static sections + visual harness (~3.5h) · `ms/2-static-sections` · Issue #3
+## MS-2 — Navigation slice + fidelity harness (~3.5h) · `ms/2-navigation` · Issue #3
 
-Goal: the page's frame pixel-true at both widths; the Fidelity Gate machinery alive.
-→ skills: `frontend-design:frontend-design` (all UI tasks), `superpowers:tdd` (harness)
+Goal: the measuring instrument alive, then the first Section lands complete.
+→ skills: `superpowers:tdd`, `frontend-design`
 
-- [ ] T2.1 **Harness first:** Playwright fidelity lib — Baseline slicing from
-      `design/figma/renders/`, per-Section screenshot ≤5% diff, computed-style numeric asserts
-- [ ] T2.2 Navigation bar (static shell, both widths; menus in MS-3)
-- [ ] T2.3 Hero: headline accent spans, media block w/ notch + play button (visual), watermark
-- [ ] T2.4 Trusted By grid (2×4 ↔ 2-col×4-row)
-- [ ] T2.5 We Are statement
-- [ ] T2.6 Footer + gradient wordmark
+- [ ] T2.1 **Harness first:** Playwright fidelity lib (new dependency — ask before install) —
+      Baseline slicing from `design/figma/renders/`, per-Section screenshot ≤5% diff,
+      computed-style numeric asserts (D-021)
+- [ ] T2.2 **Tests first:** mega-menu open/close/tile-hover, hamburger open/trap/Esc
+- [ ] T2.3 Nav bar static, both widths: floating rounded bar, logo SVG, links, CTA
+- [ ] T2.4 Mega-menu: panel + 3 tiles, per-tile image reveal, tap-first + `:focus-within` +
+      Esc + `aria-expanded` (notes 1:512/1:514)
+- [ ] T2.5 Hamburger overlay (Authored, open Q1 default): deep-green overlay, staggered link
+      reveal, scroll lock + focus trap
+- [ ] T2.6 Fidelity Gate: Navigation @1440 + @393
 
-**AC:** Fidelity Gate green for Navigation/Hero/TrustedBy/WeAre/Footer @1440 + @393.
+**AC:** gate green · interaction tests green · menus fully alive on localhost.
 
-## MS-3 — Nav interactions (~2.5h) · `ms/3-nav-interactions` · Issue #4
+## MS-3 — Hero slice (~2.5h) · `ms/3-hero` · Issue #4
 
 → skills: `superpowers:tdd`, `frontend-design`
 
-- [ ] T3.1 **Tests first:** mega-menu open/close/tile-hover, hamburger, modal focus lifecycle
-- [ ] T3.2 Mega-menu: panel + tiles, per-tile image reveal, tap-first + `:focus-within` + Esc
-- [ ] T3.3 Hamburger overlay (Authored design, open Q1 default) + scroll lock + trap
-- [ ] T3.4 Video modal: `<dialog>`, provider union (YouTube iframe sentinel / `<video>`),
-      Safari close workaround
+- [ ] T3.1 **Tests first:** video modal open/close/focus lifecycle, provider switch
+- [ ] T3.2 Hero static: accent-span headline (data-driven), sub-copy, CTA, media block w/
+      notch + play button, watermark (mobile: play button above photo)
+- [ ] T3.3 Video modal: native `<dialog>`, provider union (YouTube iframe sentinel /
+      `<video>`), Safari close workaround (D-018)
+- [ ] T3.4 Fidelity Gate: Hero @1440 + @393
 
-**AC:** interaction tests green · manual a11y pass (tab order, Esc everywhere, `aria-expanded`).
+**AC:** gate green · modal a11y (trap, Esc, focus return) · tests green.
 
-## MS-4 — Solutions systems (~3h) · `ms/4-solutions` · Issue #5
+## MS-4 — Trusted By slice (~0.5h) · `ms/4-trusted-by` · Issue #5
+
+- [ ] T4.1 Logo grid 2×4 ↔ 2-col×4-row from `/api/trusted-by` (designed duplicates kept)
+- [ ] T4.2 Fidelity Gate @1440 + @393
+
+**AC:** gate green.
+
+## MS-5 — We Are slice (~0.5h) · `ms/5-we-are` · Issue #6
+
+- [ ] T5.1 Statement with bold→regular runs from `/api/we-are`
+- [ ] T5.2 Fidelity Gate @1440 + @393
+
+**AC:** gate green.
+
+## MS-6 — Solutions slice (~2.5h) · `ms/6-solutions` · Issue #7
 
 → skills: `superpowers:tdd`, `frontend-design`
 
-- [ ] T4.1 **Tests first:** tab switching, sticky-range spy, carousel swipe/dots
-- [ ] T4.2 Tab Bar: sticky within Solutions→TechStack wrapper, release after (Designer Note),
-      IntersectionObserver scroll-spy
-- [ ] T4.3 Solution Blocks 01–03 wired to tabs
-- [ ] T4.4 Value Cards desktop: hover flip (bg/heading/body reveal), `:focus-visible` parity
-- [ ] T4.5 Mobile carousel: scroll-snap, dots, animated arrow hint (D-015)
+- [ ] T6.1 **Tests first:** tab switching, scroll-spy, sticky pin
+- [ ] T6.2 Tab Bar + Solution Blocks 01–03 wired to `/api/solutions`
+- [ ] T6.3 Sticky within the Solutions→TechStack wrapper + IntersectionObserver scroll-spy
+      (note 1:277) — release-after-TechStack asserted provisionally, re-verified in MS-9
+- [ ] T6.4 Mobile: overflow-scroll tab row
+- [ ] T6.5 Fidelity Gate @1440 + @393
 
-**AC:** Fidelity Gate (Solutions, ValueCards) · sticky pins and releases at the exact section
-boundaries · tests green.
+**AC:** gate + tests green · tabs alive.
 
-## MS-5 — Showcase + marquee (~2h) · `ms/5-showcase-marquee` · Issue #6
+## MS-7 — Value Cards slice (~1.5h) · `ms/7-value-cards` · Issue #8
 
 → skills: `superpowers:tdd`, `frontend-design`
 
-- [ ] T5.1 **Tests first:** carousel nav, marquee pause control, reduced-motion behavior
-- [ ] T5.2 Showcase: green section, device image carousel, elongated-active dots
-- [ ] T5.3 Tech Stack: heading block + 3-row marquee (top/bottom vs middle direction,
-      hover/focus pause + visible pause control, `prefers-reduced-motion` static)
+- [ ] T7.1 **Tests first:** hover/focus flip, carousel swipe/dots
+- [ ] T7.2 Desktop: hover flip per frame 2:36 (bg/heading/body reveal), `:focus-visible` parity
+- [ ] T7.3 Mobile: swipe carousel of permanently-dark cards, dots + animated arrow hint (D-015)
+- [ ] T7.4 Fidelity Gate @1440 + @393
 
-**AC:** Fidelity Gate (Showcase, TechStack) · WCAG 2.2.2 pause verified · tests green.
+**AC:** gate + tests green.
 
-## MS-6 — Responsive, a11y, perf (~2.5h) · `ms/6-polish` · Issue #7
+## MS-8 — Showcase slice (~1.5h) · `ms/8-showcase` · Issue #13
 
+→ skills: `superpowers:tdd`, `frontend-design`
+
+- [ ] T8.1 **Tests first:** carousel nav + dots
+- [ ] T8.2 Green section, device carousel (scroll-snap), elongated-active dots
+      (verify exact section green vs the mobile-sampled token)
+- [ ] T8.3 Fidelity Gate @1440 + @393
+
+**AC:** gate + tests green.
+
+## MS-9 — Tech Stack slice (~1.5h) · `ms/9-tech-stack` · Issue #14
+
+→ skills: `superpowers:tdd`, `frontend-design`
+
+- [ ] T9.1 **Tests first:** marquee pause control, reduced-motion behavior
+- [ ] T9.2 Heading block + 3-row marquee (top/bottom same direction, middle opposite — note
+      2:5), hover/focus pause + visible pause control, `prefers-reduced-motion` static,
+      mobile edge-bleed
+- [ ] T9.3 Verify the Tab Bar releases after this Section (closes the MS-6 coupling)
+- [ ] T9.4 Fidelity Gate @1440 + @393
+
+**AC:** gate + tests green · WCAG 2.2.2 pause verified · sticky release exact.
+
+## MS-10 — Footer slice (~0.5h) · `ms/10-footer` · Issue #15
+
+- [ ] T10.1 Copyright accent spans, legal + socials, gradient wordmark bleeding off bottom
+- [ ] T10.2 Fidelity Gate @1440 + @393
+
+**AC:** gate green · **page complete top-to-bottom.**
+
+## MS-11 — Page polish (~2.5h) · `ms/11-polish` · Issue #16
+
+Page-wide properties no single Section owns.
 → skills: `superpowers:verification-before-completion`, `code-review` (pre-merge pass)
 
-- [ ] T6.1 Breakpoint sweep: fluid behavior 393→1440 (containers, type, grids at mid-widths)
-- [ ] T6.2 A11y audit: axe clean, focus visible everywhere, reduced-motion sweep, contrast checks
-- [ ] T6.3 SEO: title/meta/OG/favicon, semantic landmarks, single h1
-- [ ] T6.4 Perf: responsive images + lazy below-fold, preloads, Lighthouse ≥90 ×4 recorded in repo
-- [ ] T6.5 Cross-browser pass: Chrome/Safari/Firefox/Edge current — issues fixed or logged
+- [ ] T11.1 Breakpoint sweep: fluid behavior 393→1440 (containers, type, grids at mid-widths)
+- [ ] T11.2 A11y audit: axe clean, focus visible everywhere, reduced-motion sweep, contrast
+- [ ] T11.3 SEO: title/meta/OG/favicon, semantic landmarks, single h1
+- [ ] T11.4 Perf: responsive images + lazy below-fold, preloads, Lighthouse ≥90 ×4 recorded
+- [ ] T11.5 Cross-browser pass: Chrome/Safari/Firefox/Edge current — issues fixed or logged
 
 **AC:** recorded Lighthouse ≥90 all categories · axe clean · sweep findings closed.
 
-## MS-7 — Ship (~2h) · `ms/7-ship` · Issue #8
+## MS-12 — Ship (~2h) · `ms/12-ship` · Issue #17
 
-- [ ] T7.1 Production deploy: final wrangler deploy, custom domain, prod smoke incl. `?delay/?fail`
-- [ ] T7.2 README: setup (pnpm/corepack), structure, technologies, **assumptions** (Authored
-      Content, D-017 copy fixes, D-015 carousel, hamburger), future improvements, live URL,
+- [ ] T12.1 Production deploy: final wrangler deploy, custom domain, prod smoke incl.
+      `?delay/?fail`
+- [ ] T12.2 README: setup, structure, technologies, **assumptions** (Authored Content, D-017
+      fixes, D-015 carousel, hamburger, D-023, D-025), future improvements, live URL,
       decision-log pointer
-- [ ] T7.3 Full regression: fidelity + unit + interaction + contract suites; results recorded
-- [ ] T7.4 `feat → dev` PR (human gate — your review) → `dev → main` · submission email draft
-      to hr@d4t4crunch.com with repo + live links
+- [ ] T12.3 Full regression: fidelity + unit + interaction + contract suites; results recorded
+- [ ] T12.4 `feat → dev` PR (human gate — your review) → `dev → main` · submission email
+      draft to hr@d4t4crunch.com with repo + live links
 
 **AC:** cold-load-fast public URL on custom domain · README complete · all suites green ·
 `main` holds the submission state.

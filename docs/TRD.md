@@ -132,7 +132,10 @@ system table, color-contrast check (#33F987-on-dark passes; verify small-text ca
 
 ## 10. Milestones
 
-MS-0 Foundation → MS-1 Content API → MS-2 Static sections + visual harness → MS-3 Nav
-interactions → MS-4 Solutions systems → MS-5 Showcase + marquee → MS-6 Responsive/a11y/perf →
-MS-7 Ship. Full acceptance criteria + task lists: [[plans/metatech-landing.md]]. Execution: D-020
-GitHub issues + D-022 topology (`ms/N` → `feat/metatech-landing` → `dev` → `main`).
+Re-cut per D-025 into full Section slices in viewport order: MS-0 Foundation → MS-1 Content API →
+MS-2 Navigation (+ fidelity harness) → MS-3 Hero → MS-4 Trusted By → MS-5 We Are → MS-6 Solutions
+→ MS-7 Value Cards → MS-8 Showcase → MS-9 Tech Stack → MS-10 Footer → MS-11 Page polish → MS-12
+Ship. Each slice = statics + all of the Section's interactions/animations + tests + Fidelity Gate,
+complete before the next Section. Full acceptance criteria + task lists + Section tracker:
+[[plans/metatech-landing.md]]. Execution: D-020 GitHub issues + D-022 topology (`ms/N` →
+`feat/metatech-landing` → `dev` → `main`).
