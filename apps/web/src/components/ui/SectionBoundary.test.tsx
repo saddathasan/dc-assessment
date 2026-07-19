@@ -57,6 +57,7 @@ describe('useSectionQuery + SectionBoundary', () => {
     renderProbe()
 
     expect(screen.getByTestId('skeleton')).toBeInTheDocument()
+    expect(screen.getByRole('status')).toHaveTextContent('Loading section')
     expect(
       await screen.findByRole('heading', {
         name: 'Building Intelligence to Power Scalable Innovation',

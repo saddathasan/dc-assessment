@@ -13,9 +13,10 @@ import type {
 } from '@metatech/shared'
 import { app } from '../src/app.js'
 
-// Compile-time layer of the contract lives in the route modules (data JSON
-// `satisfies` each payload type); these tests are the runtime layer: every
-// endpoint responds 200 with the exact extracted content.
+// The typed data barrel (src/data/index.ts) binds each JSON file to its
+// Contract type at compile time (with documented literal-widening casts);
+// these tests are the authoritative runtime layer: every endpoint responds
+// 200 with the exact extracted content.
 
 const SECTION_ENDPOINTS = [
   '/api/navigation',

@@ -11,8 +11,9 @@ export function Hero() {
         {(hero) => (
           <div className="px-[50px] py-10">
             <h1 className="max-w-[664px] font-display text-hero font-extrabold">
-              {hero.headline.map((span) => (
-                <span key={span.text} className={span.accent ? 'text-accent' : undefined}>
+              {hero.headline.map((span, index) => (
+                // Spans have no identity beyond position, so the index is the honest key.
+                <span key={index} className={span.accent ? 'text-accent' : undefined}>
                   {span.text}
                 </span>
               ))}

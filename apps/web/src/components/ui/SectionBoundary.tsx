@@ -11,7 +11,12 @@ interface SectionBoundaryProps<T> {
 /** Per-Section loading/error/content switch: every Section fails and recovers alone (D-007). */
 export function SectionBoundary<T>({ query, skeleton, children }: SectionBoundaryProps<T>) {
   if (query.isPending) {
-    return <>{skeleton}</>
+    return (
+      <div role="status">
+        <span className="sr-only">Loading section</span>
+        {skeleton}
+      </div>
+    )
   }
   if (query.isError) {
     return (
@@ -20,10 +25,11 @@ export function SectionBoundary<T>({ query, skeleton, children }: SectionBoundar
           <p className="font-sans text-body-lg">This section could not be loaded.</p>
           <button
             type="button"
+            disabled={query.isRefetching}
             onClick={() => void query.refetch()}
-            className="mt-4 rounded-card bg-accent px-[35px] py-[10px] font-sans text-ui font-bold text-ink"
+            className="mt-4 rounded-card bg-accent px-[35px] py-[10px] font-sans text-ui font-bold text-ink disabled:opacity-60"
           >
-            Try again
+            {query.isRefetching ? 'Retrying…' : 'Try again'}
           </button>
         </div>
       </div>
