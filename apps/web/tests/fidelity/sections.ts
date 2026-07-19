@@ -81,4 +81,23 @@ export const targets: FidelityTarget[] = [
     crop: { x: 0, y: 195, width: 393, height: 732 },
     clip: { x: 0, y: 138, width: 393, height: 732 },
   },
+  // Trusted By — desktop band: heading + 4x2 logo wall bottom-pinned in the
+  // 1440x320 frame (node 1:79, abs y=1171 — flush under the hero band, flush
+  // over We-Are at 1491).
+  {
+    id: 'trusted-by-desktop',
+    source: '1-34.png',
+    crop: { x: 0, y: 1171, width: 1440, height: 320 },
+    clip: { x: 0, y: 1171, width: 1440, height: 320 },
+  },
+  // Trusted By — mobile band: 80px headroom + heading + 2x4 wall (node 1:334,
+  // abs y=926.76 → crop 927 by the slicer's whole-pixel rule); page clip
+  // y = render − 57 (the excluded status bar), contiguous with hero-mobile's
+  // clip end 138+732=870.
+  {
+    id: 'trusted-by-mobile',
+    source: '1-279.png',
+    crop: { x: 0, y: 927, width: 393, height: 458 },
+    clip: { x: 0, y: 870, width: 393, height: 458 },
+  },
 ]
