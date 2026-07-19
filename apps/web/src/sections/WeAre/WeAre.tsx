@@ -31,8 +31,10 @@ function WeAreLayout({ content }: { content: WeAreContent }) {
       <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-[400px]">
         {/* Eyebrow swaps family per breakpoint like the Trusted By heading:
             Bricolage 600 18/24 on mobile (1:360), Manrope 600 18/30 at lg
-            (1:103). Slash-form sizes so the paired line-heights win. */}
-        <h2 className="font-display text-[18px]/[24px] font-semibold tracking-[-0.9px] lg:shrink-0 lg:font-sans lg:text-[18px]/[30px] lg:whitespace-nowrap">
+            (1:103). Slash-form sizes so the paired line-heights win. The design
+            hugs it at 76 wide; Chromium measures the glyphs ~1.7px narrower, so
+            the box is fixed at 76 to keep the statement's 496 offset exact. */}
+        <h2 className="font-display text-[18px]/[24px] font-semibold tracking-[-0.9px] lg:w-[76px] lg:shrink-0 lg:font-sans lg:text-[18px]/[30px] lg:whitespace-nowrap">
           {content.eyebrow}
         </h2>
         {/* One text node in the design, weight-split by characterStyleOverrides
