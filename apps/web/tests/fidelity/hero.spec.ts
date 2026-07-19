@@ -106,6 +106,31 @@ test.describe('Hero @1440', () => {
     })
   })
 
+  test('band stays capped and coherent on wide viewports', async ({ page }) => {
+    // No Baseline exists beyond the design's 1440 artboard, but the layout must
+    // degrade coherently there: the band caps at 1440 and centers (the nav's
+    // convention), and the notch contents stay married to the scaled clip path.
+    // Regression for the >1440 breakage where the container stretched while the
+    // photo/play/watermark stayed at fixed artboard offsets.
+    await page.setViewportSize({ width: 1920, height: 900 })
+
+    // Copy block centers with the band: 50px margin inside the capped 1440.
+    expect(await page.getByRole('heading', { level: 1 }).boundingBox()).toMatchObject({ x: 290 })
+
+    // Media block: still 1400x571, centered — never stretched.
+    const media = await page.getByTestId('hero-media').boundingBox()
+    expect(media).toEqual({ x: 260, y: 600, width: 1400, height: 571 })
+
+    // Play button rides the notch center (~50% of the block), not a fixed offset.
+    expect(await visiblePlay(page).boundingBox()).toMatchObject({ x: 895, y: 535 })
+
+    // Photo still covers the whole block; watermark keeps its design offset.
+    const photo = await page.getByTestId('hero-photo').boundingBox()
+    expect(photo!.x).toBeLessThanOrEqual(media!.x)
+    expect(photo!.x + photo!.width).toBeGreaterThanOrEqual(media!.x + media!.width)
+    expect(await page.getByTestId('hero-watermark').boundingBox()).toMatchObject({ x: 459 })
+  })
+
   test('play button opens the modal; Esc closes and returns focus', async ({ page }) => {
     await visiblePlay(page).click()
 
