@@ -2,7 +2,7 @@
    (48px-headline column + photo card on mobile; 400px copy row + 571 media at 1440). */
 export function HeroSkeleton() {
   return (
-    <div aria-hidden className="mx-auto animate-pulse lg:max-w-[1440px]">
+    <div aria-hidden className="mx-auto animate-pulse pt-[62px] lg:max-w-[1440px] lg:pt-0">
       <div className="w-full px-[28.5px] lg:flex lg:h-[400px] lg:items-center lg:gap-[180px] lg:px-[50px]">
         <div className="h-[192px] rounded-card bg-white/10 lg:h-[216px] lg:w-[664px]" />
         <div className="mt-5 lg:mt-0 lg:w-[388px]">

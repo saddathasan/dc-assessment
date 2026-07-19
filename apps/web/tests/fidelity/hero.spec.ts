@@ -158,27 +158,29 @@ test.describe('Hero @393', () => {
   })
 
   test('column geometry and styles are design-exact', async ({ page }) => {
-    // h1: 336x192 at (28.5,76) — Bricolage w800 48/48, -5% tracking (node 1:315).
+    // h1: 336x192 at (28.5,138) — Bricolage w800 48/48, -5% tracking (node 1:315);
+    // the column starts 62px below the header (hero node y=194.76 vs header end
+    // 133 in file.json — the design's spacing survives the excluded banner, D-026).
     const h1 = page.getByRole('heading', { level: 1 })
-    expect(await h1.boundingBox()).toEqual({ x: 28.5, y: 76, width: 336, height: 192 })
+    expect(await h1.boundingBox()).toEqual({ x: 28.5, y: 138, width: 336, height: 192 })
     await expect(h1).toHaveCSS('font-size', '48px')
     await expect(h1).toHaveCSS('line-height', '48px')
     await expect(h1).toHaveCSS('letter-spacing', '-2.4px')
 
     // Sub-copy: 336x80 at y=288 — Manrope w300 14/20 (node 1:316).
     const subcopy = page.getByText(/MetaTech integrates custom software/)
-    expect(await subcopy.boundingBox()).toEqual({ x: 28.5, y: 288, width: 336, height: 80 })
+    expect(await subcopy.boundingBox()).toEqual({ x: 28.5, y: 350, width: 336, height: 80 })
     await expect(subcopy).toHaveCSS('font-size', '14px')
     await expect(subcopy).toHaveCSS('line-height', '20px')
 
     // CTA: fixed 130x40 at y=398, r=10 (node 1:319 — pads clamped by the width).
     const cta = page.getByRole('link', { name: 'Book for Demo' })
-    expect(await cta.boundingBox()).toEqual({ x: 28.5, y: 398, width: 130, height: 40 })
+    expect(await cta.boundingBox()).toEqual({ x: 28.5, y: 460, width: 130, height: 40 })
     await expect(cta).toHaveCSS('border-radius', '10px')
 
     // Play rings above the photo: 100/80/60 at (28.5,488) (nodes 1:321..1:323).
     const play = visiblePlay(page)
-    expect(await play.boundingBox()).toEqual({ x: 28.5, y: 488, width: 100, height: 100 })
+    expect(await play.boundingBox()).toEqual({ x: 28.5, y: 550, width: 100, height: 100 })
     await expect(play).toHaveCSS('background-color', 'rgba(51, 249, 135, 0.25)')
     expect(await play.locator('span').first().boundingBox()).toMatchObject({
       width: 80,
@@ -196,18 +198,18 @@ test.describe('Hero @393', () => {
       }
     }
     const media = page.getByTestId('hero-media')
-    closeTo(await media.boundingBox(), { x: 6.5, y: 608, width: 380, height: 200 })
+    closeTo(await media.boundingBox(), { x: 6.5, y: 670, width: 380, height: 200 })
     await expect(media.locator('div').first()).toHaveCSS('border-radius', '20px')
     await expect(page.getByTestId('hero-overlay')).toHaveCSS('opacity', '0.35')
     closeTo(await page.getByTestId('hero-photo').boundingBox(), {
       x: 3.5,
-      y: 598,
+      y: 660,
       width: 383,
       height: 255,
     })
     closeTo(await page.getByTestId('hero-watermark').boundingBox(), {
       x: 59,
-      y: 764,
+      y: 826,
       width: 275,
       height: 44,
     })

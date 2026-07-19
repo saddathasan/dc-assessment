@@ -49,7 +49,10 @@ function HeroLayout({ content }: { content: HeroContent }) {
   return (
     // The band caps at the design's 1440 and centers on wider viewports — the
     // page convention the nav set; the deep green bleeds via the section behind.
-    <div className="mx-auto lg:max-w-[1440px]">
+    // Mobile keeps the design's 62px gap under the header (hero y=194.76 vs
+    // header end 133 in file.json): the foreign banner there is excluded, its
+    // space is design geometry and stays (D-026). Desktop is flush (y=120).
+    <div className="mx-auto pt-[62px] lg:max-w-[1440px] lg:pt-0">
       {/* Copy block: below lg it fills the viewport with the design's 28.5px side
           margins (336 wide at exactly 393 — never a hard cap, which shrank big
           phones and stranded tablets); at 1440 a 400px-tall row whose items-center

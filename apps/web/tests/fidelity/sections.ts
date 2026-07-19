@@ -71,10 +71,14 @@ export const targets: FidelityTarget[] = [
   // ('Frame 289414', abs y=194.76 in the render — above it sit the excluded status
   // bar AND the foreign gamification banner, do-not-build artifacts per
   // EXTRACTION.md Quirks; rounded to 195 because the slicer crops whole pixels).
+  // On the page the band sits 62px below the header — the design's rendered gap
+  // (194.76 − 133), preserved even though the foreign banner that overlapped it
+  // is excluded (D-026); the crop skips that region because the banner pollutes
+  // the render there.
   {
     id: 'hero-mobile',
     source: '1-279.png',
     crop: { x: 0, y: 195, width: 393, height: 732 },
-    clip: { x: 0, y: 76, width: 393, height: 732 },
+    clip: { x: 0, y: 138, width: 393, height: 732 },
   },
 ]
