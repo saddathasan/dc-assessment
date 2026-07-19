@@ -23,16 +23,18 @@ export function TrustedBy() {
  * Display box per logo bitmap, from the Extraction. Desktop: fixed px rect
  * widths inside the capped band (nodes 1:85..1:100; heights follow the bitmaps'
  * intrinsic ratios, which match the design's targetAspectRatio). Mobile:
- * percentages of the 175x70 tile so the wall scales fluidly below lg —
- * UiPath keeps the design's own off-ratio 96x36 STRETCH (node 1:347).
+ * percentages of the tile's 173x68 CONTENT box (175x70 minus the 1px borders —
+ * that's what % widths resolve against) so the wall scales fluidly below lg and
+ * lands on the design's exact px at 393. UiPath keeps the design's own
+ * off-ratio 96x36 STRETCH (node 1:347).
  */
 const LOGO_SIZE: Record<string, { desktop: string; mobile: string }> = {
-  Databricks: { desktop: 'w-[172px]', mobile: 'w-[82.2857%]' },
-  'Google Cloud': { desktop: 'w-[172px]', mobile: 'w-[76.5714%]' },
-  UiPath: { desktop: 'w-[112px]', mobile: 'h-[51.4286%] w-[54.8571%]' },
-  Alteryx: { desktop: 'w-[132px]', mobile: 'w-[56.5714%]' },
-  Figma: { desktop: 'w-[132px]', mobile: 'w-[57.7143%]' },
-  'Amazon Web Services': { desktop: 'w-[80px]', mobile: 'w-[28.5714%]' },
+  Databricks: { desktop: 'w-[172px]', mobile: 'w-[83.237%]' },
+  'Google Cloud': { desktop: 'w-[172px]', mobile: 'w-[77.4566%]' },
+  UiPath: { desktop: 'w-[112px]', mobile: 'h-[52.9412%] w-[55.4913%]' },
+  Alteryx: { desktop: 'w-[132px]', mobile: 'w-[57.2254%]' },
+  Figma: { desktop: 'w-[132px]', mobile: 'w-[58.3815%]' },
+  'Amazon Web Services': { desktop: 'w-[80px]', mobile: 'w-[28.9017%]' },
 }
 
 /** The 925x200 desktop wall (node 1:82): two flex rows of 232x100 bordered tiles. */
