@@ -2,9 +2,9 @@
 // open/close/focus lifecycle, the content-driven provider union (D-018), and the
 // sentinel focus trap the YouTube iframe requires. Visual checks live in tests/fidelity/.
 import { useState } from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VideoSource } from '@metatech/shared'
 import { VideoModal } from './VideoModal'
 
@@ -31,16 +31,19 @@ function Harness({ video }: { video: VideoSource }) {
 }
 
 async function openModal(video: VideoSource) {
+  const user = userEvent.setup()
   render(<Harness video={video} />)
-  await userEvent.click(screen.getByRole('button', { name: 'Play the MetaTech video' }))
-  return screen.getByRole('dialog')
+  await user.click(screen.getByRole('button', { name: 'Play the MetaTech video' }))
+  return { user, dialog: screen.getByRole('dialog') }
 }
 
-/** The modal closes after its exit transition; wait past the fallback window. */
-async function expectClosed() {
-  await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument(), {
-    timeout: 1000,
-  })
+/**
+ * With no CSS in happy-dom the dialog's transition duration computes to 0, so the
+ * component takes its reduced-motion path and every close settles synchronously —
+ * closed, unmounted, focus and scroll restored — before this assertion runs.
+ */
+function expectClosed() {
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
 }
 
 afterEach(() => {
@@ -49,7 +52,7 @@ afterEach(() => {
 
 describe('VideoModal lifecycle', () => {
   it('opens as a modal dialog, locks scroll, and starts focus on the close button', async () => {
-    const dialog = await openModal(youtubeVideo)
+    const { dialog } = await openModal(youtubeVideo)
 
     expect(dialog).toBeInTheDocument()
     expect((dialog as HTMLDialogElement).open).toBe(true)
@@ -58,29 +61,31 @@ describe('VideoModal lifecycle', () => {
   })
 
   it('closes from the close button, unlocks scroll, and returns focus to the trigger', async () => {
-    await openModal(youtubeVideo)
+    const { user } = await openModal(youtubeVideo)
 
-    await userEvent.click(screen.getByRole('button', { name: /close video/i }))
-    await expectClosed()
+    await user.click(screen.getByRole('button', { name: /close video/i }))
+    expectClosed()
     expect(document.body.style.overflow).not.toBe('hidden')
     expect(screen.getByRole('button', { name: 'Play the MetaTech video' })).toHaveFocus()
   })
 
   it('closes on the dialog cancel event (Esc) and returns focus to the trigger', async () => {
-    const dialog = await openModal(youtubeVideo)
+    const { dialog } = await openModal(youtubeVideo)
 
     // Browsers turn Esc into a cancelable `cancel` on the open <dialog>; the real
     // keypress is exercised in the Playwright fidelity spec.
-    dialog.dispatchEvent(new Event('cancel', { cancelable: true }))
-    await expectClosed()
+    act(() => {
+      dialog.dispatchEvent(new Event('cancel', { cancelable: true }))
+    })
+    expectClosed()
     expect(screen.getByRole('button', { name: 'Play the MetaTech video' })).toHaveFocus()
   })
 
   it('closes when the backdrop (the dialog surface itself) is clicked', async () => {
-    const dialog = await openModal(youtubeVideo)
+    const { user, dialog } = await openModal(youtubeVideo)
 
-    await userEvent.click(dialog)
-    await expectClosed()
+    await user.click(dialog)
+    expectClosed()
   })
 })
 
