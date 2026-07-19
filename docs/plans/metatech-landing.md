@@ -32,7 +32,7 @@ localhost (`pnpm dev` → http://localhost:5173).
 | — | Content API + data layer | MS-1 | #2 | ✅ PR #10/#11 |
 | 1 | Navigation (+ fidelity harness) | MS-2 | #3 | ✅ PR #20 |
 | 2 | Hero (incl. video modal) | MS-3 | #4 | ✅ PR #22 |
-| 3 | Trusted By | MS-4 | #5 | ⬜ |
+| 3 | Trusted By | MS-4 | #5 | ✅ PR #27 |
 | 4 | We Are | MS-5 | #6 | ⬜ |
 | 5 | Solutions (tabs + sticky) | MS-6 | #7 | ⬜ |
 | 6 | Value Cards (hover + carousel) | MS-7 | #8 | ⬜ |
@@ -111,10 +111,11 @@ Goal: the measuring instrument alive, then the first Section lands complete.
 
 **AC:** gate green · modal a11y (trap, Esc, focus return) · tests green.
 
-## MS-4 — Trusted By slice (~0.5h) · `ms/4-trusted-by` · Issue #5
+## MS-4 — Trusted By slice (~0.5h) · `ms/4-trusted-by` · Issue #5 — ✅ DONE (PR #27, 2026-07-20)
 
-- [ ] T4.1 Logo grid 2×4 ↔ 2-col×4-row from `/api/trusted-by` (designed duplicates kept)
-- [ ] T4.2 Fidelity Gate @1440 + @393
+- [x] T4.1 Logo grid 2×4 ↔ 2-col×4-row from `/api/trusted-by` (designed duplicates kept;
+      the mobile artboard's own duplicates differ, so the contract gained `logosMobile`)
+- [x] T4.2 Fidelity Gate @1440 + @393
 
 **AC:** gate green.
 
