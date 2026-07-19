@@ -4,6 +4,7 @@ import type { HealthPayload } from '@metatech/shared'
 import { simulateNetwork } from './middleware/simulateNetwork.js'
 import { notFound } from './middleware/notFound.js'
 import { errorHandler } from './middleware/errorHandler.js'
+import { contentRouter } from './routes/content.js'
 
 export const app = express()
 
@@ -13,6 +14,8 @@ app.use(simulateNetwork)
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok' } satisfies HealthPayload)
 })
+
+app.use(contentRouter)
 
 app.use(notFound)
 app.use(errorHandler)
