@@ -100,4 +100,22 @@ export const targets: FidelityTarget[] = [
     crop: { x: 0, y: 927, width: 393, height: 458 },
     clip: { x: 0, y: 870, width: 393, height: 458 },
   },
+  // We Are — desktop band: eyebrow + statement row bottom-pinned in the white
+  // 1440x345 frame (node 1:101, abs y=1491 — flush under Trusted By's 1171+320).
+  {
+    id: 'we-are-desktop',
+    source: '1-34.png',
+    crop: { x: 0, y: 1491, width: 1440, height: 345 },
+    clip: { x: 0, y: 1491, width: 1440, height: 345 },
+  },
+  // We Are — mobile band: 87px headroom + stacked eyebrow/statement (node 1:358,
+  // abs y=1384.76 → crop 1385, contiguous with trusted-by-mobile's 927+458);
+  // page clip y = render − 57 (the excluded status bar), contiguous with
+  // trusted-by-mobile's clip end 870+458=1328.
+  {
+    id: 'we-are-mobile',
+    source: '1-279.png',
+    crop: { x: 0, y: 1385, width: 393, height: 370 },
+    clip: { x: 0, y: 1328, width: 393, height: 370 },
+  },
 ]
