@@ -363,6 +363,20 @@ flexibility (the 36h hard deadline stands), and a pre-agreed valve — if the wi
 remaining Sections drop to static-first with interactions in a closing pass, recorded here if used.
 **Status:** Accepted.
 
+## D-026 — Excluded artifacts leave their space behind
+
+**Context:** the mobile design's hero column sits at y=194.76 while the header ends at 133;
+the 62px between them is where the foreign gamification banner (a do-not-build artifact,
+EXTRACTION.md Quirks) overlapped. MS-3 first shipped the hero flush under the header —
+deleting the design's spacing along with the artifact (caught by the user, fixed same day).
+**Decision:** when a do-not-build artifact is excluded, only its pixels are dropped — the
+absolute positions of everything we DO build come verbatim from `file.json`
+absoluteBoundingBox values, so the space the artifact occupied persists as design geometry
+(here: a 62px top gap on the mobile hero, rounded from 61.76).
+**Why superior:** the alternative (reflowing content to fill the hole) fabricates a layout
+the designer never drew; rendered positions are the only ground truth the Extraction offers.
+**Status:** Accepted.
+
 ---
 
 ## Open questions (tracked; each resolves into a numbered decision)
