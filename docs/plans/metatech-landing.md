@@ -13,46 +13,49 @@ screenshot self-check before any milestone closes.
 **The Window:** 36h hard from 2026-07-19 ~19:00 (+06) · 24h target · estimates below total ~19h.
 **Pre-agreed scope-cut order (TRD §9):** comprehensive→targeted tests, then x-browser depth.
 Never the Fidelity Gate.
+**Status ritual:** this file is the plan of record — at each milestone close, tick its task
+boxes and mark the heading `✅ DONE (PR #N, date)` in the same session that merges the PR.
+Live narrative status stays in the hub README; issues #1–#8 mirror the milestones on GitHub.
 
 ---
 
-## MS-0 — Foundation (~1.5h) · branch `ms/0-foundation` · Issue #MS-0
+## MS-0 — Foundation (~1.5h) · branch `ms/0-foundation` · Issue #1 — ✅ DONE (PR #9, 2026-07-19)
 
 Goal: running skeleton of the whole system, riskiest integrations proven.
 
-- [ ] T0.1 Commit planning + design artifacts (docs/, design/, CONTEXT.md) — first commits on feat
-- [ ] T0.2 pnpm workspaces root: `pnpm-workspace.yaml`, root scripts, .gitignore, engines
-- [ ] T0.3 `apps/web`: Vite 8 react-ts + Tailwind v4 `@theme` tokens + @fontsource fonts +
+- [x] T0.1 Commit planning + design artifacts (docs/, design/, CONTEXT.md) — first commits on feat
+- [x] T0.2 pnpm workspaces root: `pnpm-workspace.yaml`, root scripts, .gitignore, engines
+- [x] T0.3 `apps/web`: Vite 8 react-ts + Tailwind v4 `@theme` tokens + @fontsource fonts +
       **TanStack Router (verify Vite 8 plugin compat — riskiest unknown, do first)** + Query +
       `/api` proxy + Vitest/happy-dom/RTL wiring — setup per research notes in
       [[../DECISIONS.md]] D-003/D-005
-- [ ] T0.4 `apps/api`: Express 5 TS (`app.ts`/`server.ts`), `/api/health`, error + 404 +
+- [x] T0.4 `apps/api`: Express 5 TS (`app.ts`/`server.ts`), `/api/health`, error + 404 +
       `simulateNetwork` middleware, Vitest wiring
-- [ ] T0.5 `packages/shared`: `SolutionId` + Section payload type stubs (plain TS source)
-- [ ] T0.6 Scratch Cloudflare deploy: `worker.ts` + `wrangler.jsonc` + custom domain route +
+- [x] T0.5 `packages/shared`: `SolutionId` + Section payload type stubs (plain TS source)
+- [x] T0.6 Scratch Cloudflare deploy: `worker.ts` + `wrangler.jsonc` + custom domain route +
       `--dry-run` then real deploy (flush D-011 risks)
 
 **AC:** `pnpm dev` runs web+api with proxy (`/api/health` from web origin) · tokens/fonts demo
 renders · both Vitest suites green · scratch URL live on the custom domain.
 
-## MS-1 — Content contract & API (~2h) · `ms/1-content-api` · Issue #MS-1
+## MS-1 — Content contract & API (~2h) · `ms/1-content-api` · Issue #2 — ✅ DONE (PR #10 + #11, 2026-07-20)
 
 Goal: every Section's real content served, typed, and consumable. → skill: `superpowers:tdd`
 
-- [ ] T1.1 **Tests first:** contract tests — 10 endpoints × (200, payload matches Contract)
-- [ ] T1.2 Complete Content Contract types (rich-text accent spans, all 9 payloads, video union)
-- [ ] T1.3 Extract content JSON from `design/figma/tree-*.txt` → `data/*.json` (verbatim;
+- [x] T1.1 **Tests first:** contract tests — 10 endpoints × (200, payload matches Contract)
+- [x] T1.2 Complete Content Contract types (rich-text accent spans, all 9 payloads, video union)
+- [x] T1.3 Extract content JSON from `design/figma/tree-*.txt` → `data/*.json` (verbatim;
       D-017 fixes applied + logged in README assumptions)
-- [ ] T1.4 Author Solution Blocks 02/03 copy (D-016; brand voice from mega-menu tiles)
-- [ ] T1.5 Routes + asset export: section images/logos from Extraction → `apps/web/public`
+- [x] T1.4 Author Solution Blocks 02/03 copy (D-016; brand voice from mega-menu tiles)
+- [x] T1.5 Routes + asset export: section images/logos from Extraction → `apps/web/public`
       (vector logos from `fillGeometry` where crisper)
-- [ ] T1.6 Web data layer: query client, `useSectionQuery`, `SectionBoundary`
+- [x] T1.6 Web data layer: query client, `useSectionQuery`, `SectionBoundary`
       (layout-matched skeleton / error+retry) — proven on Hero with raw data
 
 **AC:** contract tests green · `?delay=2000` shows skeletons, `?fail=true` shows error+retry on
 the proof section.
 
-## MS-2 — Static sections + visual harness (~3.5h) · `ms/2-static-sections` · Issue #MS-2
+## MS-2 — Static sections + visual harness (~3.5h) · `ms/2-static-sections` · Issue #3
 
 Goal: the page's frame pixel-true at both widths; the Fidelity Gate machinery alive.
 → skills: `frontend-design:frontend-design` (all UI tasks), `superpowers:tdd` (harness)
@@ -67,7 +70,7 @@ Goal: the page's frame pixel-true at both widths; the Fidelity Gate machinery al
 
 **AC:** Fidelity Gate green for Navigation/Hero/TrustedBy/WeAre/Footer @1440 + @393.
 
-## MS-3 — Nav interactions (~2.5h) · `ms/3-nav-interactions` · Issue #MS-3
+## MS-3 — Nav interactions (~2.5h) · `ms/3-nav-interactions` · Issue #4
 
 → skills: `superpowers:tdd`, `frontend-design`
 
@@ -79,7 +82,7 @@ Goal: the page's frame pixel-true at both widths; the Fidelity Gate machinery al
 
 **AC:** interaction tests green · manual a11y pass (tab order, Esc everywhere, `aria-expanded`).
 
-## MS-4 — Solutions systems (~3h) · `ms/4-solutions` · Issue #MS-4
+## MS-4 — Solutions systems (~3h) · `ms/4-solutions` · Issue #5
 
 → skills: `superpowers:tdd`, `frontend-design`
 
@@ -93,7 +96,7 @@ Goal: the page's frame pixel-true at both widths; the Fidelity Gate machinery al
 **AC:** Fidelity Gate (Solutions, ValueCards) · sticky pins and releases at the exact section
 boundaries · tests green.
 
-## MS-5 — Showcase + marquee (~2h) · `ms/5-showcase-marquee` · Issue #MS-5
+## MS-5 — Showcase + marquee (~2h) · `ms/5-showcase-marquee` · Issue #6
 
 → skills: `superpowers:tdd`, `frontend-design`
 
@@ -104,7 +107,7 @@ boundaries · tests green.
 
 **AC:** Fidelity Gate (Showcase, TechStack) · WCAG 2.2.2 pause verified · tests green.
 
-## MS-6 — Responsive, a11y, perf (~2.5h) · `ms/6-polish` · Issue #MS-6
+## MS-6 — Responsive, a11y, perf (~2.5h) · `ms/6-polish` · Issue #7
 
 → skills: `superpowers:verification-before-completion`, `code-review` (pre-merge pass)
 
@@ -116,7 +119,7 @@ boundaries · tests green.
 
 **AC:** recorded Lighthouse ≥90 all categories · axe clean · sweep findings closed.
 
-## MS-7 — Ship (~2h) · `ms/7-ship` · Issue #MS-7
+## MS-7 — Ship (~2h) · `ms/7-ship` · Issue #8
 
 - [ ] T7.1 Production deploy: final wrangler deploy, custom domain, prod smoke incl. `?delay/?fail`
 - [ ] T7.2 README: setup (pnpm/corepack), structure, technologies, **assumptions** (Authored
