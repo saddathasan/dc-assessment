@@ -2,7 +2,7 @@
  * Content Contract — the compile-time agreement between apps/api and apps/web.
  * Types-only on purpose: `import type` erases at build time, so neither app
  * bundles this package's code (see docs/DECISIONS.md D-011 bundling caution).
- * Section payloads are stubs here; MS-1 completes them (docs/TRD.md §3).
+ * Shapes follow docs/TRD.md §3; content values come from the Extraction.
  */
 
 export type SolutionId = 'data-ai' | 'custom-software' | 'tech-staffing'
@@ -13,6 +13,33 @@ export interface RichTextSpan {
   accent?: boolean
 }
 
+/** Bold-vs-regular statement runs (the We Are Section's typography). */
+export interface WeightedTextSpan {
+  text: string
+  bold?: boolean
+}
+
+export interface ImageAsset {
+  src: string
+  alt: string
+}
+
+export interface Cta {
+  label: string
+  href: string
+}
+
+export interface Link {
+  label: string
+  href: string
+}
+
+/** Video source switched by content, not code (D-018). */
+export interface VideoSource {
+  provider: 'youtube' | 'file'
+  src: string
+}
+
 export interface HealthPayload {
   status: 'ok'
 }
@@ -21,32 +48,101 @@ export interface ApiError {
   error: string
 }
 
-/* --- Section payload stubs (completed in MS-1) --- */
+/* --- Section payloads, one per endpoint (D-007) --- */
+
+export interface MegaMenuTile {
+  solution: SolutionId
+  title: string
+  image: ImageAsset
+}
 
 export interface NavigationContent {
-  _stub: true
+  links: Link[]
+  cta: Cta
+  megaMenu: { tiles: MegaMenuTile[] }
 }
+
 export interface HeroContent {
-  _stub: true
+  headline: RichTextSpan[]
+  subcopy: string
+  cta: Cta
+  media: { image: ImageAsset }
+  video: VideoSource
 }
+
+export interface LogoTile {
+  name: string
+  image: ImageAsset
+}
+
 export interface TrustedByContent {
-  _stub: true
+  heading: RichTextSpan[]
+  logos: LogoTile[]
 }
+
 export interface WeAreContent {
-  _stub: true
+  eyebrow: string
+  statement: WeightedTextSpan[]
 }
+
+export interface SolutionTab {
+  id: SolutionId
+  label: string
+}
+
+export interface SolutionBlock {
+  id: SolutionId
+  number: string
+  heading: string
+  body: string
+  cta: Cta
+  /** True for Authored Content we wrote where the design is silent (D-016). */
+  authored?: boolean
+}
+
 export interface SolutionsContent {
-  _stub: true
+  tabs: SolutionTab[]
+  blocks: SolutionBlock[]
 }
+
+export interface ValueCard {
+  heading: string
+  body: string
+}
+
 export interface ValueCardsContent {
-  _stub: true
+  cards: ValueCard[]
 }
+
+export interface ShowcaseSlide {
+  image: ImageAsset
+}
+
 export interface ShowcaseContent {
-  _stub: true
+  logo: ImageAsset
+  heading: string
+  body: string
+  cta: Cta
+  slides: ShowcaseSlide[]
 }
+
+export type MarqueeDirection = 'left' | 'right'
+
+export interface TechStackRow {
+  direction: MarqueeDirection
+  logos: LogoTile[]
+}
+
 export interface TechStackContent {
-  _stub: true
+  eyebrow: string
+  heading: string
+  body: string
+  rows: TechStackRow[]
 }
+
 export interface FooterContent {
-  _stub: true
+  copyright: RichTextSpan[]
+  legalLinks: Link[]
+  socialLinks: Link[]
+  showWordmark: boolean
 }
