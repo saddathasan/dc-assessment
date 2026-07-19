@@ -47,7 +47,9 @@ function HeroLayout({ content }: { content: HeroContent }) {
   const openVideo = () => setVideoOpen(true)
 
   return (
-    <>
+    // The band caps at the design's 1440 and centers on wider viewports — the
+    // page convention the nav set; the deep green bleeds via the section behind.
+    <div className="mx-auto lg:max-w-[1440px]">
       {/* Copy block: a single mobile column (336 @ x=28.5); at 1440 a 400px-tall
           row whose items-center produces the design's 212/239 top offsets. */}
       <div className="mx-auto w-full max-w-[336px] lg:flex lg:h-[400px] lg:max-w-none lg:items-center lg:gap-[180px] lg:px-[50px]">
@@ -96,7 +98,7 @@ function HeroLayout({ content }: { content: HeroContent }) {
             src={content.media.image.src}
             alt={content.media.image.alt}
             data-testid="hero-photo"
-            className="absolute top-[-10px] left-[-3px] h-[255px] w-[383px] max-w-none object-cover lg:top-[-95px] lg:left-[-2px] lg:h-[934px] lg:w-[1402px]"
+            className="absolute top-[-10px] left-[-3px] h-[255px] w-[383px] max-w-none object-cover lg:top-[-95px] lg:left-[calc(50%-702px)] lg:h-[934px] lg:w-[1402px]"
           />
           {/* Diagonal dark→green→dark wash over the photo (nodes 2:15/2:30). */}
           <div
@@ -105,9 +107,10 @@ function HeroLayout({ content }: { content: HeroContent }) {
             className="absolute inset-0 bg-[linear-gradient(118deg,#161616_25%,#06ff70_48.08%,#161616_75.48%)] opacity-35 lg:bg-[linear-gradient(112.4deg,#161616_25%,#06ff70_48.08%,#161616_75.48%)] lg:opacity-30"
           />
         </div>
-        {/* Desktop placement: outer ring 130 at (635,-65) — its center sits exactly
-            on the media's top edge, inside the notch. */}
-        <div className="absolute top-[-65px] left-[635px] hidden lg:block">
+        {/* Desktop placement: ring center on the media's top edge, anchored to the
+            notch center (~50% of the block, =635 at 1400) so button and scaled
+            clip path stay married at every width — never a fixed artboard offset. */}
+        <div className="absolute top-[-65px] left-[calc(50%-65px)] hidden lg:block">
           <PlayButton variant="notch" onClick={openVideo} />
         </div>
         {/* Translucent METATECH wordmark along the photo's bottom (white @40%,
@@ -117,11 +120,11 @@ function HeroLayout({ content }: { content: HeroContent }) {
           alt=""
           aria-hidden="true"
           data-testid="hero-watermark"
-          className="absolute top-[156px] left-[52.5px] h-11 w-[275px] max-w-none lg:top-[415px] lg:left-[199px] lg:h-[159px] lg:w-[1001px]"
+          className="absolute top-[156px] left-[52.5px] h-11 w-[275px] max-w-none lg:top-[415px] lg:left-[calc(50%-501px)] lg:h-[159px] lg:w-[1001px]"
         />
       </div>
 
       {videoOpen && <VideoModal video={content.video} onClose={() => setVideoOpen(false)} />}
-    </>
+    </div>
   )
 }
