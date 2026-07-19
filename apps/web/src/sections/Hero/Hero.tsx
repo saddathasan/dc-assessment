@@ -2,7 +2,7 @@ import { SectionBoundary } from '../../components/ui/SectionBoundary'
 import { useSectionQuery } from '../../hooks/useSectionQuery'
 import { HeroSkeleton } from './HeroSkeleton'
 
-/* MS-1 proof of the data layer: raw contract data through SectionBoundary; MS-2 makes it pixel-true. */
+/* MS-1 proof of the data layer: raw contract data through SectionBoundary; the MS-3 Hero slice makes it pixel-true (D-025). */
 export function Hero() {
   const query = useSectionQuery('hero')
   return (

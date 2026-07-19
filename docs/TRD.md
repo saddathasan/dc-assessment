@@ -108,7 +108,7 @@ Worker fetch (trivial, same config).
 | Hooks/data | Vitest+RTL (web): loading→data, loading→error→retry per Section | all Sections |
 | Interactions | Vitest+RTL: tabs, modal open/close+focus, mega-menu, carousel, menu | all systems |
 | Fidelity | Playwright: per-Section screenshot ≤5% diff vs Baseline @1440+@393 **and** exact computed-style assertions (fonts, colors, radii, spacing) | every Section |
-| Quality | Lighthouse ≥90 across categories; axe clean | MS-6 |
+| Quality | Lighthouse ≥90 across categories; axe clean | MS-11 |
 
 Visual harness stands up in MS-2 and serves as the dev-time measure-fix loop, not just CI.
 
@@ -128,7 +128,7 @@ system table, color-contrast check (#33F987-on-dark passes; verify small-text ca
 | Express-on-Workers shim edge case | MS-0 scratch deploy; fallback chain in §6 |
 | pnpm `workspace:*` bundling on Wrangler | shared = plain TS source; `--dry-run` in MS-0 |
 | Font antialiasing vs Baselines | hybrid gate absorbs it (D-021); numeric layer is authoritative |
-| The Window | scope-cut order pre-agreed: D-013 comprehensive→targeted tests first, then MS-6 x-browser depth; never the Fidelity Gate |
+| The Window | scope-cut order pre-agreed: D-013 comprehensive→targeted tests first, then MS-11 x-browser depth; D-025 valve: remaining Sections drop to static-first; never the Fidelity Gate |
 
 ## 10. Milestones
 

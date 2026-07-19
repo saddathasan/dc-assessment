@@ -1,4 +1,4 @@
-/* MS-0 proof page: tokens, fonts, and radii render from @theme. Replaced by the landing page in MS-2. */
+/* MS-0 proof page: tokens, fonts, and radii render from @theme. Off the route since MS-1; delete once the first Section slices land (D-025). */
 const swatches = [
   ['accent', 'bg-accent'],
   ['ink', 'bg-ink'],

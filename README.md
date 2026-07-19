@@ -4,7 +4,8 @@ Pixel-faithful build of the MetaTech marketing page: a React SPA fed entirely by
 content API. Live: https://metatech.saddathasan.dev
 
 > Interim README — the full write-up (structure, technologies, assumptions, decisions) lands with
-> MS-7. Vocabulary: [CONTEXT.md](CONTEXT.md) · decisions: [docs/DECISIONS.md](docs/DECISIONS.md).
+> MS-12 (Ship). Progress tracker: [docs/plans/metatech-landing.md](docs/plans/metatech-landing.md)
+> · vocabulary: [CONTEXT.md](CONTEXT.md) · decisions: [docs/DECISIONS.md](docs/DECISIONS.md).
 
 ## Run locally
 
