@@ -10,6 +10,8 @@
       "node"
     ],
     "strict": true,
+    // Content JSON is imported, never fs-read (Workers, D-011); tsc also
+    // copies the imported .json files into dist for the Node build.
     "resolveJsonModule": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

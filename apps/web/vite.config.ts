@@ -1,4 +1,6 @@
 /// <reference types="vitest/config" />
+// Vite config for the web app: file-based router codegen, React, Tailwind v4,
+// the same-origin /api dev proxy, and the Vitest environment.
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
@@ -11,6 +13,8 @@ export default defineConfig({
     tailwindcss(),
   ],
   server: {
+    // Dev serves same-origin: /api proxies to the local Express app, so no
+    // CORS anywhere — mirroring the production Worker topology (D-012).
     proxy: {
       '/api': { target: 'http://localhost:3001', changeOrigin: true },
     },

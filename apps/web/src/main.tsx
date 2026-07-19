@@ -1,3 +1,5 @@
+// SPA bootstrap: mounts the router inside the query provider and loads the
+// self-hosted variable fonts + theme tokens (D-005) before first paint.
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'

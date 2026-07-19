@@ -1,3 +1,6 @@
+// One Worker serves everything (D-011): Express handles /api/* via the
+// nodejs_compat shim; the built SPA ships as static assets (unmetered — only
+// API calls touch the free-tier request budget).
 {
   "name": "metatech-assessment",
   "compatibility_date": "2026-07-19",
@@ -5,8 +8,11 @@
   "main": "./src/worker.ts",
   "assets": {
     "directory": "../web/dist",
+    // Unknown paths fall back to index.html (SPA routing)…
     "not_found_handling": "single-page-application",
+    // …except /api/*, which always reaches the Worker before asset matching.
     "run_worker_first": ["/api/*"]
   },
+  // Zone already on Cloudflare; custom_domain provisions DNS + TLS automatically.
   "routes": [{ "pattern": "metatech.saddathasan.dev", "custom_domain": true }]
 }

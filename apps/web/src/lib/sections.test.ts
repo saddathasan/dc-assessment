@@ -1,3 +1,5 @@
+// Proves the demo-param forwarding contract (D-012): only ?delay and ?fail
+// travel from the page URL to API calls; everything else is dropped.
 import { describe, expect, it } from 'vitest'
 import { demoQueryString } from './sections'
 
