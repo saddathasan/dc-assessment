@@ -1,5 +1,6 @@
 import { Hero } from '../sections/Hero/Hero'
 import { Navigation } from '../sections/Navigation/Navigation'
+import { TrustedBy } from '../sections/TrustedBy/TrustedBy'
 
 /* Page composition: Sections stack in design order (MS-2+ adds the rest). */
 export function LandingPage() {
@@ -10,6 +11,7 @@ export function LandingPage() {
       <Navigation />
       <main>
         <Hero />
+        <TrustedBy />
       </main>
     </div>
   )
