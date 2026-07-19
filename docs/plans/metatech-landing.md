@@ -31,7 +31,7 @@ localhost (`pnpm dev` → http://localhost:5173).
 | — | Foundation | MS-0 | #1 | ✅ PR #9 |
 | — | Content API + data layer | MS-1 | #2 | ✅ PR #10/#11 |
 | 1 | Navigation (+ fidelity harness) | MS-2 | #3 | ✅ PR #20 |
-| 2 | Hero (incl. video modal) | MS-3 | #4 | ⬜ |
+| 2 | Hero (incl. video modal) | MS-3 | #4 | ✅ PR #22 |
 | 3 | Trusted By | MS-4 | #5 | ⬜ |
 | 4 | We Are | MS-5 | #6 | ⬜ |
 | 5 | Solutions (tabs + sticky) | MS-6 | #7 | ⬜ |
@@ -98,16 +98,16 @@ Goal: the measuring instrument alive, then the first Section lands complete.
 
 **AC:** gate green · interaction tests green · menus fully alive on localhost.
 
-## MS-3 — Hero slice (~2.5h) · `ms/3-hero` · Issue #4
+## MS-3 — Hero slice (~2.5h) · `ms/3-hero` · Issue #4 — ✅ DONE (PR #22, 2026-07-20)
 
 → skills: `superpowers:tdd`, `frontend-design`
 
-- [ ] T3.1 **Tests first:** video modal open/close/focus lifecycle, provider switch
-- [ ] T3.2 Hero static: accent-span headline (data-driven), sub-copy, CTA, media block w/
+- [x] T3.1 **Tests first:** video modal open/close/focus lifecycle, provider switch
+- [x] T3.2 Hero static: accent-span headline (data-driven), sub-copy, CTA, media block w/
       notch + play button, watermark (mobile: play button above photo)
-- [ ] T3.3 Video modal: native `<dialog>`, provider union (YouTube iframe sentinel /
+- [x] T3.3 Video modal: native `<dialog>`, provider union (YouTube iframe sentinel /
       `<video>`), Safari close workaround (D-018)
-- [ ] T3.4 Fidelity Gate: Hero @1440 + @393
+- [x] T3.4 Fidelity Gate: Hero @1440 + @393
 
 **AC:** gate green · modal a11y (trap, Esc, focus return) · tests green.
 
