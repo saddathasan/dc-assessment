@@ -59,4 +59,22 @@ export const targets: FidelityTarget[] = [
     crop: { x: 0, y: 59, width: 393, height: 76 },
     clip: { x: 0, y: 0, width: 393, height: 76 },
   },
+  // Hero — desktop band under the nav: 400 copy row + 80 gap + 1400x571 media
+  // (tree-desktop 'Frame 289370', y=120..1171).
+  {
+    id: 'hero-desktop',
+    source: '1-34.png',
+    crop: { x: 0, y: 120, width: 1440, height: 1051 },
+    clip: { x: 0, y: 120, width: 1440, height: 1051 },
+  },
+  // Hero — mobile band: 336x512 copy/play column + 20 gap + 380x200 photo card
+  // ('Frame 289414', abs y=194.76 in the render — above it sit the excluded status
+  // bar AND the foreign gamification banner, do-not-build artifacts per
+  // EXTRACTION.md Quirks; rounded to 195 because the slicer crops whole pixels).
+  {
+    id: 'hero-mobile',
+    source: '1-279.png',
+    crop: { x: 0, y: 195, width: 393, height: 732 },
+    clip: { x: 0, y: 76, width: 393, height: 732 },
+  },
 ]
