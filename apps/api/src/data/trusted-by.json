@@ -1,0 +1,17 @@
+{
+  "heading": [
+    { "text": "Trusted by", "accent": true },
+    { "text": " product teams and enterprise " },
+    { "text": "innovators.", "accent": true }
+  ],
+  "logos": [
+    { "name": "Databricks", "image": { "src": "/images/logos/databricks.png", "alt": "Databricks" } },
+    { "name": "Google Cloud", "image": { "src": "/images/logos/google-cloud.png", "alt": "Google Cloud" } },
+    { "name": "UiPath", "image": { "src": "/images/logos/uipath.png", "alt": "UiPath" } },
+    { "name": "Alteryx", "image": { "src": "/images/logos/alteryx.png", "alt": "Alteryx" } },
+    { "name": "Alteryx", "image": { "src": "/images/logos/alteryx.png", "alt": "Alteryx" } },
+    { "name": "Figma", "image": { "src": "/images/logos/figma.png", "alt": "Figma" } },
+    { "name": "Amazon Web Services", "image": { "src": "/images/logos/aws.png", "alt": "Amazon Web Services" } },
+    { "name": "Google Cloud", "image": { "src": "/images/logos/google-cloud.png", "alt": "Google Cloud" } }
+  ]
+}

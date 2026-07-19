@@ -241,7 +241,16 @@ demonstrates dynamic data + state handling (rubric) and ships a complete-feeling
    layout fidelity outweighs content logic here).
 **Trade-off accepted:** each fix is a deviation from "as accurately as possible" — mitigated by the
 documented reasoning; visual/layout fidelity is never sacrificed, only glyph/wording defects.
-**Status:** Accepted (specific wordings finalized during content authoring).
+**Status:** Accepted. **Finalized during MS-1 content authoring:**
+1. "Data + AI Settings Innovation" → **"Data + AI Driven Innovation"** ("Settings" is a clear typo;
+   "Driven" matches the block's body copy and the brand voice of the mega-menu tile "Data+AI First
+   Innovation").
+2. "@2022-2026" → **"©2022-2026"** (as decided).
+3. We-Are run-on → **colon inserted after "pillars"** ("…three strategic pillars: AI powered
+   delivery…") — minimal punctuation at the bold/regular run boundary; no wording changed.
+4. Duplicated Alteryx/Google-Cloud logo tiles → **kept** (as decided).
+5. Showcase CTA "Explore more  →" (double space in the design text) → **"Explore more →"**
+   (single space; obvious glyph defect).
 
 ## D-018 — Video modal: content-driven dual source (YouTube now, self-hosted later)
 
@@ -301,6 +310,23 @@ via the issue PRs instead.
 computed styles (font-size, line-height, color, radius, padding, gap) for each section's key
 elements with zero tolerance. Numeric layer proves pixel-perfection; visual layer catches layout
 regressions.
+**Status:** Accepted.
+
+## D-023 — MS-1 content-authoring calls (Authored Content inventory)
+
+**Context:** serving every Section's content (D-007) required filling gaps the design leaves open;
+each call below is flagged `authored` where the Content Contract allows and listed in the README
+assumptions.
+**Decisions:**
+1. **Showcase slides ×4:** the design shows one captured device image but 4 carousel dots on
+   mobile (3 on desktop — an internal design inconsistency). Resolved to 4 slides reusing the one
+   captured image so the carousel demonstrably works; noted as assumption.
+2. **Hero video placeholder:** `provider: 'youtube'`, Blender's Big Buck Bunny official embed —
+   neutral, embeddable, swappable by content alone (D-018).
+3. **Link targets:** section anchors (`#solutions`, `#showcase`, `#contact`) and root social
+   domains — no real destinations exist in the brief; placeholder policy documented in README.
+4. **Solution Blocks 02/03** copy authored per D-016, `authored: true` in the payload — the flag
+   travels with the content so provenance survives any future CMS move.
 **Status:** Accepted.
 
 ---

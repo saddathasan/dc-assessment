@@ -1,0 +1,40 @@
+{
+  "eyebrow": "Tech Stacks />",
+  "heading": "Built With Modern Technologies",
+  "body": "We use modern, reliable technologies to design, build, and scale high-performance software systems. Our team works with proven tools to deliver secure, scalable, production-ready solutions.",
+  "rows": [
+    {
+      "direction": "left",
+      "logos": [
+        { "name": "React", "image": { "src": "/images/tech/react.png", "alt": "React" } },
+        { "name": "Next.js", "image": { "src": "/images/tech/nextjs.png", "alt": "Next.js" } },
+        { "name": "Tailwind CSS", "image": { "src": "/images/tech/tailwind.png", "alt": "Tailwind CSS" } },
+        { "name": "TypeScript", "image": { "src": "/images/tech/typescript.png", "alt": "TypeScript" } },
+        { "name": "Angular", "image": { "src": "/images/tech/angular.svg", "alt": "Angular" } },
+        { "name": "Vue.js", "image": { "src": "/images/tech/vue.png", "alt": "Vue.js" } }
+      ]
+    },
+    {
+      "direction": "right",
+      "logos": [
+        { "name": "Go", "image": { "src": "/images/tech/go.png", "alt": "Go" } },
+        { "name": "Python", "image": { "src": "/images/tech/python.png", "alt": "Python" } },
+        { "name": "Node.js", "image": { "src": "/images/tech/nodejs.png", "alt": "Node.js" } },
+        { "name": ".NET", "image": { "src": "/images/tech/dotnet.png", "alt": ".NET" } },
+        { "name": "Ruby", "image": { "src": "/images/tech/ruby.png", "alt": "Ruby" } },
+        { "name": "PHP", "image": { "src": "/images/tech/php.png", "alt": "PHP" } }
+      ]
+    },
+    {
+      "direction": "left",
+      "logos": [
+        { "name": "Django", "image": { "src": "/images/tech/django.png", "alt": "Django" } },
+        { "name": "Laravel", "image": { "src": "/images/tech/laravel.png", "alt": "Laravel" } },
+        { "name": "Flutter", "image": { "src": "/images/tech/flutter.png", "alt": "Flutter" } },
+        { "name": "MySQL", "image": { "src": "/images/tech/mysql.png", "alt": "MySQL" } },
+        { "name": "MongoDB", "image": { "src": "/images/tech/mongodb.png", "alt": "MongoDB" } },
+        { "name": "HTML5", "image": { "src": "/images/tech/html5.png", "alt": "HTML5" } }
+      ]
+    }
+  ]
+}

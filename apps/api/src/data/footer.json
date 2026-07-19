@@ -1,0 +1,18 @@
+{
+  "copyright": [
+    { "text": "©2022-2026 " },
+    { "text": "MetaTech LLC ", "accent": true },
+    { "text": "// All Rights Reserved" }
+  ],
+  "legalLinks": [
+    { "label": "Privacy Policy", "href": "#privacy" },
+    { "label": "Terms of Use", "href": "#terms" }
+  ],
+  "socialLinks": [
+    { "label": "Facebook", "href": "https://facebook.com" },
+    { "label": "Linkedin", "href": "https://linkedin.com" },
+    { "label": "Instagram", "href": "https://instagram.com" },
+    { "label": "Youtube", "href": "https://youtube.com" }
+  ],
+  "showWordmark": true
+}

@@ -1,0 +1,12 @@
+{
+  "logo": { "src": "/images/amicredible-logo.png", "alt": "AmiCredible" },
+  "heading": "An AI-powered credibility checking platform",
+  "body": "that helps users verify claims, analyze sources, and make informed decisions with Quick Check, Deep Check, and Image Check features.",
+  "cta": { "label": "Explore more →", "href": "#showcase" },
+  "slides": [
+    { "image": { "src": "/images/showcase-device.png", "alt": "AmiCredible running on a tablet — view 1" } },
+    { "image": { "src": "/images/showcase-device.png", "alt": "AmiCredible running on a tablet — view 2" } },
+    { "image": { "src": "/images/showcase-device.png", "alt": "AmiCredible running on a tablet — view 3" } },
+    { "image": { "src": "/images/showcase-device.png", "alt": "AmiCredible running on a tablet — view 4" } }
+  ]
+}
