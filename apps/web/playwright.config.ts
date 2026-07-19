@@ -21,6 +21,9 @@ export default defineConfig({
     baseURL: 'http://localhost:5173',
     // Screenshots come out @2x to match the render Baselines' export scale.
     deviceScaleFactor: 2,
+    // Entrance animations are motion-safe-gated; reducing motion makes geometry
+    // deterministic (no mid-flight boundingBox samples) and proves that path.
+    reducedMotion: 'reduce',
   },
   projects: [
     { name: 'desktop', use: { viewport: { width: 1440, height: 900 } } },

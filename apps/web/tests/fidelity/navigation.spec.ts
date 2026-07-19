@@ -16,6 +16,10 @@ async function expectBaseline(page: Page, id: string): Promise<void> {
 }
 
 test.beforeEach(async ({ page }) => {
+  // Belt to the config's reducedMotion braces: entrance animations are
+  // motion-safe-gated, so this pins geometry to its settled values before any
+  // boundingBox sample — no mid-flight flake.
+  await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/')
   await page.waitForLoadState('networkidle')
   await page.evaluate(() => document.fonts.ready)
