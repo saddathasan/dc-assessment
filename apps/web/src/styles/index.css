@@ -47,4 +47,29 @@
 
   /* Layout */
   --container-page: 1400px;
+
+  /* Motion scale (open Q3 default): 200–300ms ease-out; disabled via motion-safe gates. */
+  --animate-menu-in: menu-in 200ms ease-out;
+  --animate-rise-in: rise-in 300ms ease-out both;
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
