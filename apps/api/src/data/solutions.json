@@ -1,0 +1,32 @@
+{
+  "tabs": [
+    { "id": "data-ai", "label": "Data + AI" },
+    { "id": "custom-software", "label": "Custom Software" },
+    { "id": "tech-staffing", "label": "Tech Staffing" }
+  ],
+  "blocks": [
+    {
+      "id": "data-ai",
+      "number": "01",
+      "heading": "Data + AI Driven Innovation",
+      "body": "Our Data and AI services combine engineering, analytics, and applied AI to help organizations understand data, predict outcomes, and automate decisions. From trusted analytics to production grade AI systems, we deliver intelligence that works in the real world.",
+      "cta": { "label": "Book a consultation", "href": "#contact" }
+    },
+    {
+      "id": "custom-software",
+      "number": "02",
+      "heading": "Custom Software Development",
+      "body": "Our engineering teams design, build, and ship software shaped around the way your business actually works. From rapid prototypes to enterprise platforms, we deliver secure, scalable systems that hold up in production and keep evolving with you.",
+      "cta": { "label": "Book a consultation", "href": "#contact" },
+      "authored": true
+    },
+    {
+      "id": "tech-staffing",
+      "number": "03",
+      "heading": "Tech Staff Augmentation",
+      "body": "We embed senior engineers, data specialists, and delivery leads directly into your teams. From a single expert to a full squad, we provide elite talent that ramps up fast, raises the bar, and accelerates your roadmap without the overhead of hiring.",
+      "cta": { "label": "Book a consultation", "href": "#contact" },
+      "authored": true
+    }
+  ]
+}

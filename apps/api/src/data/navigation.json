@@ -1,0 +1,36 @@
+{
+  "links": [
+    { "label": "Solutions", "href": "#solutions" },
+    { "label": "Showcase", "href": "#showcase" },
+    { "label": "Contact", "href": "#contact" }
+  ],
+  "cta": { "label": "Book a meeting", "href": "#contact" },
+  "megaMenu": {
+    "tiles": [
+      {
+        "solution": "custom-software",
+        "title": "Custom Software Development",
+        "image": {
+          "src": "/images/menu/custom-software.jpg",
+          "alt": "Engineers collaborating on custom software"
+        }
+      },
+      {
+        "solution": "data-ai",
+        "title": "Data+AI First Innovation",
+        "image": {
+          "src": "/images/menu/data-ai.png",
+          "alt": "Data and AI visualization"
+        }
+      },
+      {
+        "solution": "tech-staffing",
+        "title": "Tech Staff Augmentation",
+        "image": {
+          "src": "/images/menu/tech-staffing.png",
+          "alt": "Team of technology specialists"
+        }
+      }
+    ]
+  }
+}
