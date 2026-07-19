@@ -50,9 +50,11 @@ function HeroLayout({ content }: { content: HeroContent }) {
     // The band caps at the design's 1440 and centers on wider viewports — the
     // page convention the nav set; the deep green bleeds via the section behind.
     <div className="mx-auto lg:max-w-[1440px]">
-      {/* Copy block: a single mobile column (336 @ x=28.5); at 1440 a 400px-tall
-          row whose items-center produces the design's 212/239 top offsets. */}
-      <div className="mx-auto w-full max-w-[336px] lg:flex lg:h-[400px] lg:max-w-none lg:items-center lg:gap-[180px] lg:px-[50px]">
+      {/* Copy block: below lg it fills the viewport with the design's 28.5px side
+          margins (336 wide at exactly 393 — never a hard cap, which shrank big
+          phones and stranded tablets); at 1440 a 400px-tall row whose items-center
+          produces the design's 212/239 top offsets. */}
+      <div className="w-full px-[28.5px] lg:flex lg:h-[400px] lg:items-center lg:gap-[180px] lg:px-[50px]">
         {/* Sizes use the slash form (not leading-*): a leading utility would pin
             --tw-leading globally and defeat the lg token's paired line-height. */}
         <h1 className="font-display text-[48px]/[48px] font-extrabold tracking-[-0.05em] capitalize lg:w-[664px] lg:text-hero">
@@ -88,17 +90,19 @@ function HeroLayout({ content }: { content: HeroContent }) {
           riding the cutout, centered on the top edge. */}
       <div
         data-testid="hero-media"
-        className="relative mx-auto mt-5 h-[200px] w-full max-w-[380px] lg:mx-5 lg:mt-20 lg:h-[571px] lg:w-auto lg:max-w-none"
+        className="relative mx-[6.5px] mt-5 aspect-[380/200] lg:mx-5 lg:mt-20 lg:aspect-auto lg:h-[571px]"
       >
         <NotchClipPath />
         <div className="absolute inset-0 overflow-hidden rounded-tile lg:rounded-none lg:[clip-path:url(#hero-notch)]">
-          {/* The photo replicates the design's FILL placement: a fixed rect larger
-              than the mask, offset (-3,-10) mobile / (-2,-95) desktop. */}
+          {/* The photo replicates the design's FILL placement: a rect larger than
+              the mask, offset (-3,-10)/383x255 at the 393 artboard — expressed as
+              percentages of the card below lg so it scales with the fluid width;
+              fixed px at lg where the capped band bounds the block at 1400. */}
           <img
             src={content.media.image.src}
             alt={content.media.image.alt}
             data-testid="hero-photo"
-            className="absolute top-[-10px] left-[-3px] h-[255px] w-[383px] max-w-none object-cover lg:top-[-95px] lg:left-[calc(50%-702px)] lg:h-[934px] lg:w-[1402px]"
+            className="absolute top-[-5%] left-[-0.7895%] h-[127.5%] w-[100.7895%] max-w-none object-cover lg:top-[-95px] lg:left-[calc(50%-702px)] lg:h-[934px] lg:w-[1402px]"
           />
           {/* Diagonal dark→green→dark wash over the photo (nodes 2:15/2:30). */}
           <div
@@ -120,7 +124,7 @@ function HeroLayout({ content }: { content: HeroContent }) {
           alt=""
           aria-hidden="true"
           data-testid="hero-watermark"
-          className="absolute top-[156px] left-[52.5px] h-11 w-[275px] max-w-none lg:top-[415px] lg:left-[calc(50%-501px)] lg:h-[159px] lg:w-[1001px]"
+          className="absolute top-[78%] left-[13.816%] h-[22%] w-[72.368%] max-w-none lg:top-[415px] lg:left-[calc(50%-501px)] lg:h-[159px] lg:w-[1001px]"
         />
       </div>
 

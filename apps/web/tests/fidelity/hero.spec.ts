@@ -186,23 +186,60 @@ test.describe('Hero @393', () => {
     })
 
     // Photo card: 380x200 at (6.5,608), r=20, wash at 35%, watermark 275x44
-    // at (59,764) (nodes 2:25..2:35).
+    // at (59,764) (nodes 2:25..2:35). The card's children are percentage-sized so
+    // they scale with the fluid width, which leaves sub-pixel float residue at
+    // 393 — asserted to 0.05px, far under anything a pixel can show.
+    const closeTo = (box: { x: number; y: number; width: number; height: number } | null,
+      expected: { x: number; y: number; width: number; height: number }) => {
+      for (const key of ['x', 'y', 'width', 'height'] as const) {
+        expect(box![key]).toBeCloseTo(expected[key], 1)
+      }
+    }
     const media = page.getByTestId('hero-media')
-    expect(await media.boundingBox()).toEqual({ x: 6.5, y: 608, width: 380, height: 200 })
+    closeTo(await media.boundingBox(), { x: 6.5, y: 608, width: 380, height: 200 })
     await expect(media.locator('div').first()).toHaveCSS('border-radius', '20px')
     await expect(page.getByTestId('hero-overlay')).toHaveCSS('opacity', '0.35')
-    expect(await page.getByTestId('hero-photo').boundingBox()).toEqual({
+    closeTo(await page.getByTestId('hero-photo').boundingBox(), {
       x: 3.5,
       y: 598,
       width: 383,
       height: 255,
     })
-    expect(await page.getByTestId('hero-watermark').boundingBox()).toEqual({
+    closeTo(await page.getByTestId('hero-watermark').boundingBox(), {
       x: 59,
       y: 764,
       width: 275,
       height: 44,
     })
+  })
+
+  test('band stays fluid and coherent across phone and tablet widths', async ({ page }) => {
+    // No Baselines exist off the 393 artboard, but below lg the band must scale
+    // like the nav does: the copy keeps its 28.5px side margins and fills, the
+    // photo card keeps its 6.5px margins and 380:200 aspect, and its image and
+    // watermark scale with it. Regression for the artboard-capped mobile layout
+    // (336/380px maxes) that shrank on big phones and floated lost on tablets.
+    for (const width of [430, 800]) {
+      await page.setViewportSize({ width, height: 900 })
+
+      const h1 = await page.getByRole('heading', { level: 1 }).boundingBox()
+      expect(h1).toMatchObject({ x: 28.5, width: width - 57 })
+
+      const media = await page.getByTestId('hero-media').boundingBox()
+      expect(media!.x).toBe(6.5)
+      expect(media!.width).toBe(width - 13)
+      expect(media!.height).toBeCloseTo((media!.width * 200) / 380, 0)
+
+      // Photo always covers the card; watermark stays centered inside it.
+      const photo = await page.getByTestId('hero-photo').boundingBox()
+      expect(photo!.x).toBeLessThanOrEqual(media!.x)
+      expect(photo!.x + photo!.width).toBeGreaterThanOrEqual(media!.x + media!.width)
+      expect(photo!.y).toBeLessThanOrEqual(media!.y)
+      expect(photo!.y + photo!.height).toBeGreaterThanOrEqual(media!.y + media!.height)
+      const wm = await page.getByTestId('hero-watermark').boundingBox()
+      expect(wm!.x + wm!.width / 2).toBeCloseTo(media!.x + media!.width / 2, 0)
+      expect(wm!.y + wm!.height).toBeLessThanOrEqual(media!.y + media!.height + 1)
+    }
   })
 
   test('tapping play opens the modal and its close button dismisses it', async ({ page }) => {
