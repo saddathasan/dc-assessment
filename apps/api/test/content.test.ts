@@ -101,6 +101,22 @@ describe('content endpoints', () => {
     for (const logo of trusted.logos) {
       expect(logo.image.src).toMatch(/^\/images\//)
     }
+    // The mobile artboard rearranges the wall with different designed duplicates
+    // (UiPath/Alteryx twice, Google Cloud once — nodes 1:338..1:357, D-017.4),
+    // so it carries its own tile list.
+    expect(trusted.logosMobile.map((l) => l.name)).toEqual([
+      'Databricks',
+      'Google Cloud',
+      'Alteryx',
+      'UiPath',
+      'Figma',
+      'Amazon Web Services',
+      'Alteryx',
+      'UiPath',
+    ])
+    for (const logo of trusted.logosMobile) {
+      expect(logo.image.src).toMatch(/^\/images\//)
+    }
   })
 
   it('GET /api/we-are matches WeAreContent', async () => {
