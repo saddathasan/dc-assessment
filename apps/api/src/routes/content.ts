@@ -5,14 +5,14 @@ import { Router } from 'express'
 import * as content from '../data/index.js'
 
 // Slug → payload map; the loop below turns each entry into GET /api/<slug>.
+// No value-cards or showcase route: both are per-tab content of the Solutions
+// panel and ship inside /api/solutions (D-028.4).
 const sections = {
   navigation: content.navigation,
   hero: content.hero,
   'trusted-by': content.trustedBy,
   'we-are': content.weAre,
   solutions: content.solutions,
-  'value-cards': content.valueCards,
-  showcase: content.showcase,
   'tech-stack': content.techStack,
   footer: content.footer,
 }

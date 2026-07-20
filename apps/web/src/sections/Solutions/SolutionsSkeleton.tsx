@@ -1,6 +1,8 @@
-/* Layout-matched Solutions placeholder: tab-pill stub over the block-01
-   footprint (the design band, not the full authored stack) so the visible
-   region doesn't jump when content lands. */
+/* Layout-matched Solutions placeholder: tab-pill stub over the intro-block
+   footprint, so the visible region doesn't jump when content lands. One query
+   now backs the whole tab panel (D-028), so this must grow with it — the card
+   row in MS-7 and the showcase in MS-8 — or the panel's later parts land as
+   layout shift. */
 export function SolutionsSkeleton() {
   return (
     <div aria-hidden className="animate-pulse">

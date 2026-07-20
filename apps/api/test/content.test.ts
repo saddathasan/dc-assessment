@@ -4,11 +4,9 @@ import type {
   FooterContent,
   HeroContent,
   NavigationContent,
-  ShowcaseContent,
   SolutionsContent,
   TechStackContent,
   TrustedByContent,
-  ValueCardsContent,
   WeAreContent,
 } from '@metatech/shared'
 import { app } from '../src/app.js'
@@ -18,14 +16,15 @@ import { app } from '../src/app.js'
 // these tests are the authoritative runtime layer: every endpoint responds
 // 200 with the exact extracted content.
 
+// One endpoint per Section (D-007). Solutions is the tabbed Section, so the
+// value cards and showcase ride inside it rather than having their own routes
+// (D-028.4) — the retired slugs are pinned as 404s below.
 const SECTION_ENDPOINTS = [
   '/api/navigation',
   '/api/hero',
   '/api/trusted-by',
   '/api/we-are',
   '/api/solutions',
-  '/api/value-cards',
-  '/api/showcase',
   '/api/tech-stack',
   '/api/footer',
 ] as const
@@ -133,7 +132,7 @@ describe('content endpoints', () => {
     )
   })
 
-  it('GET /api/solutions matches SolutionsContent', async () => {
+  it('GET /api/solutions carries one full panel per tab', async () => {
     const solutions = await get<SolutionsContent>('/api/solutions')
     expect(solutions.tabs.map((t) => t.id)).toEqual(['data-ai', 'custom-software', 'tech-staffing'])
     expect(solutions.tabs.map((t) => t.label)).toEqual([
@@ -141,58 +140,89 @@ describe('content endpoints', () => {
       'Custom Software',
       'Tech Staffing',
     ])
-    expect(solutions.blocks.map((b) => b.number)).toEqual(['01', '02', '03'])
-    expect(solutions.blocks.map((b) => b.id)).toEqual(solutions.tabs.map((t) => t.id))
+    // One panel per tab, in tab order — the number is the tab's index (D-028.2).
+    expect(solutions.panels.map((p) => p.id)).toEqual(solutions.tabs.map((t) => t.id))
+    expect(solutions.panels.map((p) => p.number)).toEqual(['01', '02', '03'])
 
-    const [dataAi, customSoftware, techStaffing] = solutions.blocks
+    const [dataAi, customSoftware, techStaffing] = solutions.panels
     // D-017.1: "Settings" typo corrected to "Driven"
     expect(dataAi.heading).toBe('Data + AI Driven Innovation')
     expect(dataAi.body).toBe(
       'Our Data and AI services combine engineering, analytics, and applied AI to help organizations understand data, predict outcomes, and automate decisions. From trusted analytics to production grade AI systems, we deliver intelligence that works in the real world.',
     )
     expect(dataAi.authored).toBeFalsy()
-    // D-016: blocks 02/03 are Authored Content, flagged as such
-    for (const block of [customSoftware, techStaffing]) {
-      expect(block.authored).toBe(true)
-      expect(block.heading).toBeTruthy()
-      expect(block.body).toBeTruthy()
+    // D-016/D-028.5: panels 02/03 are Authored Content, flagged as such
+    for (const panel of [customSoftware, techStaffing]) {
+      expect(panel.authored).toBe(true)
+      expect(panel.heading).toBeTruthy()
+      expect(panel.body).toBeTruthy()
     }
-    for (const block of solutions.blocks) {
-      expect(block.cta.label).toBe('Book a consultation')
+    for (const panel of solutions.panels) {
+      expect(panel.cta.label).toBe('Book a consultation')
     }
   })
 
-  it('GET /api/value-cards matches ValueCardsContent', async () => {
-    const valueCards = await get<ValueCardsContent>('/api/value-cards')
-    expect(valueCards.cards.map((c) => c.heading)).toEqual([
+  it('every solutions panel carries its own three value cards', async () => {
+    const { panels } = await get<SolutionsContent>('/api/solutions')
+
+    // The designed set (frame 2:36) belongs to the Data + AI panel; the other
+    // two panels carry authored cards on the identical design.
+    expect(panels[0].cards.map((c) => c.heading)).toEqual([
       'Data Integrity First',
       'Workflows Before Automation',
       'Governance With Same Standard',
     ])
-    expect(valueCards.cards[0].body).toBe(
+    expect(panels[0].cards[0].body).toBe(
       'AI outputs are only as reliable as the data feeding them. We design, validate, and strengthen your data foundation from the ground up. Garbage in, garbage out is not a risk we take with your business.',
     )
-    expect(valueCards.cards[1].body).toBe(
+    expect(panels[0].cards[1].body).toBe(
       'Before we build anything, we map your business workflows end to end by surveying the ambiguity. We understand the decisions being made, the people making them, and the systems involved. That clarity determines how and where automation creates real leverage, not just activity.',
     )
-    expect(valueCards.cards[2].body).toBe(
+    expect(panels[0].cards[2].body).toBe(
       'We implement data governance frameworks that carry the same accountability as human oversight. Your agents operate within defined boundaries. Auditability, control, and compliance are built in, not added on.',
     )
+
+    for (const panel of panels) {
+      expect(panel.cards).toHaveLength(3)
+      for (const card of panel.cards) {
+        expect(card.heading).toBeTruthy()
+        expect(card.body).toBeTruthy()
+      }
+    }
+    // Card headings are unique across the whole Section — authored panels must
+    // not silently reuse the designed set.
+    const headings = panels.flatMap((p) => p.cards.map((c) => c.heading))
+    expect(new Set(headings).size).toBe(headings.length)
   })
 
-  it('GET /api/showcase matches ShowcaseContent', async () => {
-    const showcase = await get<ShowcaseContent>('/api/showcase')
-    expect(showcase.logo.src).toMatch(/^\/images\//)
-    expect(showcase.heading).toBe('An AI-powered credibility checking platform')
-    expect(showcase.body).toBe(
+  it('every solutions panel carries its own showcase', async () => {
+    const { panels } = await get<SolutionsContent>('/api/solutions')
+
+    const [dataAi] = panels
+    expect(dataAi.showcase.logo?.src).toMatch(/^\/images\//)
+    expect(dataAi.showcase.name).toBe('AmiCredible')
+    expect(dataAi.showcase.heading).toBe('An AI-powered credibility checking platform')
+    expect(dataAi.showcase.body).toBe(
       'that helps users verify claims, analyze sources, and make informed decisions with Quick Check, Deep Check, and Image Check features.',
     )
-    // D-017.5: double space before the arrow normalized
-    expect(showcase.cta.label).toBe('Explore more →')
-    expect(showcase.slides).toHaveLength(4)
-    for (const slide of showcase.slides) {
-      expect(slide.image.src).toMatch(/^\/images\//)
+
+    for (const panel of panels) {
+      const { showcase } = panel
+      expect(showcase.name).toBeTruthy()
+      expect(showcase.heading).toBeTruthy()
+      expect(showcase.body).toBeTruthy()
+      // D-017.5: double space before the arrow normalized
+      expect(showcase.cta.label).toBe('Explore more →')
+      // D-023.1: 4 slides so the carousel's 4 dots have somewhere to go
+      expect(showcase.slides).toHaveLength(4)
+      for (const slide of showcase.slides) {
+        expect(slide.image.src).toMatch(/^\/images\//)
+        expect(slide.image.alt).toContain(showcase.name)
+      }
     }
+    // D-028.5: only the designed panel ships a logo asset; authored panels fall
+    // back to a wordmark of `name`, so a missing logo must stay legal.
+    expect(panels.filter((p) => p.showcase.logo === undefined)).toHaveLength(2)
   })
 
   it('GET /api/tech-stack matches TechStackContent', async () => {
@@ -231,6 +261,14 @@ describe('content endpoints', () => {
     ])
     expect(footer.showWordmark).toBe(true)
   })
+
+  it.each(['/api/value-cards', '/api/showcase'])(
+    '%s is gone — folded into /api/solutions (D-028.4)',
+    async (path) => {
+      const res = await request(app).get(path)
+      expect(res.status).toBe(404)
+    },
+  )
 
   it('section endpoints honor the ?fail=true error demo', async () => {
     const res = await request(app).get('/api/hero?fail=true')

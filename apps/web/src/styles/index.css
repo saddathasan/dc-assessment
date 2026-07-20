@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
-/* Anchor navigation (Solutions tabs, header links) glides only when motion is
-   allowed — the fidelity gate and reduced-motion users get instant jumps. */
+/* In-page anchor links (header nav → #solutions, footer legal) glide only when
+   motion is allowed — the fidelity gate and reduced-motion users get instant
+   jumps. The Solutions tabs do NOT rely on this: they switch content in place
+   rather than navigating (D-028). */
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;

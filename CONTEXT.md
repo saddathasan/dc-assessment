@@ -16,9 +16,10 @@ The one-shot Figma data pull in `design/` (node JSON, images, renders) plus its 
 _Avoid_: "the Figma" (implies a live dependency we deliberately don't have)
 
 **Section**:
-One of the 9 vertical page regions: Navigation, Hero, Trusted By, We Are, Solutions, Value Cards,
-Showcase, Tech Stack, Footer. Each Section owns exactly one API endpoint and its own
-loading/error UI.
+One of the 7 vertical page regions: Navigation, Hero, Trusted By, We Are, Solutions, Tech Stack,
+Footer. Each Section owns exactly one API endpoint and its own loading/error UI. Solutions is the
+tabbed Section (D-028): its value cards and showcase are per-tab panel content, not Sections —
+they have no endpoint and no loading state of their own.
 _Avoid_: block, area, module
 
 **Solution**:
