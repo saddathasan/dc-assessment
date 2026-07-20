@@ -205,4 +205,46 @@ describe('Solutions', () => {
     const cta = within(panel()).getByRole('link', { name: 'Book a consultation' })
     expect(cta).toHaveAttribute('href', '#contact')
   })
+
+  it('renders the panel’s three value cards, heading and body both present', async () => {
+    renderSolutions()
+    await screen.findByRole('tablist')
+
+    const cards = within(panel()).getAllByRole('listitem')
+    expect(cards).toHaveLength(3)
+    expect(cards.map((c) => within(c).getByRole('heading', { level: 3 }).textContent)).toEqual([
+      'Data Integrity First',
+      'Workflows Before Automation',
+      'Governance With Same Standard',
+    ])
+    // The body is in the DOM at rest — the hover flip reveals it visually
+    // (note 2:3), so it must stay readable to search and assistive tech.
+    expect(cards[0]).toHaveTextContent('AI outputs are only as reliable as the data feeding them.')
+  })
+
+  it('swaps the cards with the tab', async () => {
+    renderSolutions()
+    await screen.findByRole('tablist')
+
+    await userEvent.click(tab('Tech Staffing'))
+
+    const cards = within(panel()).getAllByRole('listitem')
+    expect(cards.map((c) => within(c).getByRole('heading', { level: 3 }).textContent)).toEqual([
+      'Engineers Screen Engineers',
+      'Teammates Not Resources',
+      'Retention Is Our Problem',
+    ])
+    expect(screen.queryByText('Data Integrity First')).not.toBeInTheDocument()
+  })
+
+  it('makes each card keyboard-reachable so the hover reveal has a focus equivalent', async () => {
+    renderSolutions()
+    await screen.findByRole('tablist')
+
+    // D-010's a11y commitment: hover-only reveals need :focus-visible parity,
+    // which requires the card itself to be focusable.
+    for (const card of within(panel()).getAllByRole('listitem')) {
+      expect(card).toHaveAttribute('tabindex', '0')
+    }
+  })
 })

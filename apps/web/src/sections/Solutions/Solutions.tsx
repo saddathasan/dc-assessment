@@ -7,6 +7,7 @@ import { useRef, useState } from 'react'
 import type { SolutionId, SolutionPanel, SolutionTab, SolutionsContent } from '@metatech/shared'
 import { SectionBoundary } from '../../components/ui/SectionBoundary'
 import { useSectionQuery } from '../../hooks/useSectionQuery'
+import { SolutionCards } from './SolutionCards'
 import { SolutionsSkeleton } from './SolutionsSkeleton'
 
 /** The page's Solutions Section: tab bar + the active tab's panel from /api/solutions (D-025 slice). */
@@ -89,6 +90,7 @@ function SolutionsTabs({ content }: { content: SolutionsContent }) {
       </div>
       <div id={panelId(active.id)} role="tabpanel" aria-labelledby={tabId(active.id)} tabIndex={-1}>
         <SolutionIntro panel={active} />
+        <SolutionCards cards={active.cards} />
       </div>
     </>
   )
