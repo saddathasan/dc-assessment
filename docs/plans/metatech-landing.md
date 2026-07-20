@@ -40,7 +40,7 @@ they keep their own milestones (a slice each, per D-025) but are not standalone 
 | 3 | Trusted By | MS-4 | #5 | ✅ PR #27 |
 | 4 | We Are | MS-5 | #6 | ✅ PR #29 |
 | 5 | **Solutions (tabbed region)** — shell: contract + switcher + intro | MS-6 | #7 | ✅ PR #33 (rebuild; PR #31 shipped the wrong model, D-028) |
-| 5a | ↳ per-tab Value Cards (hover + carousel) | MS-7 | #8 | ⬜ |
+| 5a | ↳ per-tab Value Cards (hover + carousel) | MS-7 | #8 | ✅ PR #35 |
 | 5b | ↳ per-tab Showcase (carousel) | MS-8 | #13 | ⬜ |
 | 6 | Tech Stack (marquee) — sticky releases here | MS-9 | #14 | ⬜ |
 | 7 | Footer (gradient wordmark) | MS-10 | #15 | ⬜ |
@@ -156,17 +156,17 @@ Goal: the measuring instrument alive, then the first Section lands complete.
 
 **AC:** gate + tests green · tabs switch the panel · a11y tab pattern verified.
 
-## MS-7 — Per-tab Value Cards (~1.5h) · `ms/7-value-cards` · Issue #8
+## MS-7 — Per-tab Value Cards (~1.5h) · `ms/7-value-cards` · Issue #8 — ✅ DONE (PR #35, 2026-07-20)
 
 The card row *inside* the tab panel (design y 2306–2756 / mobile 2457–2851): it swaps with the
 tab and re-renders from `panels[active].cards`.
 
 → skills: `superpowers:tdd`, `frontend-design`
 
-- [ ] T7.1 **Tests first:** hover/focus flip, carousel swipe/dots, cards swap on tab change
-- [ ] T7.2 Desktop: hover flip per frame 2:36 (bg/heading/body reveal), `:focus-visible` parity
-- [ ] T7.3 Mobile: swipe carousel of permanently-dark cards, dots + animated arrow hint (D-015)
-- [ ] T7.4 Fidelity Gate @1440 + @393
+- [x] T7.1 **Tests first:** hover/focus flip, carousel swipe/dots, cards swap on tab change
+- [x] T7.2 Desktop: hover flip per frame 2:36 (bg/heading/body reveal), `:focus-visible` parity
+- [x] T7.3 Mobile: swipe carousel of permanently-dark cards, dots + animated arrow hint (D-015)
+- [x] T7.4 Fidelity Gate @1440 + @393
 
 **AC:** gate + tests green · cards follow the active tab.
 
