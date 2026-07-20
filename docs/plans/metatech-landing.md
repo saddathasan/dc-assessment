@@ -41,7 +41,7 @@ they keep their own milestones (a slice each, per D-025) but are not standalone 
 | 4 | We Are | MS-5 | #6 | ✅ PR #29 |
 | 5 | **Solutions (tabbed region)** — shell: contract + switcher + intro | MS-6 | #7 | ✅ PR #33 (rebuild; PR #31 shipped the wrong model, D-028) |
 | 5a | ↳ per-tab Value Cards (hover + carousel) | MS-7 | #8 | ✅ PR #35 |
-| 5b | ↳ per-tab Showcase (carousel) | MS-8 | #13 | ⬜ |
+| 5b | ↳ per-tab Showcase (carousel) | MS-8 | #13 | ✅ PR #37 |
 | 6 | Tech Stack (marquee) — sticky releases here | MS-9 | #14 | ⬜ |
 | 7 | Footer (gradient wordmark) | MS-10 | #15 | ⬜ |
 | — | Page polish (a11y/perf/SEO/x-browser) | MS-11 | #16 | ⬜ |
@@ -170,18 +170,18 @@ tab and re-renders from `panels[active].cards`.
 
 **AC:** gate + tests green · cards follow the active tab.
 
-## MS-8 — Per-tab Showcase (~1.5h) · `ms/8-showcase` · Issue #13
+## MS-8 — Per-tab Showcase (~1.5h) · `ms/8-showcase` · Issue #13 — ✅ DONE (PR #37, 2026-07-20)
 
 The showcase *inside* the tab panel (design y 2829–3530 / mobile 2880–3780), swapping with the
 tab from `panels[active].showcase`; closes the tab body — Tech Stack begins immediately after.
 
 → skills: `superpowers:tdd`, `frontend-design`
 
-- [ ] T8.1 **Tests first:** carousel nav + dots, showcase swaps on tab change
-- [ ] T8.2 Green section, device carousel (scroll-snap), elongated-active dots
+- [x] T8.1 **Tests first:** carousel nav + dots, showcase swaps on tab change
+- [x] T8.2 Green section, device carousel (scroll-snap), elongated-active dots
       (verify exact section green vs the mobile-sampled token); wordmark fallback where an
       authored panel has no logo asset (D-028.5)
-- [ ] T8.3 Fidelity Gate @1440 + @393
+- [x] T8.3 Fidelity Gate @1440 + @393
 
 **AC:** gate + tests green · showcase follows the active tab · tab body ends flush at Tech Stack.
 
