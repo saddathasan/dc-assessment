@@ -19,13 +19,13 @@ export function LandingPage() {
             (1:358 ends 1754.76) and the Solutions gray (1:280 starts 1777) —
             built as 22px per the slicer's whole-pixel rule; desktop is flush. */}
         <div aria-hidden className="h-[22px] bg-white lg:hidden" />
-        {/* Sticky scope + shared gray canvas (note 1:277, nodes 1:105/1:280):
-            the Solutions tab bar pins from here until past Tech Stack. MS-7/8/9
-            Sections land inside this wrapper; the release point is provisional
-            until MS-9 closes the coupling (T9.3). */}
-        <div data-testid="solutions-sticky-scope" className="bg-surface-2">
+        {/* The tabbed Solutions Section (D-028) on its gray canvas (nodes
+            1:105/1:280). This element is also the sticky scope: the tab bar
+            pins for the panel's whole height and releases where the Section
+            ends — Tech Stack (note 1:277), whose exact seam MS-9 verifies. */}
+        <section id="solutions" aria-label="Solutions" className="bg-surface-2">
           <Solutions />
-        </div>
+        </section>
       </main>
     </div>
   )

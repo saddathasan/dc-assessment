@@ -1,11 +1,12 @@
-// Data contract + interaction tests for the Solutions Section (MS-6): tabs and
-// blocks 01–03 from /api/solutions (01 heading per D-017.1, 02/03 Authored per
-// D-016), anchor-nav tab switching, and the IntersectionObserver scroll-spy.
+// Behaviour contract for the Solutions Section (MS-6, D-028): the tab bar is a
+// real content switcher — one panel on screen at a time, swapped by pointer or
+// keyboard under the WAI-ARIA tabs pattern. Panel content comes from
+// /api/solutions (01 heading per D-017.1, panels 02/03 Authored per D-016).
 // Geometry, typography, and sticky fidelity live in tests/fidelity/solutions.spec.ts.
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { SolutionsContent } from '@metatech/shared'
 import { Solutions } from './Solutions'
 
@@ -16,54 +17,68 @@ const solutionsContent: SolutionsContent = {
     { id: 'custom-software', label: 'Custom Software' },
     { id: 'tech-staffing', label: 'Tech Staffing' },
   ],
-  blocks: [
+  panels: [
     {
       id: 'data-ai',
       number: '01',
       heading: 'Data + AI Driven Innovation',
-      body: 'Our Data and AI services combine engineering, analytics, and applied AI to help organizations understand data, predict outcomes, and automate decisions. From trusted analytics to production grade AI systems, we deliver intelligence that works in the real world.',
+      body: 'Our Data and AI services combine engineering, analytics, and applied AI to help organizations understand data, predict outcomes, and automate decisions.',
       cta: { label: 'Book a consultation', href: '#contact' },
+      cards: [
+        { heading: 'Data Integrity First', body: 'AI outputs are only as reliable as the data feeding them.' },
+        { heading: 'Workflows Before Automation', body: 'Before we build anything, we map your business workflows end to end.' },
+        { heading: 'Governance With Same Standard', body: 'We implement data governance frameworks that carry the same accountability.' },
+      ],
+      showcase: {
+        logo: { src: '/images/amicredible-logo.png', alt: 'AmiCredible' },
+        name: 'AmiCredible',
+        heading: 'An AI-powered credibility checking platform',
+        body: 'that helps users verify claims, analyze sources, and make informed decisions.',
+        cta: { label: 'Explore more →', href: '#showcase' },
+        slides: [{ image: { src: '/images/showcase-device.jpg', alt: 'AmiCredible running on a tablet — view 1' } }],
+      },
     },
     {
       id: 'custom-software',
       number: '02',
       heading: 'Custom Software Development',
-      body: 'Our engineering teams design, build, and ship software shaped around the way your business actually works. From rapid prototypes to enterprise platforms, we deliver secure, scalable systems that hold up in production and keep evolving with you.',
+      body: 'Our engineering teams design, build, and ship software shaped around the way your business actually works.',
       cta: { label: 'Book a consultation', href: '#contact' },
       authored: true,
+      cards: [
+        { heading: 'Discovery Is Engineering', body: 'Most failed builds were scoped in one meeting.' },
+        { heading: 'Architecture Outlives Features', body: 'Features get replaced every quarter.' },
+        { heading: 'Built For Handover', body: 'We write code your team can own without us.' },
+      ],
+      showcase: {
+        name: 'Fieldmark',
+        heading: 'An offline-first field operations platform',
+        body: 'that helps supervisors dispatch crews and capture site evidence.',
+        cta: { label: 'Explore more →', href: '#showcase' },
+        slides: [{ image: { src: '/images/showcase-device.jpg', alt: 'Fieldmark running on a tablet — view 1' } }],
+      },
     },
     {
       id: 'tech-staffing',
       number: '03',
       heading: 'Tech Staff Augmentation',
-      body: 'We embed senior engineers, data specialists, and delivery leads directly into your teams. From a single expert to a full squad, we provide elite talent that ramps up fast, raises the bar, and accelerates your roadmap without the overhead of hiring.',
+      body: 'We embed senior engineers, data specialists, and delivery leads directly into your teams.',
       cta: { label: 'Book a consultation', href: '#contact' },
       authored: true,
+      cards: [
+        { heading: 'Engineers Screen Engineers', body: 'A recruiter can match keywords.' },
+        { heading: 'Teammates Not Resources', body: 'Our engineers join your standups.' },
+        { heading: 'Retention Is Our Problem', body: 'Cheap placements leave in four months.' },
+      ],
+      showcase: {
+        name: 'Rampline',
+        heading: 'A vetting-first engineering talent platform',
+        body: 'that helps hiring leads review verified skill profiles.',
+        cta: { label: 'Explore more →', href: '#showcase' },
+        slides: [{ image: { src: '/images/showcase-device.jpg', alt: 'Rampline running on a tablet — view 1' } }],
+      },
     },
   ],
-}
-
-/** Capturing IntersectionObserver stub: happy-dom has no layout, so the spy is driven by hand. */
-class ObserverStub {
-  static instances: ObserverStub[] = []
-  readonly observed: Element[] = []
-  readonly callback: IntersectionObserverCallback
-  constructor(callback: IntersectionObserverCallback) {
-    this.callback = callback
-    ObserverStub.instances.push(this)
-  }
-  observe(element: Element) {
-    this.observed.push(element)
-  }
-  unobserve() {}
-  disconnect() {}
-}
-
-/** Fires the scroll-spy observer with hand-built entries, as the browser would on scroll. */
-function intersect(entries: Array<{ target: Element; isIntersecting: boolean }>) {
-  const spy = ObserverStub.instances.at(-1)
-  if (!spy) throw new Error('no IntersectionObserver was constructed')
-  act(() => spy.callback(entries as IntersectionObserverEntry[], spy as unknown as IntersectionObserver))
 }
 
 function renderSolutions() {
@@ -78,7 +93,6 @@ function renderSolutions() {
       ),
     ),
   )
-  vi.stubGlobal('IntersectionObserver', ObserverStub)
   const client = new QueryClient({
     defaultOptions: { queries: { retry: false, staleTime: Infinity } },
   })
@@ -89,101 +103,106 @@ function renderSolutions() {
   )
 }
 
-const tab = (name: string) => screen.getByRole('link', { name })
-
-beforeEach(() => {
-  ObserverStub.instances.length = 0
-})
+const tab = (name: string) => screen.getByRole('tab', { name })
+const panel = () => screen.getByRole('tabpanel')
 
 afterEach(() => {
   vi.unstubAllGlobals()
 })
 
 describe('Solutions', () => {
-  it('renders the three tabs from /api/solutions as anchors to their blocks', async () => {
+  it('renders the three tabs from /api/solutions, first one selected', async () => {
     renderSolutions()
 
-    const nav = await screen.findByRole('navigation', { name: 'Solutions' })
-    expect(nav).toBeInTheDocument()
-    expect(tab('Data + AI')).toHaveAttribute('href', '#solution-data-ai')
-    expect(tab('Custom Software')).toHaveAttribute('href', '#solution-custom-software')
-    expect(tab('Tech Staffing')).toHaveAttribute('href', '#solution-tech-staffing')
-
-    // The design's rest state: the first tab is the active one (node 1:114).
-    expect(tab('Data + AI')).toHaveAttribute('aria-current', 'true')
-    expect(tab('Custom Software')).not.toHaveAttribute('aria-current')
-    expect(tab('Tech Staffing')).not.toHaveAttribute('aria-current')
-  })
-
-  it('renders blocks 01–03 with numbers, headings, bodies, and CTAs', async () => {
-    renderSolutions()
-
-    // Block 01 is the designed block (D-017.1 heading fix); 02/03 are Authored (D-016).
-    const headings = await screen.findAllByRole('heading', { level: 2 })
-    expect(headings.map((h) => h.textContent)).toEqual([
-      'Data + AI Driven Innovation',
-      'Custom Software Development',
-      'Tech Staff Augmentation',
+    const tablist = await screen.findByRole('tablist')
+    expect(within(tablist).getAllByRole('tab').map((t) => t.textContent)).toEqual([
+      'Data + AI',
+      'Custom Software',
+      'Tech Staffing',
     ])
-
-    for (const block of solutionsContent.blocks) {
-      const article = document.getElementById(`solution-${block.id}`)
-      expect(article).not.toBeNull()
-      expect(article).toHaveTextContent(block.number)
-      expect(article).toHaveTextContent(block.body)
-    }
-
-    const ctas = screen.getAllByRole('link', { name: 'Book a consultation' })
-    expect(ctas).toHaveLength(3)
-    for (const cta of ctas) expect(cta).toHaveAttribute('href', '#contact')
+    expect(tab('Data + AI')).toHaveAttribute('aria-selected', 'true')
+    expect(tab('Custom Software')).toHaveAttribute('aria-selected', 'false')
+    expect(tab('Tech Staffing')).toHaveAttribute('aria-selected', 'false')
   })
 
-  it('moves the active tab on click without waiting for the scroll to settle', async () => {
+  it('shows only the selected tab’s panel', async () => {
     renderSolutions()
-    await screen.findByRole('navigation', { name: 'Solutions' })
+    await screen.findByRole('tablist')
+
+    // The panel is the tab's whole body; at rest that is panel 01 (D-028.2).
+    expect(panel()).toHaveTextContent('01')
+    expect(panel()).toHaveTextContent('Data + AI Driven Innovation')
+    // The other panels' content must not be in the document at all.
+    expect(screen.queryByText('Custom Software Development')).not.toBeInTheDocument()
+    expect(screen.queryByText('Tech Staff Augmentation')).not.toBeInTheDocument()
+  })
+
+  it('wires each tab to its panel for assistive tech', async () => {
+    renderSolutions()
+    await screen.findByRole('tablist')
+
+    const selected = tab('Data + AI')
+    expect(selected).toHaveAttribute('aria-controls', panel().id)
+    expect(panel()).toHaveAttribute('aria-labelledby', selected.id)
+  })
+
+  it('swaps the whole panel when another tab is clicked', async () => {
+    renderSolutions()
+    await screen.findByRole('tablist')
 
     await userEvent.click(tab('Tech Staffing'))
 
-    expect(tab('Tech Staffing')).toHaveAttribute('aria-current', 'true')
-    expect(tab('Data + AI')).not.toHaveAttribute('aria-current')
+    expect(tab('Tech Staffing')).toHaveAttribute('aria-selected', 'true')
+    expect(tab('Data + AI')).toHaveAttribute('aria-selected', 'false')
+    expect(panel()).toHaveTextContent('03')
+    expect(panel()).toHaveTextContent('Tech Staff Augmentation')
+    expect(panel()).toHaveTextContent('We embed senior engineers')
+    expect(screen.queryByText('Data + AI Driven Innovation')).not.toBeInTheDocument()
   })
 
-  it('keeps a clicked tab active until the spy reaches its block', async () => {
+  it('moves between tabs with the arrow keys, wrapping at both ends', async () => {
     renderSolutions()
-    await screen.findByRole('navigation', { name: 'Solutions' })
+    await screen.findByRole('tablist')
 
-    await userEvent.click(tab('Tech Staffing'))
+    // Roving tabindex: only the selected tab is in the tab sequence.
+    expect(tab('Data + AI')).toHaveAttribute('tabindex', '0')
+    expect(tab('Custom Software')).toHaveAttribute('tabindex', '-1')
 
-    // The click's programmatic scroll sweeps the spy line through other blocks
-    // (and clamps short of the target while Solutions is the page tail) —
-    // their entries must not steal the clicked highlight.
-    intersect([{ target: document.getElementById('solution-data-ai')!, isIntersecting: true }])
-    expect(tab('Tech Staffing')).toHaveAttribute('aria-current', 'true')
+    await userEvent.tab()
+    expect(tab('Data + AI')).toHaveFocus()
 
-    // Once the spy sees the clicked block itself, normal spying resumes.
-    intersect([{ target: document.getElementById('solution-tech-staffing')!, isIntersecting: true }])
-    intersect([{ target: document.getElementById('solution-data-ai')!, isIntersecting: true }])
-    expect(tab('Data + AI')).toHaveAttribute('aria-current', 'true')
+    await userEvent.keyboard('{ArrowRight}')
+    expect(tab('Custom Software')).toHaveFocus()
+    expect(panel()).toHaveTextContent('Custom Software Development')
+
+    // Wraps forward past the end…
+    await userEvent.keyboard('{ArrowRight}{ArrowRight}')
+    expect(tab('Data + AI')).toHaveFocus()
+    // …and backward past the start.
+    await userEvent.keyboard('{ArrowLeft}')
+    expect(tab('Tech Staffing')).toHaveFocus()
+    expect(panel()).toHaveTextContent('Tech Staff Augmentation')
   })
 
-  it('follows the scroll-spy: the intersecting block drives the active tab', async () => {
+  it('jumps to the first and last tab with Home and End', async () => {
     renderSolutions()
-    await screen.findByRole('navigation', { name: 'Solutions' })
+    await screen.findByRole('tablist')
 
-    // The spy watches all three blocks (note 1:277 scroll-spy over the block stack).
-    const spy = ObserverStub.instances.at(-1)!
-    expect(spy.observed.map((el) => el.id)).toEqual([
-      'solution-data-ai',
-      'solution-custom-software',
-      'solution-tech-staffing',
-    ])
+    await userEvent.tab()
+    await userEvent.keyboard('{End}')
+    expect(tab('Tech Staffing')).toHaveFocus()
+    expect(panel()).toHaveTextContent('03')
 
-    intersect([{ target: document.getElementById('solution-custom-software')!, isIntersecting: true }])
-    expect(tab('Custom Software')).toHaveAttribute('aria-current', 'true')
+    await userEvent.keyboard('{Home}')
+    expect(tab('Data + AI')).toHaveFocus()
+    expect(panel()).toHaveTextContent('01')
+  })
 
-    // Leaving entries (isIntersecting: false) must not steal the highlight —
-    // the last block seen at the spy line stays active between blocks.
-    intersect([{ target: document.getElementById('solution-custom-software')!, isIntersecting: false }])
-    expect(tab('Custom Software')).toHaveAttribute('aria-current', 'true')
+  it('renders the panel’s CTA from the payload', async () => {
+    renderSolutions()
+    await screen.findByRole('tablist')
+
+    const cta = within(panel()).getByRole('link', { name: 'Book a consultation' })
+    expect(cta).toHaveAttribute('href', '#contact')
   })
 })
