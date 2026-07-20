@@ -377,6 +377,26 @@ absoluteBoundingBox values, so the space the artifact occupied persists as desig
 the designer never drew; rendered positions are the only ground truth the Extraction offers.
 **Status:** Accepted.
 
+## D-027 — Cross-engine text wrap divergence: accept the browser's break, pin the line count
+
+**Context:** the We Are desktop statement (node 1:104, fixed 680px box) wraps differently in
+Chromium than in the Figma render: Chromium fits "three" at the end of line 1 where the design
+breaks before it. MS-5's independent render-diff measured the constraint window: matching the
+design's line-1 break needs a content width < 679.78px while keeping the design's line-3 break
+needs ≥ 678.06px — under 2px of total slack, i.e. sub-pixel margins on both sides. The engines'
+static-vs-variable font instances genuinely disagree by <2px in opposite directions on different
+lines; no uniform CSS transform (padding, letter-spacing, stretch) can reproduce all five breaks
+robustly, and per-glyph hacks or content mutations (nbsp) poison the data layer.
+**Decision:** when Figma's rendered wrap and the browser's wrap of the *same specification*
+(box, family, size, spacing) diverge inside a ~2px advance window, the browser's break stands.
+The numeric layer pins the block box and the design's line count (so any cascade reflow fails
+loudly), plus an explicit divergence pin marking the known differing break; the ≤5% visual layer
+absorbs the shifted words.
+**Why superior:** a sub-2px-slack pixel hack flakes on any font-rendering change and asserts
+nothing real; the spec-faithful rendering is stable, and the divergence stays visible in an
+executable assert instead of silently absorbed.
+**Status:** Accepted (MS-5).
+
 ---
 
 ## Open questions (tracked; each resolves into a numbered decision)
