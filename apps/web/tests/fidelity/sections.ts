@@ -207,4 +207,24 @@ export const targets: FidelityTarget[] = [
     crop: { x: 0, y: 3780, width: 393, height: 710 },
     clip: { x: 0, y: 3723, width: 393, height: 710 },
   },
+  // Footer — desktop: the dark band closing the page (node 1:248, y=4380..4738,
+  // flush under Tech Stack's 3530+850 — no itemSpacing here, unlike the seam
+  // above it). The link row over the METATECH mark and its scrim (1:264), which
+  // has no mobile counterpart.
+  {
+    id: 'footer-desktop',
+    source: '1-34.png',
+    crop: { x: 0, y: 4380, width: 1440, height: 358 },
+    clip: { x: 0, y: 4380, width: 1440, height: 358 },
+  },
+  // Footer — mobile: node 1:441 at y=4490, flush under Tech Stack's 3780+710,
+  // running to the artboard's 4972 end; page clip y = render − 57 (the excluded
+  // status bar), contiguous with tech-stack-mobile's clip end 3723+710=4433.
+  // This is the last band: its clip end 4433+482=4915 is the whole page height.
+  {
+    id: 'footer-mobile',
+    source: '1-279.png',
+    crop: { x: 0, y: 4490, width: 393, height: 482 },
+    clip: { x: 0, y: 4433, width: 393, height: 482 },
+  },
 ]

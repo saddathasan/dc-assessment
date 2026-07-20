@@ -43,7 +43,10 @@ export function FooterWordmark() {
           rather than Figma's literal rgba(0,0,0,0): Figma interpolates
           premultiplied, CSS does not, so a black zero-alpha stop would drag the
           midtones grey across the white half of the mark. */}
-      <div className="absolute inset-0 hidden bg-[linear-gradient(to_top,#161616_0px,rgba(22,22,22,0)_197.94px)] lg:block" />
+      <div
+        data-testid="footer-wordmark-scrim"
+        className="absolute inset-0 hidden bg-[linear-gradient(to_top,#161616_0px,rgba(22,22,22,0)_197.94px)] lg:block"
+      />
     </div>
   )
 }
