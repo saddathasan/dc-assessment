@@ -5,14 +5,20 @@
     { "text": "// All Rights Reserved" }
   ],
   "legalLinks": [
-    { "label": "Privacy Policy", "href": "#privacy" },
-    { "label": "Terms of Use", "href": "#terms" }
+    { "label": "Terms of Use", "href": "#terms" },
+    { "label": "Privacy Policy", "href": "#privacy" }
   ],
   "socialLinks": [
     { "label": "Facebook", "href": "https://facebook.com" },
     { "label": "Linkedin", "href": "https://linkedin.com" },
     { "label": "Instagram", "href": "https://instagram.com" },
     { "label": "Youtube", "href": "https://youtube.com" }
+  ],
+  "socialLinksMobile": [
+    { "label": "Linkedin", "href": "https://linkedin.com" },
+    { "label": "Youtube", "href": "https://youtube.com" },
+    { "label": "Instagram", "href": "https://instagram.com" },
+    { "label": "Facebook", "href": "https://facebook.com" }
   ],
   "showWordmark": true
 }

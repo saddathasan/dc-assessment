@@ -157,7 +157,14 @@ export interface TechStackContent {
 
 export interface FooterContent {
   copyright: RichTextSpan[]
+  /** Legal links in artboard order — both breakpoints draw Terms of Use first (D-030). */
   legalLinks: Link[]
   socialLinks: Link[]
+  /**
+   * The mobile artboard's own social order (nodes 1:450..1:453): a permutation
+   * of `socialLinks`, not a different set, so one list cannot drive both
+   * breakpoints (D-030 — same shape as `logosMobile`, D-017.4).
+   */
+  socialLinksMobile: Link[]
   showWordmark: boolean
 }
