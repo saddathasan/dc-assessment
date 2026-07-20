@@ -17,9 +17,13 @@ export function LandingPage() {
         <Hero />
         <TrustedBy />
         <WeAre />
-        {/* The mobile artboard keeps a 22.24px white strip between We Are
-            (1:358 ends 1754.76) and the Solutions gray (1:280 starts 1777) —
-            built as 22px per the slicer's whole-pixel rule; desktop is flush. */}
+        {/* NOT a stray spacer — this reproduces a real gap the mobile artboard
+            draws. We Are (node 1:358) ends at y=1754.76 and the Solutions gray
+            (node 1:280) starts at y=1777.00, so 22.24px of the page's white shows
+            between the two bands (built as 22px per the slicer's whole-pixel
+            rule). It reads as invisible because We Are is white too; removing it
+            pulls every mobile Section below up 22px and diverges from the render.
+            Desktop is flush. Verified against file.json + the design render. */}
         <div aria-hidden className="h-[22px] bg-white lg:hidden" />
         {/* The tabbed Solutions Section (D-028) on its gray canvas (nodes
             1:105/1:280). This element is also the sticky scope: the tab bar

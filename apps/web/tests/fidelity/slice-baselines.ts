@@ -38,4 +38,12 @@ function slice(target: FidelityTarget): void {
 }
 
 mkdirSync(outDir, { recursive: true })
-targets.forEach(slice)
+// Deviated Sections (D-032) have no render pixel to slice against — their
+// Baseline is captured from the build (fidelity:baseline:build), so skip them.
+targets.forEach((t) => {
+  if (t.deviated) {
+    console.log(`skipped ${t.id}.png (deviated ${t.deviated} — Baseline is build-sourced)`)
+    return
+  }
+  slice(t)
+})

@@ -608,6 +608,47 @@ phrasing in the plan and `EXTRACTION.md:75`.
 
 ---
 
+## D-032 — The mobile footer deviates from the artboard by 30px, so its Baseline is build-sourced
+
+**Chosen over:** staying pixel-faithful (flush, as the artboard draws it); removing the deviation's
+gate coverage entirely.
+**Context:** on mobile the design owner found the footer cramped — "Terms of Use" jams against the
+Tech Stack seam above it. Investigation (file.json + the design render) confirmed this is faithful:
+the mobile footer frame (node 1:442) starts at y=4490, the footer band's exact top edge, with zero
+top padding, while the **desktop** footer breathes at 68px (node 1:250 at y=4448). So the mobile
+artboard genuinely draws it flush; the cramping is a real design inconsistency, not a build bug.
+
+The same investigation cleared the adjacent suspicion: the mobile `h-[22px]` strip between We Are
+and Solutions is **not** a stray spacer. We Are (1:358) ends at y=1754.76 and the Solutions gray
+(1:280) starts at y=1777.00, a genuine 22.24px white gap the artboard draws. It was kept; removing
+it would shift every mobile Section below up 22px and diverge from the render.
+
+**Decision:** add 30px of top padding to the mobile footer column (`FooterStack`, `pt-[30px]`,
+mobile-only), giving the dark band the breathing room desktop already has. This is a deliberate
+deviation from the artboard, ratified by the design owner.
+
+Because the deviation has no render pixel to slice against, the footer-mobile Baseline is captured
+from the **build**, not the render: `FidelityTarget` gains a `deviated` flag (the decision ID), the
+slicer skips flagged targets, and `pnpm --filter web fidelity:baseline:build` regenerates them
+through the gate's exact screenshot path. The numeric layer carries the intended geometry (links at
+4433+30, band 512, page 4945), so the deviation is pinned, not merely tolerated.
+
+**Why superior:** the artboard is authoritative on what the design *is*, but the design owner is
+authoritative on what ships, and here the two differ by a defensible 30px that also brings mobile
+into line with desktop. Sourcing just this one Baseline from the build — rather than dropping its
+visual test or globally trusting build screenshots — keeps a real regression guard (the wordmark
+render included) while being explicit that this region no longer tracks the render.
+
+**Trade-off accepted:** one Baseline is now build-sourced, a documented exception to D-021's
+"Baselines from design, never build-over-build drift." Contained by the `deviated` flag (so the
+slicer can never silently overwrite it) and the numeric asserts (which fail loudly if the geometry
+drifts). Everything else in the gate stays render-sourced.
+
+**Status:** Accepted (MS-11 polish, 2026-07-21). Design owner's call; the flush-footer and
+kept-22px-strip alternatives were both presented and declined/confirmed respectively.
+
+---
+
 ## Open questions (tracked; each resolves into a numbered decision)
 
 1. Hamburger menu open state (undesigned) — proposed: full-screen dark-green overlay in brand style,

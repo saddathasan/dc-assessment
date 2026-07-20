@@ -1,10 +1,13 @@
 /**
  * Fidelity Gate — Footer Section (MS-10). Visual layer: screenshot diff ≤5%
- * against sliced Figma Baselines; numeric layer: zero-tolerance computed-style
- * asserts on the values extracted from file.json (D-021).
+ * against Figma Baselines (mobile is build-sourced, see below); numeric layer:
+ * zero-tolerance computed-style asserts on the values extracted from file.json
+ * (D-021).
  *
  * This is the last band, so the page-height asserts here are the page's own:
- * 4738 desktop and 4915 mobile mean the build lands on the artboard end to end.
+ * 4738 desktop lands on the artboard end to end; 4945 mobile is the artboard's
+ * 4915 plus the 30px the footer deviates by (D-032), so its Baseline is captured
+ * from the build (fidelity:baseline:build), not sliced from the render.
  *
  * The METATECH mark is a VECTOR whose per-glyph colour lives in
  * fillOverrideTable, not in `fills` — so the two path colours are asserted
@@ -145,20 +148,23 @@ test.describe('Footer @1440', () => {
 test.describe('Footer @393', () => {
   test.skip(({ isMobile }) => !isMobile, 'mobile-only asserts')
 
-  test('footer band matches the Baseline', async ({ page }) => {
+  test('footer band matches the Baseline (build-sourced, D-032)', async ({ page }) => {
+    // Unlike every other Baseline this diffs against the build, not the render:
+    // the footer deviates from the artboard by 30px (D-032), so there is no
+    // render pixel to slice. Regenerate with fidelity:baseline:build.
     await expectBaseline(page, 'footer-mobile')
   })
 
   test('the band closes the page flush under Tech Stack, on the artboard', async ({ page }) => {
-    // Node 1:441: 393x482 at render y=4490 → page y 4433 (the excluded 57px
-    // status bar), flush under Tech Stack's 3723+710.
+    // Node 1:441 lands at page y 4433 (render 4490 less the excluded 57px status
+    // bar), flush under Tech Stack's 3723+710. The band is 512 not the artboard's
+    // 482: D-032 adds 30px of top padding the mobile artboard omits — the top
+    // edge stays on the seam, the content moves down inside it.
     const footer = band(page)
     await expect(footer).toHaveCSS('background-color', 'rgb(22, 22, 22)')
     const box = (await footer.boundingBox())!
     expect(box.y).toBe(4433)
-    // The mark's height follows its viewBox aspect (391 x 227/1432), which lands
-    // on Chromium's 1/64px grid rather than the artboard's whole 62.
-    expect(box.height).toBeCloseTo(482, 0)
+    expect(box.height).toBeCloseTo(512, 0)
 
     const seam = await page.evaluate(() => {
       const tech = document.querySelector('section#tech-stack')!.getBoundingClientRect()
@@ -166,17 +172,18 @@ test.describe('Footer @393', () => {
     })
     expect(seam).toBe(0)
 
-    // 4433 + 482: the mobile artboard's 4972 less its status bar — page complete.
-    expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBe(4915)
+    // 4433 + 512: the artboard's 482 plus the D-032 padding — page complete.
+    expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBe(4945)
   })
 
   test('the column stacks on the artboard rhythm (node 1:442)', async ({ page }) => {
-    // Frame 289404 has no vertical padding, so the first link starts on the
-    // band's own top edge; then 30/50 gaps put each group at its drawn y.
-    expect(await pageTop(page, 'footer-legal-mobile')).toBe(4433)
-    expect(await pageTop(page, 'footer-social-mobile')).toBe(4433 + 129)
-    expect(await pageTop(page, 'footer-copyright-mobile')).toBe(4433 + 366)
-    expect(await pageTop(page, 'footer-wordmark')).toBe(4433 + 420)
+    // D-032: 30px of top padding sits above the first link (the artboard draws it
+    // flush, which jammed it against the Tech Stack seam); then the artboard's
+    // own 30/50 gaps put each group at its drawn offset from that shifted origin.
+    expect(await pageTop(page, 'footer-legal-mobile')).toBe(4433 + 30)
+    expect(await pageTop(page, 'footer-social-mobile')).toBe(4433 + 30 + 129)
+    expect(await pageTop(page, 'footer-copyright-mobile')).toBe(4433 + 30 + 366)
+    expect(await pageTop(page, 'footer-wordmark')).toBe(4433 + 30 + 420)
 
     // 30px inset both sides (pad=(0,30,0,30)).
     expect((await page.getByTestId('footer-legal-mobile').boundingBox())!.x).toBe(30)

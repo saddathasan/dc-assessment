@@ -37,6 +37,14 @@ export interface FidelityTarget {
    * content errors. Naive diff of this band reads ~13%; averaged it reads ~2%.
    */
   noiseTextured?: boolean
+  /**
+   * A decision ID when this Section deliberately deviates from the artboard, so
+   * its Baseline is captured from the build rather than sliced from the render
+   * (there is no render pixel to slice against). The slicer skips these; the
+   * Baseline is regenerated with `fidelity:baseline:build` and the numeric layer
+   * carries the intended geometry. Use sparingly — a design deviation, not drift.
+   */
+  deviated?: string
 }
 
 /**
@@ -217,14 +225,18 @@ export const targets: FidelityTarget[] = [
     crop: { x: 0, y: 4380, width: 1440, height: 358 },
     clip: { x: 0, y: 4380, width: 1440, height: 358 },
   },
-  // Footer — mobile: node 1:441 at y=4490, flush under Tech Stack's 3780+710,
-  // running to the artboard's 4972 end; page clip y = render − 57 (the excluded
-  // status bar), contiguous with tech-stack-mobile's clip end 3723+710=4433.
-  // This is the last band: its clip end 4433+482=4915 is the whole page height.
+  // Footer — mobile: node 1:441 at y=4490, flush under Tech Stack's 3780+710;
+  // page clip y = render − 57 (the excluded status bar), contiguous with
+  // tech-stack-mobile's clip end 3723+710=4433.
+  // DEVIATED (D-032): the build adds 30px of top padding the artboard omits, so
+  // the band is 512 not 482 and its Baseline is captured from the build, not
+  // sliced from the render. clip height grows to 512 to keep the full wordmark
+  // in frame; crop is the untouched render region, kept for reference only.
   {
     id: 'footer-mobile',
     source: '1-279.png',
     crop: { x: 0, y: 4490, width: 393, height: 482 },
-    clip: { x: 0, y: 4433, width: 393, height: 482 },
+    clip: { x: 0, y: 4433, width: 393, height: 512 },
+    deviated: 'D-032',
   },
 ]

@@ -11,6 +11,7 @@
     "test": "vitest run",
     "fidelity": "playwright test",
     "fidelity:slice": "node tests/fidelity/slice-baselines.ts",
+    "fidelity:baseline:build": "node tests/fidelity/build-baselines.ts",
     "typecheck": "tsc -b --noEmit"
   },
   "dependencies": {

@@ -45,7 +45,12 @@ function FooterLayout({ content }: { content: FooterContent }) {
  */
 function FooterStack({ content }: { content: FooterContent }) {
   return (
-    <div className="px-[30px] lg:hidden">
+    // pt-[30px] is a deliberate deviation from the artboard (D-032): the mobile
+    // artboard draws the links flush at the band's top edge (0 padding), which
+    // jams "Terms of Use" against the Tech Stack seam above — unlike desktop,
+    // which breathes at 68px. This gives the dark band the matching breathing
+    // room; it is why footer-mobile's Baseline is build-sourced, not sliced.
+    <div className="px-[30px] pt-[30px] lg:hidden">
       {/* 50 between the link column and the copyright (1:443), 30 between the
           link groups and their rules (1:444), 20 inside each group. */}
       <div className="flex flex-col gap-[50px]">
