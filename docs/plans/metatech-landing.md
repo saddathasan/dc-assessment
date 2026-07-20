@@ -42,7 +42,7 @@ they keep their own milestones (a slice each, per D-025) but are not standalone 
 | 5 | **Solutions (tabbed region)** — shell: contract + switcher + intro | MS-6 | #7 | ✅ PR #33 (rebuild; PR #31 shipped the wrong model, D-028) |
 | 5a | ↳ per-tab Value Cards (hover + carousel) | MS-7 | #8 | ✅ PR #35 (+ #39 flip fix) |
 | 5b | ↳ per-tab Showcase (carousel) | MS-8 | #13 | ✅ PR #37 |
-| 6 | Tech Stack (marquee) — sticky releases here | MS-9 | #14 | ⬜ |
+| 6 | Tech Stack (marquee) — sticky releases here | MS-9 | #14 | ✅ PR #41 |
 | 7 | Footer (gradient wordmark) | MS-10 | #15 | ⬜ |
 | — | Page polish (a11y/perf/SEO/x-browser) | MS-11 | #16 | ⬜ |
 | — | Ship | MS-12 | #17 | ⬜ |
@@ -185,18 +185,29 @@ tab from `panels[active].showcase`; closes the tab body — Tech Stack begins im
 
 **AC:** gate + tests green · showcase follows the active tab · tab body ends flush at Tech Stack.
 
-## MS-9 — Tech Stack slice (~1.5h) · `ms/9-tech-stack` · Issue #14
+## MS-9 — Tech Stack slice (~1.5h) · `ms/9-tech-stack` · Issue #14 — ✅ DONE (PR #41, 2026-07-20)
+
+> **Axis settled first:** note 2:5's "vertically" contradicts its own row language and the
+> artboard. **D-029** decodes the three rows as one uniform 260-pitch strip sampled at phases
+> 36/76/34 (mobile 42/82/40) and ratifies horizontal travel — the model `tech-stack.json` had
+> already shipped as `direction: left/right/left` since MS-1.
 
 → skills: `superpowers:tdd`, `frontend-design`
 
-- [ ] T9.1 **Tests first:** marquee pause control, reduced-motion behavior
-- [ ] T9.2 Heading block + 3-row marquee (top/bottom same direction, middle opposite — note
-      2:5), hover/focus pause + visible pause control, `prefers-reduced-motion` static,
-      mobile edge-bleed
-- [ ] T9.3 Verify the Tab Bar releases after this Section (closes the MS-6 coupling)
-- [ ] T9.4 Fidelity Gate @1440 + @393
+- [x] T9.1 **Tests first:** marquee pause control, reduced-motion behavior
+- [x] T9.2 Heading block + 3-row marquee (top/bottom same direction, middle opposite — note
+      2:5), hover pause + keyboard-operable pause control (visually hidden until focused —
+      the design draws no pause chrome, D-029.5), `prefers-reduced-motion` static **at the
+      drawn phase**, mobile edge-bleed
+- [x] T9.3 Verify the Tab Bar releases after this Section (closes the MS-6 coupling) —
+      `extendPageTail` deleted, release re-derived against the real 850px tail, seam asserted
+      at 1px desktop (frame 1:143 itemSpacing) / flush mobile
+- [x] T9.4 Fidelity Gate @1440 + @393
 
-**AC:** gate + tests green · WCAG 2.2.2 pause verified · sticky release exact.
+**AC:** gate + tests green ×3 stable runs · WCAG 2.2.2 pause verified · sticky release exact.
+**Carries into MS-10:** the bar only *fully* leaves the viewport once the Footer lengthens the
+page — today ~49px stays on screen at max scroll (desktop), and mobile's release is not
+reachable at all (710px tail vs 852px viewport).
 
 ## MS-10 — Footer slice (~0.5h) · `ms/10-footer` · Issue #15
 
