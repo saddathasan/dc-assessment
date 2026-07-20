@@ -104,6 +104,8 @@ function renderSolutions() {
 }
 
 const tab = (name: string) => screen.getByRole('tab', { name })
+// Scoped: the showcase carousel contributes its own list items to the panel.
+const cardList = () => within(screen.getByTestId('solution-cards'))
 const panel = () => screen.getByRole('tabpanel')
 
 afterEach(() => {
@@ -210,7 +212,7 @@ describe('Solutions', () => {
     renderSolutions()
     await screen.findByRole('tablist')
 
-    const cards = within(panel()).getAllByRole('listitem')
+    const cards = cardList().getAllByRole('listitem')
     expect(cards).toHaveLength(3)
     expect(cards.map((c) => within(c).getByRole('heading', { level: 3 }).textContent)).toEqual([
       'Data Integrity First',
@@ -228,7 +230,7 @@ describe('Solutions', () => {
 
     await userEvent.click(tab('Tech Staffing'))
 
-    const cards = within(panel()).getAllByRole('listitem')
+    const cards = cardList().getAllByRole('listitem')
     expect(cards.map((c) => within(c).getByRole('heading', { level: 3 }).textContent)).toEqual([
       'Engineers Screen Engineers',
       'Teammates Not Resources',
@@ -243,7 +245,7 @@ describe('Solutions', () => {
 
     // D-010's a11y commitment: hover-only reveals need :focus-visible parity,
     // which requires the card itself to be focusable.
-    for (const card of within(panel()).getAllByRole('listitem')) {
+    for (const card of cardList().getAllByRole('listitem')) {
       expect(card).toHaveAttribute('tabindex', '0')
     }
   })

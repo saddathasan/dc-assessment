@@ -5,7 +5,6 @@ const swatches = [
   ['deep', 'bg-deep'],
   ['surface', 'bg-surface'],
   ['surface-2', 'bg-surface-2'],
-  ['showcase', 'bg-showcase'],
 ] as const
 
 export function TokenDemo() {

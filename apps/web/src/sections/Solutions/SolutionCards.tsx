@@ -16,6 +16,7 @@ export function SolutionCards({ cards }: { cards: ValueCard[] }) {
     // Below lg the row becomes a scroll-snap carousel inside the 393x394 block
     // (1:380, 20px padding), each card 353 wide like the single designed one.
     <ul
+      data-testid="solution-cards"
       className="flex h-[394px] snap-x snap-mandatory items-center gap-5 overflow-x-auto px-5 [scrollbar-width:none] lg:mx-auto lg:h-[450px] lg:max-w-[1440px] lg:snap-none lg:justify-center lg:gap-4 lg:overflow-visible lg:px-0 [&::-webkit-scrollbar]:hidden"
     >
       {cards.map((card) => (
