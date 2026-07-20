@@ -1,0 +1,57 @@
+
+====================================================================================================
+[FRAME] 'Nav - Solutions'  1400x444
+  [GROUP] 'Group 15'  1400x444  r=25
+    [RECTANGLE] 'Rectangle 2'  1400x444  r=25
+  [VECTOR] 'Rectangle 5'  450x339  r=20
+  [VECTOR] 'Rectangle 34'  450x339  r=20
+  [RECTANGLE] 'Rectangle 4'  450x339  r=20
+  [TEXT] 'Data+AI First Innovation'  181x60  «Data+AI First Innovation» Bricolage Grotesque w800 30.0px lh=30
+  [TEXT] 'Tech Staff Augmentation'  199x60  «Tech Staff Augmentation» Bricolage Grotesque w800 30.0px lh=30
+  [TEXT] 'Custom Software Development'  240x60  «Custom Software
+Development» Bricolage Grotesque w800 30.0px lh=30
+  [FRAME] 'Frame 110'  1365x50  HORI gap=379 pad=(0, 0, 0, 0)
+    [FRAME] 'Frame 110'  1365x50  HORI gap=379 pad=(0, 0, 0, 0)
+      [FRAME] 'Frame 52'  839x25  HORI gap=420 pad=(0, 0, 0, 0)
+        [VECTOR] 'MetaTech'  155x25
+        [FRAME] 'Frame 2'  227x24  HORI gap=25 pad=(0, 0, 0, 0)
+          [FRAME] 'Frame 2'  227x24  HORI gap=25 pad=(0, 0, 0, 0)
+            [TEXT] 'Solutions'  60x24  «Solutions» Manrope w700 14.0px lh=24
+            [FRAME] 'Frame 1'  65x24  HORI gap=5 pad=(0, 0, 0, 0)
+              [TEXT] 'Showcase'  65x24  «Showcase» Manrope w700 14.0px lh=24
+            [FRAME] 'Frame 2'  52x24  HORI gap=5 pad=(0, 0, 0, 0)
+              [TEXT] 'Contact'  52x24  «Contact» Manrope w700 14.0px lh=24
+      [FRAME] 'Frame 3'  147x50  HORI gap=10 pad=(10.0, 25.0, 10.0, 25.0)  r=15
+        [TEXT] 'Book a meeting'  97x24  «Book a meeting» Manrope w800 14.0px lh=24
+
+====================================================================================================
+[FRAME] 'Nav - Solutions'  1400x444
+  [GROUP] 'Group 15'  1400x444  r=25
+    [RECTANGLE] 'Rectangle 2'  1400x444  r=25
+  [VECTOR] 'Rectangle 34'  450x339  r=20
+  [FRAME] 'Frame 110'  1365x50  HORI gap=379 pad=(0, 0, 0, 0)
+    [FRAME] 'Frame 110'  1365x50  HORI gap=379 pad=(0, 0, 0, 0)
+      [FRAME] 'Frame 110'  1365x50  HORI gap=379 pad=(0, 0, 0, 0)
+        [FRAME] 'Frame 52'  839x25  HORI gap=420 pad=(0, 0, 0, 0)
+          [VECTOR] 'MetaTech'  155x25
+          [FRAME] 'Frame 2'  227x24  HORI gap=25 pad=(0, 0, 0, 0)
+            [FRAME] 'Frame 2'  227x24  HORI gap=25 pad=(0, 0, 0, 0)
+              [TEXT] 'Solutions'  60x24  «Solutions» Manrope w700 14.0px lh=24
+              [FRAME] 'Frame 1'  65x24  HORI gap=5 pad=(0, 0, 0, 0)
+                [TEXT] 'Showcase'  65x24  «Showcase» Manrope w700 14.0px lh=24
+              [FRAME] 'Frame 2'  52x24  HORI gap=5 pad=(0, 0, 0, 0)
+                [TEXT] 'Contact'  52x24  «Contact» Manrope w700 14.0px lh=24
+        [FRAME] 'Frame 3'  147x50  HORI gap=10 pad=(10.0, 25.0, 10.0, 25.0)  r=15
+          [TEXT] 'Book a meeting'  97x24  «Book a meeting» Manrope w800 14.0px lh=24
+  [VECTOR] 'Rectangle 35'  450x339  r=20
+  [TEXT] 'Custom Software Development'  240x60  «Custom Software
+Development» Bricolage Grotesque w800 30.0px lh=30
+  [FRAME] 'Frame 114'  450x339
+    [VECTOR] 'Rectangle 5'  450x339  r=20
+    [VECTOR] 'Rectangle 35'  450x339  r=20
+    [TEXT] 'Data+AI First Innovation'  181x60  «Data+AI First Innovation» Bricolage Grotesque w800 30.0px lh=30
+  [FRAME] 'Frame 115'  450x339
+    [GROUP] 'Group 59'  450x339  r=20
+      [RECTANGLE] 'Rectangle 4'  450x339  r=20
+    [VECTOR] 'Rectangle 35'  450x339  r=20
+    [TEXT] 'Tech Staff Augmentation'  199x60  «Tech Staff Augmentation» Bricolage Grotesque w800 30.0px lh=30

@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+/* In-page anchor links (header nav → #solutions, footer legal) glide only when
+   motion is allowed — the fidelity gate and reduced-motion users get instant
+   jumps. The Solutions tabs do NOT rely on this: they switch content in place
+   rather than navigating (D-028). */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/*
+ * Design tokens extracted 1:1 from the Figma pull (design/EXTRACTION.md).
+ * Text sizes carry their paired line-heights from the design; the scale grows
+ * per-section from design/figma/tree-*.txt values — never estimated.
+ */
+@theme {
+  /* Colors */
+  --color-accent: #33f987;
+  --color-ink: #161616;
+  --color-deep: #032019;
+  --color-surface: #f8f8f8;
+  --color-surface-2: #e9edf0;
+  --color-line: #efefef;
+  --color-muted: #dadada;
+  --color-green-700: #17a955;
+  --color-navy: #1d203e;
+  --color-btn-gray: #505050;
+
+  /* Typography */
+  --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", sans-serif;
+  --font-sans: "Manrope Variable", "Manrope", sans-serif;
+
+  --text-hero: 72px;
+  --text-hero--line-height: 72px;
+  --text-showcase-h: 48px;
+  --text-showcase-h--line-height: 54px;
+  --text-h2: 32px;
+  --text-h2--line-height: 36px;
+  --text-tile: 30px;
+  --text-tile--line-height: 30px;
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 27px;
+  --text-card-body: 18px;
+  --text-card-body--line-height: 24px;
+  --text-body: 16px;
+  --text-body--line-height: 23px;
+  --text-ui: 14px;
+  --text-ui--line-height: 24px;
+
+  /* Radii (bar 25 / tile 20 / card+button 15) */
+  --radius-bar: 25px;
+  --radius-tile: 20px;
+  --radius-card: 15px;
+
+  /* Layout */
+  --container-page: 1400px;
+
+  /* Motion scale (open Q3 default): 200–300ms ease-out; disabled via motion-safe gates. */
+  --animate-menu-in: menu-in 200ms ease-out;
+  --animate-rise-in: rise-in 300ms ease-out both;
+  /* Hero play-button heartbeat: an accent ring that swells out of the button and
+     fades, then rests. Longer than the UI scale on purpose — it is ambient, not a
+     response. Decorative and motion-safe-gated, so the Fidelity Baseline (forced
+     reduced motion) never sees it. */
+  --animate-heartbeat: heartbeat 3s ease-out infinite;
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  /* Swells from the button edge to 1.6x while fading, then holds clear for the
+     rest of the cycle — the gap between beats is what makes it read as a pulse
+     rather than a spinner. */
+  @keyframes heartbeat {
+    0% {
+      transform: scale(1);
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.3;
+    }
+    55% {
+      transform: scale(1.4);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1.4);
+      opacity: 0;
+    }
+  }
+}
+
+/*
+ * Tech Stack marquee (D-029). Each row is one frame of a uniform strip: tiles
+ * are 250 wide on a 260 pitch, so six of them make a 1560px cycle that repeats
+ * seamlessly — after travelling exactly one cycle, tile n+6 sits where tile n
+ * was. The base offset parks the strip at the phase its artboard frame was
+ * drawn at (--phase-*, set per row), which is the state the Fidelity Gate
+ * screenshots, since the gate forces reduced motion.
+ *
+ * Motion is opt-in via prefers-reduced-motion: no-preference, matching the app's
+ * motion-safe convention — reduced-motion users get the static drawn frame.
+ * Left- and right-travelling rows get separate keyframes rather than one set
+ * with animation-direction: reverse, so both begin at the same resting offset
+ * and neither jumps when the animation starts.
+ */
+.marquee-strip {
+  --cycle: 1560px;
+  --phase: var(--phase-mobile);
+  transform: translateX(calc(-1 * (var(--cycle) + var(--phase))));
+}
+
+@media (width >= 64rem) {
+  .marquee-strip {
+    --phase: var(--phase-desktop);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .marquee-strip {
+    animation: marquee-left 30s linear infinite;
+  }
+
+  [data-direction='right'] .marquee-strip {
+    animation-name: marquee-right;
+  }
+
+  /* Hover stops the row you are reading; the Section's pause control stops all
+     three. There is deliberately no :focus-within rule — a row holds only
+     images, so nothing inside one can take focus, and the keyboard path to
+     stopping the marquee is the pause control (WCAG 2.2.2, D-029.5). */
+  .marquee-row:hover .marquee-strip,
+  [data-paused='true'] .marquee-strip {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes marquee-left {
+  from {
+    transform: translateX(calc(-1 * (var(--cycle) + var(--phase))));
+  }
+  to {
+    transform: translateX(calc(-1 * (2 * var(--cycle) + var(--phase))));
+  }
+}
+
+@keyframes marquee-right {
+  from {
+    transform: translateX(calc(-1 * (var(--cycle) + var(--phase))));
+  }
+  to {
+    transform: translateX(calc(-1 * var(--phase)));
+  }
+}
