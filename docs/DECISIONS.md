@@ -102,6 +102,8 @@ loading states, per-section graceful errors; mirrors and exceeds the brief's own
 (latency/failure simulation per endpoint).
 **Trade-off accepted:** more fetches on first paint (nav/footer could pop in) — mitigated by firing
 all fetches in parallel on mount and skeleton states matched to each section's layout.
+**Amended by [[#D-028]]:** Value Cards and Showcase are not Sections — their content ships
+inside `/api/solutions`, so the endpoint list is seven, not nine.
 **Status:** Accepted.
 
 ## D-008 — Routing: TanStack Router
@@ -226,6 +228,8 @@ reusing the 01 layout, copy adapted from the mega-menu tiles and established bra
 **Why superior:** reviewers click tabs — a dead interaction reads as broken; authored content
 demonstrates dynamic data + state handling (rubric) and ships a complete-feeling product.
 **Trade-off accepted:** two blocks of non-designer copy, flagged as authored in the README.
+**Extended by [[#D-028]]:** "real tab switcher" is confirmed as decided here; what a tab
+switches is the *whole panel* (intro + cards + showcase), not an intro block alone.
 **Status:** Accepted.
 
 ## D-017 — Copy policy: fix oddities, document every change
@@ -327,6 +331,8 @@ assumptions.
    domains — no real destinations exist in the brief; placeholder policy documented in README.
 4. **Solution Blocks 02/03** copy authored per D-016, `authored: true` in the payload — the flag
    travels with the content so provenance survives any future CMS move.
+**Extended by [[#D-028]]:** the Authored inventory grows by the Custom Software and Tech
+Staffing panels' cards and showcases (six cards, two product spotlights).
 **Status:** Accepted.
 
 ## D-024 — Commenting standard: mandatory, merge-gating
@@ -361,6 +367,8 @@ re-scoped, #13–#17 created, dependency chain preserved.
 a fidelity-scored assessment than missing interactions). Mitigations: the user has granted schedule
 flexibility (the 36h hard deadline stands), and a pre-agreed valve — if the window tightens,
 remaining Sections drop to static-first with interactions in a closing pass, recorded here if used.
+**Amended by [[#D-028]]:** the slice order stands, but Value Cards (MS-7) and Showcase (MS-8)
+are layers of the Solutions panel rather than standalone Sections.
 **Status:** Accepted.
 
 ## D-026 — Excluded artifacts leave their space behind
@@ -396,6 +404,54 @@ absorbs the shifted words.
 nothing real; the spec-faithful rendering is stable, and the divergence stays visible in an
 executable assert instead of silently absorbed.
 **Status:** Accepted (MS-5).
+
+---
+
+## D-028 — Solutions is one tabbed region; the cards and showcase are per-tab panel content
+
+**Context:** the 1440 artboard stacks tab bar (y=1836) → numbered intro block (1936–2306) →
+value-card row (2306–2756) → product showcase (2829–3530) → Tech Stack (3530); the 393 artboard
+stacks the same parts 1777 → 3780. Only the Data + AI tab is drawn — the file contains a block
+"01" and no "02"/"03" anywhere. MS-6 read that stack as four independent Sections and built the
+tab bar as scroll-spy anchor navigation over three stacked intro blocks, i.e. the "keep only 01
+and treat tabs as anchors" option that EXTRACTION.md open question 2 had already rejected and
+D-016 had already decided against ("real tab switcher"). The design owner confirmed the intended
+flow: selecting a tab reveals that tab's entire body — intro + cards + showcase — and switching
+tabs swaps all of it; the design is identical per tab, only the content differs.
+
+**Decision:**
+1. Solutions is a single tabbed Section. The sticky tab bar is a real content switcher
+   (WAI-ARIA tabs: `tablist`/`tab`/`tabpanel`, `aria-selected`, arrow-key roving focus).
+2. A tab's panel = numbered intro block (the number is the tab's index) + 3 value cards
+   (light→dark on individual hover, note 2:3) + product showcase. They swap together.
+3. Value Cards and Showcase stop being independent page Sections. The page's top-level Sections
+   become Navigation, Hero, Trusted By, We Are, **Solutions (tabbed)**, Tech Stack, Footer.
+4. `/api/value-cards` and `/api/showcase` fold into `/api/solutions`, which returns `tabs` plus
+   one `panels` entry per tab (amends D-007's endpoint list: the tabbed region is one Section,
+   so it is one endpoint — and one payload makes tab switching instant, with no per-panel
+   loading flash on a control the reviewer will click repeatedly).
+5. Cards and showcase content for the Custom Software and Tech Staffing panels is Authored
+   Content (D-016/D-023): flagged in the payload, listed in the README assumptions. Authored
+   panels have no exported product logo, so the showcase mark falls back to a typographic
+   wordmark of the product name.
+6. Milestones re-sliced against the corrected model — MS-6 rebuilt as contract + content +
+   tabbed shell + intro; MS-7 = the per-tab card row; MS-8 = the per-tab showcase; MS-9
+   unchanged and still closes the sticky-release coupling (note 1:277).
+
+**Why superior:** the artboard's own coordinates only reconcile with the switcher. Note 1:277
+scopes the sticky bar to "this section (until the Tech Stack section)", which parses only if the
+cards and showcase sit inside the Section — and they do, exactly filling 1836→3530. Under the
+stacked model every Section below Solutions shifts ~740px off its design y, which would have
+mis-mapped every remaining Fidelity Baseline; under the switcher the rendered page matches the
+artboard 1:1. The absent "02"/"03" nodes are evidence *for* the switcher (one intro block exists
+because only one is ever on screen), not evidence that 02/03 need inventing as siblings.
+
+**Trade-off accepted:** two endpoints disappear from MS-1's nine-endpoint design, and the whole
+tab payload loads up front rather than per Section. MS-6 shipped wrong and is corrected by a
+forward-fix PR rather than a revert (user call) — merge-commit-only history keeps both, and the
+wrong model never reaches the `feat → dev` human gate.
+
+**Status:** Accepted (MS-6 rebuild, 2026-07-20). Resolves EXTRACTION.md open question 2.
 
 ---
 

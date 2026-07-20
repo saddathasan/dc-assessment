@@ -26,6 +26,11 @@ One Section at a time, complete before the next: statics at both widths + **all*
 Section's interactions/animations/functionality + tests + Fidelity Gate. Watch it land on
 localhost (`pnpm dev` → http://localhost:5173).
 
+**Solutions is one tabbed Section (D-028), not three.** Its sticky tab bar switches a panel
+whose body is intro + value cards + showcase — desktop y 1836→3530, mobile 1777→3780, the exact
+span note 1:277 pins the bar to. The card row and the showcase are *layers of that panel*, so
+they keep their own milestones (a slice each, per D-025) but are not standalone Sections.
+
 | # | Slice | Milestone | Issue | Status |
 |---|-------|-----------|-------|--------|
 | — | Foundation | MS-0 | #1 | ✅ PR #9 |
@@ -34,11 +39,11 @@ localhost (`pnpm dev` → http://localhost:5173).
 | 2 | Hero (incl. video modal) | MS-3 | #4 | ✅ PR #22 |
 | 3 | Trusted By | MS-4 | #5 | ✅ PR #27 |
 | 4 | We Are | MS-5 | #6 | ✅ PR #29 |
-| 5 | Solutions (tabs + sticky) | MS-6 | #7 | ✅ PR #31 |
-| 6 | Value Cards (hover + carousel) | MS-7 | #8 | ⬜ |
-| 7 | Showcase (carousel) | MS-8 | #13 | ⬜ |
-| 8 | Tech Stack (marquee) | MS-9 | #14 | ⬜ |
-| 9 | Footer (gradient wordmark) | MS-10 | #15 | ⬜ |
+| 5 | **Solutions (tabbed region)** — shell: contract + switcher + intro | MS-6 | #7 | 🔁 rebuild (PR #31 shipped the wrong model, D-028) |
+| 5a | ↳ per-tab Value Cards (hover + carousel) | MS-7 | #8 | ⬜ |
+| 5b | ↳ per-tab Showcase (carousel) | MS-8 | #13 | ⬜ |
+| 6 | Tech Stack (marquee) — sticky releases here | MS-9 | #14 | ⬜ |
+| 7 | Footer (gradient wordmark) | MS-10 | #15 | ⬜ |
 | — | Page polish (a11y/perf/SEO/x-browser) | MS-11 | #16 | ⬜ |
 | — | Ship | MS-12 | #17 | ⬜ |
 
@@ -126,40 +131,59 @@ Goal: the measuring instrument alive, then the first Section lands complete.
 
 **AC:** gate green.
 
-## MS-6 — Solutions slice (~2.5h) · `ms/6-solutions` · Issue #7 — ✅ DONE (PR #31, 2026-07-20)
+## MS-6 — Solutions tabbed shell (~3h) · `ms/6-solutions` · Issue #7
+
+> **Superseded first attempt:** PR #31 (merged 2026-07-20) built the tab bar as scroll-spy
+> anchor navigation over three stacked intro blocks — the model D-016 and EXTRACTION.md open
+> question 2 had already rejected. **D-028** records the corrected model and this rebuild;
+> the fix lands as a forward-fix PR, not a revert (user call, merge-commit history stands).
 
 → skills: `superpowers:tdd`, `frontend-design`
 
-- [x] T6.1 **Tests first:** tab switching, scroll-spy, sticky pin
-- [x] T6.2 Tab Bar + Solution Blocks 01–03 wired to `/api/solutions`
-- [x] T6.3 Sticky within the Solutions→TechStack wrapper + IntersectionObserver scroll-spy
-      (note 1:277) — release-after-TechStack asserted provisionally, re-verified in MS-9
-- [x] T6.4 Mobile: overflow-scroll tab row
-- [x] T6.5 Fidelity Gate @1440 + @393
+- [ ] T6.1 **Contract:** `SolutionsContent` = `tabs` + one `panels` entry per tab (intro fields
+      + `cards` + `showcase`); retire `/api/value-cards` and `/api/showcase` into it; update
+      `data/index.ts`, `routes/content.ts`, `SectionPayloads`, api contract tests (D-028.4)
+- [ ] T6.2 **Content:** author the Custom Software and Tech Staffing panels' cards + showcase
+      (`authored: true`, README assumptions; wordmark fallback for the un-exported logos)
+- [ ] T6.3 **Tests first:** tab switch swaps the panel, ARIA tab semantics, keyboard roving
+      focus, sticky pin, default tab
+- [ ] T6.4 Sticky tab bar as a **real switcher** (`tablist`/`tab`/`tabpanel`, `aria-selected`,
+      arrow/Home/End) over one intro block bound to the active tab — delete the scroll-spy,
+      the stacked articles, and the click-priority pin
+- [ ] T6.5 Mobile: overflow-scroll tab row
+- [ ] T6.6 Fidelity Gate @1440 + @393 (tab-bar + intro band; Baselines from PR #31 stay valid —
+      page geometry now matches the artboard 1:1)
 
-**AC:** gate + tests green · tabs alive.
+**AC:** gate + tests green · tabs switch the panel · a11y tab pattern verified.
 
-## MS-7 — Value Cards slice (~1.5h) · `ms/7-value-cards` · Issue #8
+## MS-7 — Per-tab Value Cards (~1.5h) · `ms/7-value-cards` · Issue #8
+
+The card row *inside* the tab panel (design y 2306–2756 / mobile 2457–2851): it swaps with the
+tab and re-renders from `panels[active].cards`.
 
 → skills: `superpowers:tdd`, `frontend-design`
 
-- [ ] T7.1 **Tests first:** hover/focus flip, carousel swipe/dots
+- [ ] T7.1 **Tests first:** hover/focus flip, carousel swipe/dots, cards swap on tab change
 - [ ] T7.2 Desktop: hover flip per frame 2:36 (bg/heading/body reveal), `:focus-visible` parity
 - [ ] T7.3 Mobile: swipe carousel of permanently-dark cards, dots + animated arrow hint (D-015)
 - [ ] T7.4 Fidelity Gate @1440 + @393
 
-**AC:** gate + tests green.
+**AC:** gate + tests green · cards follow the active tab.
 
-## MS-8 — Showcase slice (~1.5h) · `ms/8-showcase` · Issue #13
+## MS-8 — Per-tab Showcase (~1.5h) · `ms/8-showcase` · Issue #13
+
+The showcase *inside* the tab panel (design y 2829–3530 / mobile 2880–3780), swapping with the
+tab from `panels[active].showcase`; closes the tab body — Tech Stack begins immediately after.
 
 → skills: `superpowers:tdd`, `frontend-design`
 
-- [ ] T8.1 **Tests first:** carousel nav + dots
+- [ ] T8.1 **Tests first:** carousel nav + dots, showcase swaps on tab change
 - [ ] T8.2 Green section, device carousel (scroll-snap), elongated-active dots
-      (verify exact section green vs the mobile-sampled token)
+      (verify exact section green vs the mobile-sampled token); wordmark fallback where an
+      authored panel has no logo asset (D-028.5)
 - [ ] T8.3 Fidelity Gate @1440 + @393
 
-**AC:** gate + tests green.
+**AC:** gate + tests green · showcase follows the active tab · tab body ends flush at Tech Stack.
 
 ## MS-9 — Tech Stack slice (~1.5h) · `ms/9-tech-stack` · Issue #14
 

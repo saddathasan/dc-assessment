@@ -37,9 +37,7 @@ Prod: one Cloudflare Worker — Express via `httpServerHandler`, SPA via static 
 | `/api/hero` | `HeroContent` | headline with accent-span markup, sub-copy, CTA, media, `video: {provider: 'youtube'\|'file', src}` (D-018) |
 | `/api/trusted-by` | `TrustedByContent` | heading (accent spans), 8 logo tiles (incl. designed duplicates) |
 | `/api/we-are` | `WeAreContent` | eyebrow, bold+regular statement runs |
-| `/api/solutions` | `SolutionsContent` | tabs ×3, Solution Blocks ×3 (01 extracted; 02/03 authored, D-016) |
-| `/api/value-cards` | `ValueCardsContent` | 3 cards: heading + hover body (mobile: carousel, D-015) |
-| `/api/showcase` | `ShowcaseContent` | logo, heading, copy, CTA, carousel slides + indicators |
+| `/api/solutions` | `SolutionsContent` | tabs ×3 + one panel per tab — intro (01 extracted; 02/03 authored, D-016), 3 cards with hover bodies, product showcase (D-028) |
 | `/api/tech-stack` | `TechStackContent` | heading block, 3 marquee rows × 6 logos with directions |
 | `/api/footer` | `FooterContent` | copyright (accent spans), legal + social links, wordmark flag |
 
@@ -75,8 +73,8 @@ Content JSON lives in `apps/api/src/data/*.json`, imported (never `fs`-read — 
 | Hamburger (authored) | full-screen deep-green overlay, staggered link reveal | focus trap, Esc, scroll lock |
 | Video modal | native `<dialog>.showModal()`, provider-switched content (D-018) | manual focus trap + iframe sentinel; Safari close via `transitionend` |
 | Tab Bar | `position: sticky` within Solutions→Tech Stack range wrapper; IntersectionObserver scroll-spy | tabs are buttons, arrow-key navigation, `aria-selected` |
-| Value Cards | `group-hover` bg/heading flip + grid-rows body reveal; mobile: scroll-snap carousel, dots + animated arrow hint | cards keyboard-focusable (`:focus-visible` = hover state); carousel swipe + button nav |
-| Showcase carousel | scroll-snap slides, dot indicators (elongated active) | buttons + `aria-label` per slide |
+| Value Cards (in panel) | `group-hover` bg/heading flip + grid-rows body reveal; mobile: scroll-snap carousel, dots + animated arrow hint | cards keyboard-focusable (`:focus-visible` = hover state); carousel swipe + button nav |
+| Showcase carousel (in panel) | scroll-snap slides, dot indicators (elongated active) | buttons + `aria-label` per slide |
 | Marquee | duplicated track, `translateX(0→-50%)` linear infinite; rows alternate `animation-direction`; pause on hover/focus | `prefers-reduced-motion` → static; visible pause control (WCAG 2.2.2) |
 
 Motion scale (proposed default, open Q3): 200ms/300ms ease-out interactions; marquee 30s linear;
@@ -134,7 +132,7 @@ system table, color-contrast check (#33F987-on-dark passes; verify small-text ca
 
 Re-cut per D-025 into full Section slices in viewport order: MS-0 Foundation → MS-1 Content API →
 MS-2 Navigation (+ fidelity harness) → MS-3 Hero → MS-4 Trusted By → MS-5 We Are → MS-6 Solutions
-→ MS-7 Value Cards → MS-8 Showcase → MS-9 Tech Stack → MS-10 Footer → MS-11 Page polish → MS-12
+→ MS-7 per-tab Value Cards → MS-8 per-tab Showcase → MS-9 Tech Stack → MS-10 Footer → MS-11 Page polish → MS-12
 Ship. Each slice = statics + all of the Section's interactions/animations + tests + Fidelity Gate,
 complete before the next Section. Full acceptance criteria + task lists + Section tracker:
 [[plans/metatech-landing.md]]. Execution: D-020 GitHub issues + D-022 topology (`ms/N` →

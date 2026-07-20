@@ -57,6 +57,13 @@ Completeness proofs: 489/489 nodes in JSON · 29/29 node-referenced images on di
 
 ## Section inventory (desktop order; mobile = same order, single column)
 
+> **Reading note (added 2026-07-20, D-028):** this list enumerates the artboard's *vertical
+> stack*, not the page's Sections. Items 5–7 (sticky tabs + "01" block, value cards, AmiCredible
+> showcase) are one tabbed Section: the tab bar switches a panel whose body is all three, which
+> is why note 1:277 scopes the sticky bar to "this section (until the Tech Stack section)" and
+> why only "01" is drawn. MS-6 initially misread items 5/6/7 as three independent Sections —
+> see D-028 before building against this inventory.
+
 1. **Nav** — floating rounded bar; logo (vector, geometry captured) + Solutions/Showcase/Contact + "Book a meeting". Mobile: pill nav + hamburger only (no open state designed).
 2. **Hero** — dark green; 72px headline with per-character green spans (captured as style overrides: green `#33F987` vs white); sub-copy + "Book for Demo"; photo block (1400×571, notch cutout holding circular play button → video modal, popup design is ours) + translucent METATECH watermark. Mobile: play button sits above photo.
 3. **Trusted-by** — 2×4 logo grid (Databricks, GCloud, UiPath, Alteryx, Alteryx, Figma, AWS, GCloud — duplicates ARE in the design). Mobile: 2 cols × 4 rows.
@@ -88,7 +95,7 @@ Completeness proofs: 489/489 nodes in JSON · 29/29 node-referenced images on di
 ## Open questions → resolve in /plan (each becomes a recorded decision)
 
 1. Mobile value cards: stack all 3, or carousel, or faithfully show only card 1?
-2. Tabs "Custom Software"/"Tech Staffing": no designed content (no 02/03) — swap content with placeholder copy, or keep only 01 and treat tabs as anchors?
+2. ~~Tabs "Custom Software"/"Tech Staffing": no designed content (no 02/03) — swap content with placeholder copy, or keep only 01 and treat tabs as anchors?~~ **Resolved by D-016 + D-028:** real tab switcher; each tab swaps a whole panel (intro + cards + showcase), with the two undesigned panels' content authored. "No 02/03 anywhere" is evidence *for* the switcher — only one panel is ever on screen.
 3. Hamburger menu open state: undes igned — invent (record as assumption).
 4. Marquee axis (horizontal strips vs note's "vertically") + speeds; reduced-motion fallback.
 5. Mega-menu behavior details: trigger/dismiss timing, mobile equivalent (none designed), keyboard/touch a11y.
