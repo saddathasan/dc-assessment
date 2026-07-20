@@ -76,8 +76,13 @@ function FooterBar({ content }: { content: FooterContent }) {
           not, and the error then accumulates rightward. Each group is hug-width
           and left-anchored in the design (x=88/625/1032), so pinning the column
           starts at 0/537/944 of the 1264 row puts every group's first glyph
-          where the artboard draws it, whatever the text measures. */}
-      <div className="grid grid-cols-[537px_407px_1fr] items-center">
+          where the artboard draws it, whatever the text measures.
+          The ratios are fr rather than px so the row survives the 1024..1440
+          band, which the artboards do not cover: 537:407:320 resolves to
+          exactly those px at 1440 and shrinks proportionally below it. Fixed
+          px columns kept the artboard's x but ran the socials off a 1280
+          laptop, where overflow-x-clip hid the damage instead of showing it. */}
+      <div className="grid grid-cols-[minmax(0,537fr)_minmax(0,407fr)_minmax(0,320fr)] items-center">
         <Copyright spans={content.copyright} testId="footer-copyright-desktop" />
         {/* 28 between the legal pair (1:256 ends 705, 1:255 starts 733) and 30
             between the socials (1:257 itemSpacing). */}

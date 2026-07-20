@@ -131,11 +131,13 @@ test.describe('Footer @1440', () => {
       width: 1440,
       height: 227,
     })
-    // Figma's stops run #161616 at the box bottom to transparent 12.8% down from
-    // its top: 0.872 x 227 = 197.94px of upward travel, in the band's own hue.
+    // The scrim leans. Denormalising 1:264's handles out of Figma's unit square
+    // needs the box aspect, so the horizontal term carries W/H = 6.34 and the
+    // axis is (6.40,−198.0), not the vertical the raw numbers suggest. Read
+    // flat, the mark's left edge diffs against the render by ~0.2 alpha.
     await expect(scrim(page)).toHaveCSS(
       'background-image',
-      'linear-gradient(to top, rgb(22, 22, 22) 0px, rgba(22, 22, 22, 0) 197.94px)',
+      'linear-gradient(181.85deg, rgba(22, 22, 22, 0) 50.45px, rgb(22, 22, 22) 248.56px)',
     )
   })
 })

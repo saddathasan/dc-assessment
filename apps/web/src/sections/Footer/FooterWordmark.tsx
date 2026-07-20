@@ -26,26 +26,43 @@ export function FooterWordmark() {
     <div data-testid="footer-wordmark" aria-hidden className="relative mx-auto w-full max-w-[1440px]">
       {/* Mobile pins the mark to the left edge at its drawn 391 of a 393 frame;
           desktop centres its 1432 in the 1440 band, leaving the design's 4px
-          side bearings. Height follows the viewBox, landing 62 / 227 exactly. */}
+          side bearings. Height follows the viewBox, landing 62 / 227 exactly.
+          Both widths are the artboard's ratio rather than its px — 391/393 and
+          1432/1440 — so the mark still measures 391 and 1432 at the gate's two
+          widths but scales instead of overrunning the band between and below
+          them, where overflow-x-clip would silently crop it.
+          The trailing 5 on the desktop ratio is deliberate. Chromium floors
+          used widths to 1/64px, so a truncated 99.4444% resolves to 1431.98 and
+          drags the band off 358; rounding the ratio up lands it back on 1432. */}
       <svg
         viewBox="0 0 1432 227"
         role="presentation"
         focusable="false"
-        className="block h-auto w-[391px] lg:mx-auto lg:w-[1432px]"
+        className="block h-auto w-[99.4911%] lg:mx-auto lg:w-[99.4445%]"
       >
         <path className="fill-accent" d={META} />
         <path className="fill-white" d={TECH} />
       </svg>
       {/* Node 1:264, desktop only — the mobile artboard draws no scrim, which is
-          why its mark stays crisp. Figma's stops run #161616 at the box bottom
-          to transparent 12.8% down from its top, i.e. 0.872 x 227 = 197.94px of
-          travel upward. The transparent stop is written in the band's own hue
-          rather than Figma's literal rgba(0,0,0,0): Figma interpolates
-          premultiplied, CSS does not, so a black zero-alpha stop would drag the
-          midtones grey across the white half of the mark. */}
+          why its mark stays crisp.
+          The scrim is TILTED, which is why it is an angle rather than `to top`.
+          Its handles run (0.534,1.0) → (0.535,0.128): read naively as
+          (Δx·W, Δy·H) that is a 1px lean over 198px, i.e. vertical. It is not.
+          Denormalising a direction out of Figma's unit square needs the box
+          aspect, so the horizontal term carries an extra W/H = 6.34: the real
+          axis is (6.40, −198.0). The lean is small but the mark is 1432 wide,
+          so alpha swings ~0.2 across it — the render's left edge sits at 0.47
+          where its right is at 0.27, and a vertical scrim cannot reproduce that.
+          Stops are measured along the rotated gradient line: clear at 50.45,
+          opaque at 248.56, 198.1 apart, so the mark's foot keeps ~9% of the
+          band rather than dissolving completely.
+          The clear stop is written in the band's own hue rather than Figma's
+          literal rgba(0,0,0,0): Figma interpolates premultiplied and CSS does
+          not, so a black zero-alpha stop drags the midtones grey across the
+          white half of the mark. */}
       <div
         data-testid="footer-wordmark-scrim"
-        className="absolute inset-0 hidden bg-[linear-gradient(to_top,#161616_0px,rgba(22,22,22,0)_197.94px)] lg:block"
+        className="absolute inset-0 hidden bg-[linear-gradient(181.85deg,rgba(22,22,22,0)_50.45px,#161616_248.56px)] lg:block"
       />
     </div>
   )
