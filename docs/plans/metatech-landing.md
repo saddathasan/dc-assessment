@@ -40,7 +40,7 @@ they keep their own milestones (a slice each, per D-025) but are not standalone 
 | 3 | Trusted By | MS-4 | #5 | ✅ PR #27 |
 | 4 | We Are | MS-5 | #6 | ✅ PR #29 |
 | 5 | **Solutions (tabbed region)** — shell: contract + switcher + intro | MS-6 | #7 | ✅ PR #33 (rebuild; PR #31 shipped the wrong model, D-028) |
-| 5a | ↳ per-tab Value Cards (hover + carousel) | MS-7 | #8 | ✅ PR #35 |
+| 5a | ↳ per-tab Value Cards (hover + carousel) | MS-7 | #8 | ✅ PR #35 (+ #39 flip fix) |
 | 5b | ↳ per-tab Showcase (carousel) | MS-8 | #13 | ✅ PR #37 |
 | 6 | Tech Stack (marquee) — sticky releases here | MS-9 | #14 | ⬜ |
 | 7 | Footer (gradient wordmark) | MS-10 | #15 | ⬜ |

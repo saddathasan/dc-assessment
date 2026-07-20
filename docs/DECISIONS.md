@@ -146,6 +146,15 @@ Motion's ~5–15kb (lazy) buys nothing here — a measured case showed removing 
 affordance (WCAG 2.2.2); hover interactions gated by `@media (hover: hover)` with tap-first
 fallbacks; manual focus trap in the dialog (spec deliberately doesn't trap; YouTube iframe needs a
 sentinel); Safari dialog-close transition workaround (`transitionend` → `.close()`).
+**Mechanisms revised in build (the CSS-only ruling stands, two of its examples do not):**
+- *Sticky tabs* — no IntersectionObserver scroll-spy. The tab bar is a content switcher, not
+  anchor navigation ([[#D-028]]); it is `position: sticky` plus WAI-ARIA tabs with roving focus.
+- *Card hover* — no grid-rows text reveal. `text-align` and `justify-content` do not animate, so
+  mutating them snapped the heading into its dark-state position on the first frame while the
+  colours eased (measured: alignment flipped at t=30ms with the background still near white).
+  The two states are now separately-laid-out layers that cross-fade on opacity, matching the
+  mega-menu tiles' reveal, staggered so the heading is never legible in two places at once.
+
 **Status:** Accepted.
 
 ## D-011 — Deployment: Cloudflare (custom domain) first, Vercel as fallback
