@@ -43,7 +43,7 @@ they keep their own milestones (a slice each, per D-025) but are not standalone 
 | 5a | ↳ per-tab Value Cards (hover + carousel) | MS-7 | #8 | ✅ PR #35 (+ #39 flip fix) |
 | 5b | ↳ per-tab Showcase (carousel) | MS-8 | #13 | ✅ PR #37 |
 | 6 | Tech Stack (marquee) — sticky releases here | MS-9 | #14 | ✅ PR #41 |
-| 7 | Footer (gradient wordmark) | MS-10 | #15 | ⬜ |
+| 7 | Footer (two-colour VECTOR mark + tilted scrim, D-031) | MS-10 | #15 | ✅ PR #43 |
 | — | Page polish (a11y/perf/SEO/x-browser) | MS-11 | #16 | ⬜ |
 | — | Ship | MS-12 | #17 | ⬜ |
 
@@ -205,16 +205,30 @@ tab from `panels[active].showcase`; closes the tab body — Tech Stack begins im
 - [x] T9.4 Fidelity Gate @1440 + @393
 
 **AC:** gate + tests green ×3 stable runs · WCAG 2.2.2 pause verified · sticky release exact.
-**Carries into MS-10:** the bar only *fully* leaves the viewport once the Footer lengthens the
-page — today ~49px stays on screen at max scroll (desktop), and mobile's release is not
-reachable at all (710px tail vs 852px viewport).
+**Carried into MS-10 and closed there:** the bar now fully leaves the viewport (desktop max
+scroll 3838 against a Section ending at 3529, clearing by 309px), and mobile's release is
+reachable (4063 against 3683). Both assertions were verified load-bearing by removing the
+Footer — `solutions.spec.ts` fails on exactly the 49px it used to record.
 
-## MS-10 — Footer slice (~0.5h) · `ms/10-footer` · Issue #15
+## MS-10 — Footer slice · `ms/10-footer` · Issue #15 — ✅ DONE (PR #43)
 
-- [ ] T10.1 Copyright accent spans, legal + socials, gradient wordmark bleeding off bottom
-- [ ] T10.2 Fidelity Gate @1440 + @393
+- [x] T10.0 Footer link order from the artboards + `socialLinksMobile` (D-030, unplanned:
+      the shipped payload carried Figma's child order, which is reversed from the drawn one)
+- [x] T10.1 Copyright accent spans, legal + socials, and the METATECH mark — a two-colour
+      VECTOR under a desktop-only tilted scrim, neither gradient type nor bleeding (D-031)
+- [x] T10.2 Fidelity Gate @1440 + @393
+- [x] T10.3 Resolve MS-9's two conditional sticky-release claims
 
-**AC:** gate green · **page complete top-to-bottom.**
+**AC:** gate green ✅ 83/83 stable ×3 · **page complete top-to-bottom** ✅ 4738 desktop /
+4915 mobile, flush under Tech Stack at both widths. Independent render-diff desktop 0.72%
+(mark region 0.07%), mobile 1.74%; web 56/56, api 22/22; typecheck/lint/build clean.
+
+**Carries into MS-11:** `--container-page: 1400px` is dead and misleading — every Section uses
+the literal `max-w-[1440px]`, so a Section trusting the token would sit 40px narrow. The repo
+has no focus-visible treatment anywhere (the Footer relies on the UA ring rather than
+introducing a one-off convention in a slice). Root `pnpm lint` intermittently OOMs;
+`--workspace-concurrency=1` is clean. The artboards specify only 1440 and 393 — the Footer is
+now proportional through 1024..1440, but that band has no design truth anywhere on the page.
 
 ## MS-11 — Page polish (~2.5h) · `ms/11-polish` · Issue #16
 
