@@ -33,7 +33,7 @@ localhost (`pnpm dev` → http://localhost:5173).
 | 1 | Navigation (+ fidelity harness) | MS-2 | #3 | ✅ PR #20 |
 | 2 | Hero (incl. video modal) | MS-3 | #4 | ✅ PR #22 |
 | 3 | Trusted By | MS-4 | #5 | ✅ PR #27 |
-| 4 | We Are | MS-5 | #6 | ⬜ |
+| 4 | We Are | MS-5 | #6 | ✅ PR #29 |
 | 5 | Solutions (tabs + sticky) | MS-6 | #7 | ⬜ |
 | 6 | Value Cards (hover + carousel) | MS-7 | #8 | ⬜ |
 | 7 | Showcase (carousel) | MS-8 | #13 | ⬜ |
@@ -119,10 +119,10 @@ Goal: the measuring instrument alive, then the first Section lands complete.
 
 **AC:** gate green.
 
-## MS-5 — We Are slice (~0.5h) · `ms/5-we-are` · Issue #6
+## MS-5 — We Are slice (~0.5h) · `ms/5-we-are` · Issue #6 — ✅ DONE (PR #29, 2026-07-20)
 
-- [ ] T5.1 Statement with bold→regular runs from `/api/we-are`
-- [ ] T5.2 Fidelity Gate @1440 + @393
+- [x] T5.1 Statement with bold→regular runs from `/api/we-are`
+- [x] T5.2 Fidelity Gate @1440 + @393
 
 **AC:** gate green.
 
