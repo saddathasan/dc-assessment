@@ -39,7 +39,7 @@ they keep their own milestones (a slice each, per D-025) but are not standalone 
 | 2 | Hero (incl. video modal) | MS-3 | #4 | ✅ PR #22 |
 | 3 | Trusted By | MS-4 | #5 | ✅ PR #27 |
 | 4 | We Are | MS-5 | #6 | ✅ PR #29 |
-| 5 | **Solutions (tabbed region)** — shell: contract + switcher + intro | MS-6 | #7 | 🔁 rebuild (PR #31 shipped the wrong model, D-028) |
+| 5 | **Solutions (tabbed region)** — shell: contract + switcher + intro | MS-6 | #7 | ✅ PR #33 (rebuild; PR #31 shipped the wrong model, D-028) |
 | 5a | ↳ per-tab Value Cards (hover + carousel) | MS-7 | #8 | ⬜ |
 | 5b | ↳ per-tab Showcase (carousel) | MS-8 | #13 | ⬜ |
 | 6 | Tech Stack (marquee) — sticky releases here | MS-9 | #14 | ⬜ |
@@ -131,7 +131,7 @@ Goal: the measuring instrument alive, then the first Section lands complete.
 
 **AC:** gate green.
 
-## MS-6 — Solutions tabbed shell (~3h) · `ms/6-solutions` · Issue #7
+## MS-6 — Solutions tabbed shell (~3h) · `ms/6-solutions-tabbed` · Issue #7 — ✅ DONE (PR #33, 2026-07-20)
 
 > **Superseded first attempt:** PR #31 (merged 2026-07-20) built the tab bar as scroll-spy
 > anchor navigation over three stacked intro blocks — the model D-016 and EXTRACTION.md open
@@ -140,18 +140,18 @@ Goal: the measuring instrument alive, then the first Section lands complete.
 
 → skills: `superpowers:tdd`, `frontend-design`
 
-- [ ] T6.1 **Contract:** `SolutionsContent` = `tabs` + one `panels` entry per tab (intro fields
+- [x] T6.1 **Contract:** `SolutionsContent` = `tabs` + one `panels` entry per tab (intro fields
       + `cards` + `showcase`); retire `/api/value-cards` and `/api/showcase` into it; update
       `data/index.ts`, `routes/content.ts`, `SectionPayloads`, api contract tests (D-028.4)
-- [ ] T6.2 **Content:** author the Custom Software and Tech Staffing panels' cards + showcase
+- [x] T6.2 **Content:** author the Custom Software and Tech Staffing panels' cards + showcase
       (`authored: true`, README assumptions; wordmark fallback for the un-exported logos)
-- [ ] T6.3 **Tests first:** tab switch swaps the panel, ARIA tab semantics, keyboard roving
+- [x] T6.3 **Tests first:** tab switch swaps the panel, ARIA tab semantics, keyboard roving
       focus, sticky pin, default tab
-- [ ] T6.4 Sticky tab bar as a **real switcher** (`tablist`/`tab`/`tabpanel`, `aria-selected`,
+- [x] T6.4 Sticky tab bar as a **real switcher** (`tablist`/`tab`/`tabpanel`, `aria-selected`,
       arrow/Home/End) over one intro block bound to the active tab — delete the scroll-spy,
       the stacked articles, and the click-priority pin
-- [ ] T6.5 Mobile: overflow-scroll tab row
-- [ ] T6.6 Fidelity Gate @1440 + @393 (tab-bar + intro band; Baselines from PR #31 stay valid —
+- [x] T6.5 Mobile: overflow-scroll tab row
+- [x] T6.6 Fidelity Gate @1440 + @393 (tab-bar + intro band; Baselines from PR #31 stay valid —
       page geometry now matches the artboard 1:1)
 
 **AC:** gate + tests green · tabs switch the panel · a11y tab pattern verified.
