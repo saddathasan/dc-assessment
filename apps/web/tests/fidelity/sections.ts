@@ -139,4 +139,24 @@ export const targets: FidelityTarget[] = [
     crop: { x: 0, y: 1777, width: 393, height: 680 },
     clip: { x: 0, y: 1720, width: 393, height: 680 },
   },
+  // Solutions value cards — desktop: the row inside the tab panel (node 1:132,
+  // y=2306, flush under the intro block's 1936+370). Light/resting state; the
+  // hover flip has its own frame (2:36) and no artboard Baseline, so the numeric
+  // layer carries it.
+  {
+    id: 'solution-cards-desktop',
+    source: '1-34.png',
+    crop: { x: 0, y: 2306, width: 1440, height: 450 },
+    clip: { x: 0, y: 2306, width: 1440, height: 450 },
+  },
+  // Solutions value cards — mobile: block 1:380 at y=2457 (flush under the intro
+  // block's 1857+600). The artboard draws ONE already-dark card; ours is the
+  // first slide of the D-015 carousel, so the Baseline diffs the resting frame.
+  // Page clip y = render − 57 (the excluded status bar).
+  {
+    id: 'solution-cards-mobile',
+    source: '1-279.png',
+    crop: { x: 0, y: 2457, width: 393, height: 394 },
+    clip: { x: 0, y: 2400, width: 393, height: 394 },
+  },
 ]

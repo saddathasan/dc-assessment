@@ -64,8 +64,14 @@ const tab = (page: Page, name: string) => page.getByRole('tab', { name })
 const panel = (page: Page) => page.getByRole('tabpanel')
 const numeralBox = (page: Page) => panel(page).locator('div[aria-hidden]')
 const heading = (page: Page) => panel(page).getByRole('heading', { level: 2 })
-const body = (page: Page) => panel(page).locator('p')
+// Scoped to the intro block: the card row adds its own paragraphs to the panel.
+const body = (page: Page) => panel(page).locator('> div p')
 const cta = (page: Page) => panel(page).getByRole('link', { name: 'Book a consultation' })
+
+const cardRow = (page: Page) => panel(page).locator('ul')
+const cards = (page: Page) => cardRow(page).locator('li')
+const cardTitle = (page: Page, i: number) => cards(page).nth(i).getByRole('heading', { level: 3 })
+const cardBody = (page: Page, i: number) => cards(page).nth(i).locator('p')
 
 const BAR_SELECTOR = '[data-testid="solutions-tab-bar"]'
 
@@ -131,9 +137,9 @@ test.describe('Solutions @1440', () => {
 
   test('the panel intro is design-exact', async ({ page }) => {
     // Panel body starts flush under the 100px band: the design's intro block
-    // 1:120 occupies 1936..2306, and with one panel on screen the page matches
-    // the artboard 1:1 (D-028) — the value-card row will begin at 2306 in MS-7.
-    expect(await panel(page).boundingBox()).toMatchObject({ y: 1936, height: 370 })
+    // 1:120 occupies 1936..2306 and the card row 2306..2756, so the panel spans
+    // 820 — with one panel on screen the page matches the artboard 1:1 (D-028).
+    expect(await panel(page).boundingBox()).toMatchObject({ y: 1936, height: 820 })
 
     // Numeral: the 147.2x116.79 flattened vector box at (20,2022) (node 1:124);
     // the box is fixed so the copy column holds x=487.2 whatever Chromium's
@@ -252,6 +258,85 @@ test.describe('Solutions @1440', () => {
     expect(barRect.top).toBeLessThan(0)
   })
 
+  test('value cards match the Baseline and the light-state design', async ({ page }) => {
+    await expectBaseline(page, 'solution-cards-desktop')
+
+    // Row 1:132/1:133: 1440x450 flush under the intro block's 1936+370, three
+    // 457x450 cards, 16 gutter, centered — the 18.5 inset is that centering.
+    expect(await cardRow(page).boundingBox()).toMatchObject({ y: 2306, height: 450 })
+    for (const [i, x] of [18.5, 491.5, 964.5].entries()) {
+      expectBoxNear(await cards(page).nth(i).boundingBox(), { x, y: 2306, width: 457, height: 450 })
+    }
+
+    // Card shell: white, r15, and the 1px #E3E3E3 edge drawn as an INSET ring —
+    // a real border would eat the padding and shift every child 1px.
+    const card = cards(page).first()
+    await expect(card).toHaveCSS('background-color', 'rgb(255, 255, 255)')
+    await expect(card).toHaveCSS('border-radius', '15px')
+    await expect(card).toHaveCSS('box-shadow', /rgb\(227, 227, 227\) 0px 0px 0px 1px inset/)
+
+    // Titles 1:136/1:139/1:142: centered ink Bricolage 800 32, ls -1.6, and the
+    // content column is the full 397 (padding 30 either side of 457).
+    for (const i of [0, 1, 2]) {
+      const title = cardTitle(page, i)
+      expectBoxNear(await title.boundingBox(), { x: [48.5, 521.5, 994.5][i], width: 397 })
+      await expect(title).toHaveCSS('font-family', /Bricolage/)
+      await expect(title).toHaveCSS('font-size', '32px')
+      await expect(title).toHaveCSS('font-weight', '800')
+      await expect(title).toHaveCSS('letter-spacing', '-1.6px')
+      await expect(title).toHaveCSS('text-align', 'center')
+      await expect(title).toHaveCSS('color', 'rgb(22, 22, 22)')
+    }
+    // The two wrapping titles sit exactly where the design puts them; line-height
+    // is held at the design's 42 through the flip rather than dropping to the
+    // dark state's 36, so the heading never reflows mid-animation.
+    expectBoxNear(await cardTitle(page, 1).boundingBox(), { y: 2489, height: 84 })
+    expectBoxNear(await cardTitle(page, 2).boundingBox(), { y: 2489, height: 84 })
+
+    // Body copy is in the DOM but collapsed at rest (note 2:3 reveals it).
+    await expect(cardBody(page, 0)).toHaveCSS('opacity', '0')
+  })
+
+  test('a card flips light to dark on hover, revealing its body (note 2:3)', async ({ page }) => {
+    const card = cards(page).first()
+    await card.hover()
+
+    // Frame 2:36: bg #032019, title accent green and left-aligned, body white.
+    await expect(card).toHaveCSS('background-color', 'rgb(3, 32, 25)')
+    await expect(cardTitle(page, 0)).toHaveCSS('color', 'rgb(51, 249, 135)')
+    await expect(cardTitle(page, 0)).toHaveCSS('text-align', 'left')
+    const body = cardBody(page, 0)
+    await expect(body).toHaveCSS('opacity', '1')
+    await expect(body).toHaveCSS('color', 'rgb(255, 255, 255)')
+    await expect(body).toHaveCSS('font-family', /Manrope/)
+    await expect(body).toHaveCSS('font-size', '18px')
+    await expect(body).toHaveCSS('line-height', '24px')
+    await expect(body).toHaveCSS('font-weight', '500')
+
+    // Scoped to the hovered card only — "each card individually".
+    await expect(cards(page).nth(1)).toHaveCSS('background-color', 'rgb(255, 255, 255)')
+    await expect(cardBody(page, 1)).toHaveCSS('opacity', '0')
+
+    // The stroke survives the flip (render-verified on the dark cards).
+    await expect(card).toHaveCSS('box-shadow', /rgb\(227, 227, 227\) 0px 0px 0px 1px inset/)
+  })
+
+  test('keyboard focus mirrors the hover reveal (D-010 parity)', async ({ page }) => {
+    await cards(page).first().focus()
+    await expect(cards(page).first()).toHaveCSS('background-color', 'rgb(3, 32, 25)')
+    await expect(cardBody(page, 0)).toHaveCSS('opacity', '1')
+  })
+
+  test('the card row swaps with the tab', async ({ page }) => {
+    await tab(page, 'Tech Staffing').click()
+    await page.evaluate(() => window.scrollTo(0, 0))
+
+    await expect(cardTitle(page, 0)).toHaveText('Engineers Screen Engineers')
+    // Authored copy must land in the same design boxes as the extracted set.
+    expect(await cardRow(page).boundingBox()).toMatchObject({ y: 2306, height: 450 })
+    expectBoxNear(await cards(page).nth(0).boundingBox(), { x: 18.5, y: 2306, width: 457, height: 450 })
+  })
+
   test('band stays capped and coherent on wide viewports', async ({ page }) => {
     // No Baseline exists beyond the design's 1440 artboard, but the content
     // caps at 1440 and centers while the gray canvas bleeds full-width (the
@@ -310,7 +395,8 @@ test.describe('Solutions @393', () => {
   test('the panel intro is design-exact', async ({ page }) => {
     // Content column 1:373: 342 centered in the 600 frame (25.5 margins),
     // uniform 20 rhythm: numeral 120 / heading 36 / body 168 / CTA 40.
-    expect(await panel(page).boundingBox()).toMatchObject({ y: 1800, height: 600 })
+    // Panel = intro block 600 (1:371) + card block 394 (1:380).
+    expect(await panel(page).boundingBox()).toMatchObject({ y: 1800, height: 994 })
 
     // Both numerals live in the DOM (the desktop one is lg-gated), so the
     // mobile assert must pick the visible node, not the first match.
@@ -361,6 +447,43 @@ test.describe('Solutions @393', () => {
     await extendPageTail(page)
     await page.evaluate(() => window.scrollTo(0, 2000))
     expect((await viewportRect(page, BAR_SELECTOR)).top).toBe(0)
+  })
+
+  test('value cards match the Baseline and rest in the dark state', async ({ page }) => {
+    await expectBaseline(page, 'solution-cards-mobile')
+
+    // Block 1:380 at render 2457 → page 2400 (−57 status bar); the designed card
+    // 1:381 is 353x350 inset 20, and mobile has no hover so it rests dark (D-015).
+    const card = cards(page).first()
+    expect(await card.boundingBox()).toEqual({ x: 20, y: 2422, width: 353, height: 350 })
+    await expect(card).toHaveCSS('background-color', 'rgb(3, 32, 25)')
+    await expect(card).toHaveCSS('border-radius', '15px')
+    await expect(card).toHaveCSS('box-shadow', /rgb\(227, 227, 227\) 0px 0px 0px 1px inset/)
+
+    const title = cardTitle(page, 0)
+    expect(await title.boundingBox()).toMatchObject({ x: 43, y: 2445, height: 30 })
+    await expect(title).toHaveCSS('color', 'rgb(51, 249, 135)')
+    await expect(title).toHaveCSS('font-size', '24px')
+    await expect(title).toHaveCSS('line-height', '30px')
+
+    // Body 1:384: 322 wide — it deliberately overruns the card's 23px right
+    // padding — and rests 23 from the bottom, not the frame's declared 28.
+    const body = cardBody(page, 0)
+    expect(await body.boundingBox()).toEqual({ x: 43, y: 2605, width: 322, height: 144 })
+    await expect(body).toHaveCSS('color', 'rgb(255, 255, 255)')
+    await expect(body).toHaveCSS('font-size', '18px')
+    await expect(body).toHaveCSS('line-height', '24px')
+    await expect(body).toHaveCSS('opacity', '1')
+  })
+
+  test('all three cards ride a swipe carousel (D-015)', async ({ page }) => {
+    // The artboard draws one card; D-015 keeps all three on mobile as a
+    // scroll-snap carousel rather than dropping two value propositions.
+    await expect(cards(page)).toHaveCount(3)
+    const row = cardRow(page)
+    expect(await row.evaluate((el) => el.scrollWidth - el.clientWidth)).toBeGreaterThan(0)
+    await expect(row).toHaveCSS('scroll-snap-type', 'x mandatory')
+    await expect(cards(page).first()).toHaveCSS('scroll-snap-align', 'center')
   })
 
   test('band stays fluid and coherent across phone and tablet widths', async ({ page }) => {
