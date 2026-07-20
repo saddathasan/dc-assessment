@@ -34,7 +34,7 @@ localhost (`pnpm dev` → http://localhost:5173).
 | 2 | Hero (incl. video modal) | MS-3 | #4 | ✅ PR #22 |
 | 3 | Trusted By | MS-4 | #5 | ✅ PR #27 |
 | 4 | We Are | MS-5 | #6 | ✅ PR #29 |
-| 5 | Solutions (tabs + sticky) | MS-6 | #7 | ⬜ |
+| 5 | Solutions (tabs + sticky) | MS-6 | #7 | ✅ PR #31 |
 | 6 | Value Cards (hover + carousel) | MS-7 | #8 | ⬜ |
 | 7 | Showcase (carousel) | MS-8 | #13 | ⬜ |
 | 8 | Tech Stack (marquee) | MS-9 | #14 | ⬜ |
@@ -126,16 +126,16 @@ Goal: the measuring instrument alive, then the first Section lands complete.
 
 **AC:** gate green.
 
-## MS-6 — Solutions slice (~2.5h) · `ms/6-solutions` · Issue #7
+## MS-6 — Solutions slice (~2.5h) · `ms/6-solutions` · Issue #7 — ✅ DONE (PR #31, 2026-07-20)
 
 → skills: `superpowers:tdd`, `frontend-design`
 
-- [ ] T6.1 **Tests first:** tab switching, scroll-spy, sticky pin
-- [ ] T6.2 Tab Bar + Solution Blocks 01–03 wired to `/api/solutions`
-- [ ] T6.3 Sticky within the Solutions→TechStack wrapper + IntersectionObserver scroll-spy
+- [x] T6.1 **Tests first:** tab switching, scroll-spy, sticky pin
+- [x] T6.2 Tab Bar + Solution Blocks 01–03 wired to `/api/solutions`
+- [x] T6.3 Sticky within the Solutions→TechStack wrapper + IntersectionObserver scroll-spy
       (note 1:277) — release-after-TechStack asserted provisionally, re-verified in MS-9
-- [ ] T6.4 Mobile: overflow-scroll tab row
-- [ ] T6.5 Fidelity Gate @1440 + @393
+- [x] T6.4 Mobile: overflow-scroll tab row
+- [x] T6.5 Fidelity Gate @1440 + @393
 
 **AC:** gate + tests green · tabs alive.
 
