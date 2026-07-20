@@ -40,7 +40,9 @@ function WeAreLayout({ content }: { content: WeAreContent }) {
         {/* One text node in the design, weight-split by characterStyleOverrides
             (w800 run then w400, nodes 1:104/1:361) — here data-driven spans on a
             regular-weight base. 680px fixed at lg (layoutSizingHorizontal FIXED),
-            fluid below. */}
+            fluid below. Chromium wraps desktop line 1 one word past the Figma
+            render's break — a cross-engine advance divergence with <2px of
+            slack, accepted and pinned per D-027. */}
         <p className="font-display text-[21px]/[27px] font-normal tracking-[-0.63px] text-black lg:w-[680px] lg:shrink-0 lg:text-[32px]/[39px] lg:tracking-[-0.96px]">
           {content.statement.map((span, index) => (
             // Spans have no identity beyond position, so the index is the honest key.

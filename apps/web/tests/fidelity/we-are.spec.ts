@@ -76,14 +76,25 @@ test.describe('We Are @1440', () => {
 
     // The weight runs: w800 through "pillars: ", w400 from "AI powered"
     // (styleOverrideTable 13/12 — override 12 swaps to BricolageGrotesque-Regular).
-    await expect(p.locator('span').filter({ hasText: 'three strategic pillars:' })).toHaveCSS(
-      'font-weight',
-      '800',
-    )
+    const bold = p.locator('span').filter({ hasText: 'three strategic pillars:' })
+    await expect(bold).toHaveCSS('font-weight', '800')
     await expect(p.locator('span').filter({ hasText: 'AI powered delivery' })).toHaveCSS(
       'font-weight',
       '400',
     )
+
+    // D-027 divergence pin: Chromium fits "three" at the end of line 1 where
+    // the Figma render breaks before it — same 680 box, same typography, the
+    // engines' advances disagree by <2px in opposite directions on lines 1 and
+    // 3, so no robust CSS reproduces the design's break (the window is under
+    // 2px wide). The bold run must render as exactly two line boxes with line 1
+    // ending past x=1100 (design's break would end it at ~1088.8); if a font or
+    // engine change ever flips this, fail loudly and re-measure before repinning.
+    const boldRects = await bold.evaluate((el) =>
+      [...el.getClientRects()].map((r) => ({ right: r.right, y: r.y })),
+    )
+    expect(boldRects).toHaveLength(2)
+    expect(boldRects[0].right).toBeGreaterThan(1100)
   })
 
   test('band stays capped and coherent on wide viewports', async ({ page }) => {
@@ -159,6 +170,16 @@ test.describe('We Are @393', () => {
     // the 20px eyebrow→statement gap and the mobile type scale hold.
     for (const width of [360, 430, 800]) {
       await page.setViewportSize({ width, height: 900 })
+
+      // The band stays flush under Trusted By at fractional stack offsets —
+      // the sections must share an edge exactly (no seam, no overlap).
+      const seam = await page.evaluate(() => {
+        const sections = [...document.querySelectorAll('section')]
+        const trusted = sections.find((s) => s.textContent!.includes('Trusted by'))!
+        const weAre = sections.find((s) => s.textContent!.includes('We Are />'))!
+        return weAre.getBoundingClientRect().top - trusted.getBoundingClientRect().bottom
+      })
+      expect(seam).toBe(0)
 
       const h2Box = await eyebrow(page).boundingBox()
       expect(h2Box!.x).toBe(20)
