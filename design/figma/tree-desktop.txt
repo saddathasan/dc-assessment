@@ -1,0 +1,232 @@
+
+====================================================================================================
+[FRAME] 'Web View'  1440x4738  VERT gap=0 pad=(0, 0, 0, 0)
+  [FRAME] 'Frame 289503'  1440x2829  VERT gap=6 pad=(0, 0, 0, 0)
+    [FRAME] 'Frame 289502'  1440x4738  VERT gap=0 pad=(0, 0, 0, 0)
+      [FRAME] 'Frame 289408'  1440x1836  VERT gap=0 pad=(0, 0, 0, 0)
+        [GROUP] 'Group 289357'  1440x1491
+          [FRAME] 'Frame 289375'  1440x1491  VERT gap=0 pad=(0, 0, 0, 0)
+            [FRAME] 'Frame 52'  1440x120  VERT gap=10 pad=(20.0, 20.0, 20.0, 20.0)
+              [FRAME] 'Frame 52'  1400x80  VERT gap=10 pad=(15.0, 20.0, 15.0, 20.0)  r=25
+                [FRAME] 'Frame 110'  1360x50  HORI gap=379 pad=(0, 0, 0, 0)
+                  [FRAME] 'Frame 52'  839x25  HORI gap=420 pad=(0, 0, 0, 0)
+                    [VECTOR] 'MetaTech'  155x25
+                    [FRAME] 'Frame 2'  227x24  HORI gap=25 pad=(0, 0, 0, 0)
+                      [FRAME] 'Frame 2'  227x24  HORI gap=25 pad=(0, 0, 0, 0)
+                        [TEXT] 'Solutions'  60x24  «Solutions» Manrope w700 14.0px lh=24
+                        [FRAME] 'Frame 1'  65x24  HORI gap=5 pad=(0, 0, 0, 0)
+                          [TEXT] 'Showcase'  65x24  «Showcase» Manrope w700 14.0px lh=24
+                        [FRAME] 'Frame 2'  52x24  HORI gap=5 pad=(0, 0, 0, 0)
+                          [TEXT] 'Contact'  52x24  «Contact» Manrope w700 14.0px lh=24
+                  [FRAME] 'Frame 3'  147x50  HORI gap=10 pad=(10.0, 25.0, 10.0, 25.0)  r=15
+                    [TEXT] 'Book a meeting'  97x24  «Book a meeting» Manrope w800 14.0px lh=24
+            [FRAME] 'Frame 289370'  1440x1051  VERT gap=80 pad=(0, 0, 0, 0)
+              [FRAME] 'Frame 289357'  1440x400  VERT gap=10 pad=(0, 50.0, 0, 50.0)
+                [FRAME] 'Frame 289369'  1340x216  HORI gap=180 pad=(0, 0, 0, 0)
+                  [TEXT] 'Building Intelligence to Power Scalable Innovation'  664x216  «Building Intelligence to Power Scalable Innovation» Bricolage Grotesque w800 72.0px lh=72
+                  [FRAME] 'Frame 289368'  388x162  VERT gap=20 pad=(0, 0, 0, 0)
+                    [TEXT] 'MetaTech integrates custom software engineering, advanced data and AI systems, and strategic staff augmentation to power scalable, high impact digital transformation.'  388x92  «MetaTech integrates custom software engineering, advanced data and AI systems, and strategic staff augmentation to power scalable, high impact digital transformation.» Manrope w300 16.0px lh=23
+                    [FRAME] 'Frame 33'  370x50  HORI gap=10 pad=(0, 0, 0, 0)
+                      [FRAME] 'Frame 3'  160x50  HORI gap=10 pad=(10.0, 35.0, 10.0, 35.0)  r=15
+                        [TEXT] 'Book for Demo'  90x24  «Book for Demo» Manrope w700 14.0px lh=24
+              [FRAME] 'Frame 289523'  1400x571
+                [GROUP] 'Mask group'  1400x571
+                  [BOOLEAN_OPERATION] 'Subtract'  1400x571
+                    [RECTANGLE] 'Rectangle 2'  1400x571
+                    [RECTANGLE] 'Rectangle 32'  189x181  r=90.5
+                  [RECTANGLE] '_97A8753 1'  1402x934
+                [FRAME] 'Frame 81'  1400x571
+                  [BOOLEAN_OPERATION] 'Subtract'  1400x571
+                    [RECTANGLE] 'Rectangle 2'  1400x571
+                    [RECTANGLE] 'Rectangle 32'  189x181  r=90.5
+                  [FRAME] 'Frame 12'  130x130  HORI gap=10 pad=(0, 0, 0, 0)  r=90
+                    [FRAME] 'Frame 12'  105x105  HORI gap=10 pad=(0, 0, 0, 0)  r=70
+                      [FRAME] 'Frame 48'  74x74  HORI gap=10 pad=(10.0, 10.0, 10.0, 10.0)  r=50
+                        [REGULAR_POLYGON] 'Polygon 2'  34x34  r=3
+                  [VECTOR] 'MetaTech'  1001x159
+            [FRAME] 'Frame 289357'  1440x320  VERT gap=10 pad=(20.0, 20.0, 20.0, 20.0)
+              [FRAME] 'Frame 289371'  1400x200  HORI gap=282 pad=(0, 0, 0, 0)
+                [TEXT] 'Trusted by product teams and enterprise innovators.'  192x60  «Trusted by product teams and enterprise innovators.» Bricolage Grotesque w800 18.0px lh=20
+                [FRAME] 'Frame 75'  925x200  VERT gap=0 pad=(0, 0, 0, 0)
+                  [FRAME] 'Frame 73'  925x100  HORI gap=-1 pad=(0, 0, 0, 0)
+                    [FRAME] 'Frame 55'  232x100  VERT gap=10 pad=(10.0, 30.0, 10.0, 30.0)
+                      [RECTANGLE] 'databricks-logo-white-1 1'  172x48
+                    [FRAME] 'Frame 56'  232x100  VERT gap=10 pad=(10.0, 30.0, 10.0, 30.0)
+                      [RECTANGLE] 'Google-Cloud-Logo-1024x267 1'  172x45
+                    [FRAME] 'Frame 57'  232x100  VERT gap=10 pad=(30.0, 60.0, 30.0, 60.0)
+                      [RECTANGLE] 'UiPath-White-724315e09e7700e36e86efaee0c162fd1034254d07d953b5bc88264d284fc5ad 1'  112x50
+                    [FRAME] 'Frame 58'  232x100  VERT gap=10 pad=(10.0, 50.0, 10.0, 50.0)
+                      [RECTANGLE] 'AYX_BIG.D-6c79e09d 1'  132x40
+                  [FRAME] 'Frame 74'  925x100  HORI gap=-1 pad=(0, 0, 0, 0)
+                    [FRAME] 'Frame 58'  232x100  VERT gap=10 pad=(10.0, 50.0, 10.0, 50.0)
+                      [RECTANGLE] 'AYX_BIG.D-6c79e09d 1'  132x40
+                    [FRAME] 'Frame 59'  232x100  VERT gap=10 pad=(10.0, 50.0, 10.0, 50.0)
+                      [RECTANGLE] 'figma 1'  132x39
+                    [FRAME] 'Frame 60'  232x100  HORI gap=10 pad=(10.0, 10.0, 10.0, 10.0)
+                      [RECTANGLE] 'amazon-web-services 1'  80x80
+                    [FRAME] 'Frame 56'  232x100  VERT gap=10 pad=(10.0, 30.0, 10.0, 30.0)
+                      [RECTANGLE] 'Google-Cloud-Logo-1024x267 1'  172x45
+        [FRAME] 'Frame 289357'  1440x345  VERT gap=10 pad=(50.0, 20.0, 50.0, 20.0)
+          [FRAME] 'Frame 289372'  1400x195  HORI gap=400 pad=(0, 0, 0, 0)
+            [TEXT] 'We Are />'  76x30  «We Are />» Manrope w600 18.0px lh=30
+            [TEXT] 'Engineering business solutions through three strategic pillars AI powered delivery combining intelligent software engineering, data driven insight, and elite talent to accelerate scale, quality, and competitive advantage.'  680x195  «Engineering business solutions through three strategic pillars AI powered delivery combining intelligent software engineering, data driven insight, and elite talent to accelerate scale, quality, and competitive advantage.» Bricolage Grotesque w800 32.0px lh=39
+      [FRAME] 'Frame 289489'  1440x2902  VERT gap=0 pad=(0, 0, 0, 0)
+        [FRAME] 'Frame 289488'  1440x470  VERT gap=0 pad=(0, 0, 0, 0)
+          [FRAME] 'Frame 289487'  1440x470  VERT gap=0 pad=(0, 0, 0, 0)
+            [FRAME] 'Frame 289469'  1440x470  VERT gap=0 pad=(0, 0, 0, 0)
+              [FRAME] 'Frame 289456'  1440x470  VERT gap=0 pad=(0, 0, 0, 0)
+                [FRAME] 'Frame 289407'  1440x100  VERT gap=10 pad=(0, 490.0, 0, 490.0)
+                  [GROUP] 'Group 289406'  612x70  r=15
+                    [FRAME] 'Frame 289405'  612x70  VERT gap=10 pad=(0, 10.0, 0, 10.0)  r=15
+                      [FRAME] 'Frame 289451'  592x60  HORI gap=0 pad=(0, 0, 0, 0)
+                        [FRAME] 'Frame 289448'  200x60  HORI gap=10 pad=(10.0, 10.0, 10.0, 10.0)  r=10
+                          [TEXT] 'Data + AI'  69x30  «Data + AI» Manrope w700 18.0px lh=30
+                        [FRAME] 'Frame 289449'  200x60  HORI gap=10 pad=(10.0, 10.0, 10.0, 10.0)
+                          [TEXT] 'Custom Software'  140x30  «Custom Software» Manrope w700 18.0px lh=30
+                        [FRAME] 'Frame 289450'  200x60  HORI gap=10 pad=(10.0, 10.0, 10.0, 10.0)
+                          [TEXT] 'Tech Staffing'  107x30  «Tech Staffing» Manrope w700 18.0px lh=30
+                [FRAME] 'Frame 289406'  1440x370  VERT gap=10 pad=(50.0, 20.0, 50.0, 20.0)
+                  [GROUP] 'Group 289407'  1077x234
+                    [GROUP] 'Group 289405'  1077x234
+                      [FRAME] 'Frame 289455'  1077x234  HORI gap=320 pad=(0, 0, 0, 0)
+                        [VECTOR] '01'  147x117
+                        [FRAME] 'Frame 289454'  610x234  VERT gap=20 pad=(0, 0, 0, 0)
+                          [FRAME] 'Frame 289453'  610x164  VERT gap=20 pad=(0, 0, 0, 0)
+                            [FRAME] 'Frame 289452'  461x36  VERT gap=30 pad=(0, 0, 0, 0)
+                              [TEXT] 'Data + AI Settings Innovation'  461x36  «Data + AI Settings Innovation» Bricolage Grotesque w800 32.0px lh=36
+                            [TEXT] 'Our Data and AI services combine engineering, analytics, and applied AI to help organizations understand data, predict outcomes, and automate decisions. From trusted analytics to production grade AI systems, we deliver intelligence that works in the real world.'  610x108  «Our Data and AI services combine engineering, analytics, and applied AI to help organizations understand data, predict outcomes, and automate decisions. From trusted analytics to production grade AI systems, we deliver intelligence that works in the real world.» Manrope w400 18.0px lh=27
+                          [FRAME] 'Frame 112'  192x50  HORI gap=10 pad=(10.0, 35.0, 10.0, 35.0)  r=15
+                            [TEXT] 'Book a consultation'  122x24  «Book a consultation» Manrope w700 14.0px lh=24
+        [FRAME] 'Frame 289407'  1440x450  VERT gap=10 pad=(0, 0, 0, 0)
+          [FRAME] 'Frame 289483'  1440x450  HORI gap=16 pad=(0, 0, 0, 0)
+            [FRAME] 'Frame 289465'  457x450  VERT gap=10 pad=(30.0, 30.0, 30.0, 30.0)  r=15
+              [FRAME] 'Frame 289457'  397x36  VERT gap=10 pad=(0, 0, 0, 0)
+                [TEXT] 'Data Integrity First'  397x36  «Data Integrity First» Bricolage Grotesque w800 32.0px lh=36
+            [FRAME] 'Frame 289481'  457x450  VERT gap=10 pad=(30.0, 30.0, 30.0, 30.0)  r=15
+              [FRAME] 'Frame 289457'  397x84  VERT gap=10 pad=(0, 0, 0, 0)
+                [TEXT] 'Workflows Before Automation'  397x84  «Workflows Before Automation» Bricolage Grotesque w800 32.0px lh=42
+            [FRAME] 'Frame 289482'  457x450  VERT gap=10 pad=(30.0, 30.0, 30.0, 30.0)  r=15
+              [FRAME] 'Frame 289457'  397x84  VERT gap=10 pad=(0, 0, 0, 0)
+                [TEXT] 'Governance With Same Standard'  397x84  «Governance With Same Standard» Bricolage Grotesque w800 32.0px lh=42
+  [FRAME] 'Frame 289407'  1440x1909  VERT gap=1 pad=(0, 0, 0, 0)
+    [FRAME] 'Frame 289396'  1440x700  VERT gap=0 pad=(0, 0, 0, 0)
+      [FRAME] 'Frame 289380'  1440x700  VERT gap=0 pad=(0, 0, 0, 0)
+        [FRAME] 'Frame 289378'  1440x700  HORI gap=0 pad=(0, 0, 0, 0)
+          [FRAME] 'Frame 289359'  680x700  HORI gap=10 pad=(0, 0, 0, 0)
+            [FRAME] 'Frame 289377'  539x601  VERT gap=230 pad=(0, 0, 0, 0)
+              [RECTANGLE] 'AmiCredible-Logo-white 1'  279x40
+              [FRAME] 'Frame 289376'  539x331  VERT gap=50 pad=(0, 0, 0, 0)
+                [FRAME] 'Frame 128'  539x231  VERT gap=15 pad=(0, 0, 0, 0)
+                  [TEXT] 'An AI-powered credibility checking platform'  539x162  «An AI-powered credibility checking platform» Bricolage Grotesque w800 48.0px lh=54
+                  [TEXT] 'that helps users verify claims, analyze sources, and make informed decisions with Quick Check, Deep Check, and Image Check features.'  542x54  «that helps users verify claims, analyze sources, and make informed decisions with Quick Check, Deep Check, and Image Check features.» Manrope w500 18.0px lh=27
+                [FRAME] 'Frame 118'  169x50  HORI gap=10 pad=(10.0, 35.0, 10.0, 35.0)  r=15
+                  [TEXT] 'Explore more →'  99x24  «Explore more  →» Manrope w700 14.0px lh=24
+          [FRAME] 'Frame 289361'  700x700  VERT gap=10 pad=(0, 0, 0, 0)
+            [GROUP] 'Group 289360'  700x650
+              [GROUP] 'Group 289359'  700x650
+                [RECTANGLE] 'Rectangle 129'  700x650  r=25
+                [RECTANGLE] 'Rectangle 130'  700x129
+              [FRAME] 'Frame 289358'  100x10  HORI gap=5 pad=(0, 0, 0, 0)
+                [RECTANGLE] 'Rectangle 130'  50x10  r=25
+                [RECTANGLE] 'Rectangle 131'  20x10  r=25
+                [RECTANGLE] 'Rectangle 132'  20x10  r=25
+    [FRAME] 'Frame 289406'  1440x1208  VERT gap=0 pad=(0, 0, 0, 0)
+      [FRAME] 'Frame 289402'  1440x850  VERT gap=0 pad=(0, 0, 0, 0)
+        [FRAME] 'Frame 289372'  1440x297  VERT gap=10 pad=(50.0, 20.0, 50.0, 20.0)
+          [FRAME] 'Frame 289398'  1400x147  HORI gap=358 pad=(0, 0, 0, 0)
+            [TEXT] 'Tech Stacks />'  115x24  «Tech Stacks />» Manrope w600 18.0px lh=24
+            [FRAME] 'Frame 289397'  681x147  VERT gap=30 pad=(0, 0, 0, 0)
+              [TEXT] 'Built With Modern Technologies'  681x36  «Built With Modern Technologies» Bricolage Grotesque w800 32.0px lh=36
+              [TEXT] 'We use modern, reliable technologies to design, build, and scale high-performance software systems. Our team works with proven tools to deliver secure, scalable, production-ready solutions.'  681x81  «We use modern, reliable technologies to design, build, and scale high-performance software systems. Our team works with proven tools to deliver secure, scalable, production-ready solutions.» Manrope w400 18.0px lh=27
+        [FRAME] 'Frame 289401'  1440x470  VERT gap=10 pad=(0, 0, 0, 0)
+          [FRAME] 'Frame 289385'  1440x150  HORI gap=10 pad=(0, 0, 0, 0)
+            [GROUP] 'Group 289383'  214x150
+              [RECTANGLE] 'Rectangle 73'  214x150
+              [RECTANGLE] 'React-Logo-PNG-HD-Image 1'  130x73
+            [GROUP] 'Group 289373'  250x150
+              [RECTANGLE] 'Rectangle 74'  250x150  r=15
+              [RECTANGLE] 'next-js-logo-png_seeklogo-321806 1'  132x132
+            [GROUP] 'Group 289408'  250x150
+              [RECTANGLE] 'Rectangle 96'  250x150  r=15
+              [GROUP] 'Mask group'  250x150
+                [RECTANGLE] 'Rectangle 97'  250x150  r=15
+                [GROUP] 'Group 289376'  200x200
+                  [RECTANGLE] 'tailwind_css-logo_brandlogos.net_v91ni-512x512 1'  200x200
+            [GROUP] 'Group 289376'  250x150
+              [RECTANGLE] 'Rectangle 76'  250x150  r=15
+              [RECTANGLE] 'TypeScript_Logo_(Blue).svg 1'  138x34
+            [FRAME] 'Frame 95'  250x150
+              [RECTANGLE] 'Rectangle 77'  250x150  r=15
+              [FRAME] 'angular-3-logo-svg-vector 1'  147x40
+                [GROUP] 'Group'  147x40
+                  [GROUP] 'Group'  104x21
+                    [VECTOR] 'Vector'  104x21
+                  [VECTOR] 'Vector'  38x40
+                  [VECTOR] 'Vector'  19x40
+                  [VECTOR] 'Vector'  24x26
+            [GROUP] 'Group 289384'  176x150
+              [GROUP] 'Group 33'  176x150
+                [RECTANGLE] 'Rectangle 72'  176x150
+              [GROUP] 'Mask group'  176x150
+                [GROUP] 'Group 34'  176x150
+                  [RECTANGLE] 'Rectangle 72'  176x150
+                [GROUP] 'Group 33'  120x60
+                  [RECTANGLE] 'vuejs_logo_icon_169247 1'  120x60
+          [FRAME] 'Frame 289387'  1440x150  HORI gap=10 pad=(0, 0, 0, 0)
+            [GROUP] 'Group 289386'  174x150
+              [RECTANGLE] 'Rectangle 78'  174x150
+              [RECTANGLE] 'Go_Logo_Blue.svg 1'  107x40
+            [GROUP] 'Group 289378'  250x150
+              [RECTANGLE] 'Rectangle 79'  250x150  r=15
+              [RECTANGLE] 'Python_logo_and_wordmark.svg 1'  169x50
+            [GROUP] 'Group 289379'  250x150
+              [RECTANGLE] 'Rectangle 80'  250x150  r=15
+              [RECTANGLE] 'Node.js_logo_2015.svg 1'  148x40
+            [GROUP] 'Group 289380'  250x150
+              [RECTANGLE] 'Rectangle 81'  250x150  r=15
+              [RECTANGLE] 'NET-Framework-Logo-2010 1'  124x70
+            [GROUP] 'Group 289381'  250x150
+              [RECTANGLE] 'Rectangle 82'  250x150  r=15
+              [RECTANGLE] '2052411 1'  216x100
+            [GROUP] 'Group 289385'  216x150
+              [RECTANGLE] 'Rectangle 83'  216x150
+              [RECTANGLE] 'PHP-logo.svg 1'  111x60
+          [FRAME] 'Frame 289393'  1440x150  HORI gap=10 pad=(0, 0, 0, 0)
+            [GROUP] 'Group 289392'  216x150
+              [RECTANGLE] 'Rectangle 67'  216x150
+              [RECTANGLE] 'django 1'  128x50
+            [GROUP] 'Group 289391'  250x150
+              [RECTANGLE] 'Rectangle 68'  250x150  r=15
+              [RECTANGLE] '1_YL4PSpzHj8CHpOs1ACAKDg 1'  138x40
+            [GROUP] 'Group 289390'  250x150
+              [RECTANGLE] 'Rectangle 69'  250x150  r=15
+              [RECTANGLE] 'Google-flutter-logo 1'  140x40
+            [GROUP] 'Group 289389'  250x150
+              [RECTANGLE] 'Rectangle 70'  250x150  r=15
+              [RECTANGLE] 'MySQL-Logo.wine 1'  150x100
+            [GROUP] 'Group 289388'  250x150
+              [RECTANGLE] 'Rectangle 71'  250x150  r=15
+              [RECTANGLE] 'MongoDB_Logo.svg 1'  185x50
+            [GROUP] 'Group 289387'  174x150
+              [RECTANGLE] 'Rectangle 72'  174x150
+              [RECTANGLE] 'HTML5_logo_and_wordmark.svg 1'  70x70
+      [FRAME] 'Frame 289405'  1440x358  VERT gap=0 pad=(0, 0, 0, 0)
+        [FRAME] 'Frame 289404'  1440x358  VERT gap=0 pad=(0, 0, 0, 0)
+          [FRAME] 'Frame 289403'  1440x358  VERT gap=0 pad=(0, 0, 0, 0)
+            [FRAME] 'Footer'  1440x358
+              [RECTANGLE] 'Rectangle 2'  1440x358
+              [FRAME] 'Frame 112'  1264x24  HORI gap=214 pad=(0, 0, 0, 0)
+                [FRAME] 'Frame 44'  323x24  VERT gap=285 pad=(0, 0, 0, 0)
+                  [TEXT] '@2022-2026 DataCrunch LLC // All Rights Reserved'  323x24  «@2022-2026 MetaTech LLC // All Rights Reserved» Manrope w700 14.0px lh=24
+                [FRAME] 'Frame 43'  193x24  VERT gap=70 pad=(0, 0, 0, 0)
+                  [GROUP] 'Group 7'  193x24
+                    [TEXT] 'Privacy Policy'  85x24  «Privacy Policy» Manrope w700 14.0px lh=24
+                    [TEXT] 'Terms of Use'  80x24  «Terms of Use» Manrope w700 14.0px lh=24
+                [FRAME] 'Frame 7'  320x24  HORI gap=30 pad=(0, 0, 0, 0)
+                  [TEXT] 'Facebook'  60x24  «Facebook» Manrope w700 14.0px lh=24
+                  [TEXT] 'Linkedin'  53x24  «Linkedin» Manrope w700 14.0px lh=24
+                  [TEXT] 'Instagram'  64x24  «Instagram» Manrope w700 14.0px lh=24
+                  [TEXT] 'Youtube'  53x24  «Youtube» Manrope w700 14.0px lh=24
+              [VECTOR] 'MetaTech'  1432x227
+              [GROUP] 'Group 8'  1440x227
+                [RECTANGLE] 'Rectangle 23'  1440x227

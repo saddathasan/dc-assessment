@@ -1,0 +1,19 @@
+{
+  "headline": [
+    { "text": "Building " },
+    { "text": "Intelligence to Power", "accent": true },
+    { "text": " Scalable Innovation" }
+  ],
+  "subcopy": "MetaTech integrates custom software engineering, advanced data and AI systems, and strategic staff augmentation to power scalable, high impact digital transformation.",
+  "cta": { "label": "Book for Demo", "href": "#contact" },
+  "media": {
+    "image": {
+      "src": "/images/hero-photo.png",
+      "alt": "MetaTech team working together in the office"
+    }
+  },
+  "video": {
+    "provider": "youtube",
+    "src": "https://www.youtube.com/embed/aqz-KE-bpKQ"
+  }
+}

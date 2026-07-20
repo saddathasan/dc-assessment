@@ -1,0 +1,111 @@
+{
+  "tabs": [
+    { "id": "data-ai", "label": "Data + AI" },
+    { "id": "custom-software", "label": "Custom Software" },
+    { "id": "tech-staffing", "label": "Tech Staffing" }
+  ],
+  "panels": [
+    {
+      "id": "data-ai",
+      "number": "01",
+      "heading": "Data + AI Driven Innovation",
+      "body": "Our Data and AI services combine engineering, analytics, and applied AI to help organizations understand data, predict outcomes, and automate decisions. From trusted analytics to production grade AI systems, we deliver intelligence that works in the real world.",
+      "cta": { "label": "Book a consultation", "href": "#contact" },
+      "cards": [
+        {
+          "heading": "Data Integrity First",
+          "body": "AI outputs are only as reliable as the data feeding them. We design, validate, and strengthen your data foundation from the ground up. Garbage in, garbage out is not a risk we take with your business."
+        },
+        {
+          "heading": "Workflows Before Automation",
+          "body": "Before we build anything, we map your business workflows end to end by surveying the ambiguity. We understand the decisions being made, the people making them, and the systems involved. That clarity determines how and where automation creates real leverage, not just activity."
+        },
+        {
+          "heading": "Governance With Same Standard",
+          "body": "We implement data governance frameworks that carry the same accountability as human oversight. Your agents operate within defined boundaries. Auditability, control, and compliance are built in, not added on."
+        }
+      ],
+      "showcase": {
+        "logo": { "src": "/images/amicredible-logo.png", "alt": "AmiCredible" },
+        "name": "AmiCredible",
+        "heading": "An AI-powered credibility checking platform",
+        "body": "that helps users verify claims, analyze sources, and make informed decisions with Quick Check, Deep Check, and Image Check features.",
+        "cta": { "label": "Explore more →", "href": "#showcase" },
+        "slides": [
+          { "image": { "src": "/images/showcase-device.jpg", "alt": "AmiCredible running on a tablet — view 1" } },
+          { "image": { "src": "/images/showcase-device.jpg", "alt": "AmiCredible running on a tablet — view 2" } },
+          { "image": { "src": "/images/showcase-device.jpg", "alt": "AmiCredible running on a tablet — view 3" } },
+          { "image": { "src": "/images/showcase-device.jpg", "alt": "AmiCredible running on a tablet — view 4" } }
+        ]
+      }
+    },
+    {
+      "id": "custom-software",
+      "number": "02",
+      "heading": "Custom Software Development",
+      "body": "Our engineering teams design, build, and ship software shaped around the way your business actually works. From rapid prototypes to enterprise platforms, we deliver secure, scalable systems that hold up in production and keep evolving with you.",
+      "cta": { "label": "Book a consultation", "href": "#contact" },
+      "authored": true,
+      "cards": [
+        {
+          "heading": "Discovery Is Engineering",
+          "body": "Most failed builds were scoped in one meeting and never questioned again. We spend the first weeks proving what the software must do, for whom, and under which constraints. Discovery is the cheapest engineering you will ever buy."
+        },
+        {
+          "heading": "Architecture Outlives Features",
+          "body": "Features get replaced every quarter. The structure holding them rarely does, so we choose boundaries, data models, and dependencies you can still live with in year three. We build for the version of your product that does not exist yet."
+        },
+        {
+          "heading": "Built For Handover",
+          "body": "We write code your team can own without us. Tests, documentation, and deployment run in your environment from the first release, not the final invoice. A project we cannot walk away from was never finished."
+        }
+      ],
+      "showcase": {
+        "name": "Fieldmark",
+        "heading": "An offline-first field operations platform",
+        "body": "that helps supervisors dispatch crews, capture site evidence, and close out jobs from a phone with no signal, syncing when it reconnects.",
+        "cta": { "label": "Explore more →", "href": "#showcase" },
+        "slides": [
+          { "image": { "src": "/images/showcase-device.jpg", "alt": "Fieldmark running on a tablet — view 1" } },
+          { "image": { "src": "/images/showcase-device.jpg", "alt": "Fieldmark running on a tablet — view 2" } },
+          { "image": { "src": "/images/showcase-device.jpg", "alt": "Fieldmark running on a tablet — view 3" } },
+          { "image": { "src": "/images/showcase-device.jpg", "alt": "Fieldmark running on a tablet — view 4" } }
+        ]
+      }
+    },
+    {
+      "id": "tech-staffing",
+      "number": "03",
+      "heading": "Tech Staff Augmentation",
+      "body": "We embed senior engineers, data specialists, and delivery leads directly into your teams. From a single expert to a full squad, we provide elite talent that ramps up fast, raises the bar, and accelerates your roadmap without the overhead of hiring.",
+      "cta": { "label": "Book a consultation", "href": "#contact" },
+      "authored": true,
+      "cards": [
+        {
+          "heading": "Engineers Screen Engineers",
+          "body": "A recruiter can match keywords but cannot tell you whether someone holds up in a code review. Every candidate we send has worked through a technical session with a senior engineer who does that same job. You meet the shortlist, not the pipeline."
+        },
+        {
+          "heading": "Teammates Not Resources",
+          "body": "Our engineers join your standups, your repositories, and your planning from the first week. They carry features to production and answer for them afterwards. Nobody we place is waiting to be told what the ticket says."
+        },
+        {
+          "heading": "Retention Is Our Problem",
+          "body": "Cheap placements leave in four months and take the context with them. We pay, support, and develop our people so they stay on your roadmap long enough to know it well. Churn is a cost we absorb, not one we pass on."
+        }
+      ],
+      "showcase": {
+        "name": "Rampline",
+        "heading": "A vetting-first engineering talent platform",
+        "body": "that helps hiring leads review verified skill profiles, run technical interviews with our engineers, and track how every placement performs.",
+        "cta": { "label": "Explore more →", "href": "#showcase" },
+        "slides": [
+          { "image": { "src": "/images/showcase-device.jpg", "alt": "Rampline running on a tablet — view 1" } },
+          { "image": { "src": "/images/showcase-device.jpg", "alt": "Rampline running on a tablet — view 2" } },
+          { "image": { "src": "/images/showcase-device.jpg", "alt": "Rampline running on a tablet — view 3" } },
+          { "image": { "src": "/images/showcase-device.jpg", "alt": "Rampline running on a tablet — view 4" } }
+        ]
+      }
+    }
+  ]
+}

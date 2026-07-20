@@ -1,0 +1,24 @@
+
+====================================================================================================
+[FRAME] 'Note for Sticky Tab Navigation'  260x193  HORI gap=10 pad=(10.0, 15.0, 10.0, 15.0)
+  [TEXT] 'This navigation will remain sticky throughout this section (until the Tech Stack section). After scrolling past the Tech Stack section, the sticky navigation will no longer be required.'  230x168  «This navigation will remain sticky throughout this section (until the Tech Stack section). After scrolling past the Tech Stack section, the sticky navigation will no longer be required.» Bricolage Grotesque w400 18.0px lh=24
+
+====================================================================================================
+[FRAME] 'Note for Card Section'  260x145  HORI gap=10 pad=(10.0, 15.0, 10.0, 15.0)
+  [TEXT] 'This section will animate from light to dark when hovering over each card individually. The on-hover design is as follows.'  230x120  «This section will animate from light to dark when hovering over each card individually. The on-hover design is as follows.» Bricolage Grotesque w400 18.0px lh=24
+
+====================================================================================================
+[FRAME] 'Note for Tech Stack'  260x161  HORI gap=10 pad=(10.0, 15.0, 10.0, 15.0)
+  [TEXT] 'The Logo Blocks will be scrolling vertically. top & bottom row will scroll from same direction & the middle row will scroll from opposite direction.'  230x144  «The Logo Blocks will be scrolling vertically. top & bottom row will scroll from same direction & the middle row will scroll from opposite direction.» Bricolage Grotesque w400 18.0px lh=24
+
+====================================================================================================
+[FRAME] 'Note for Play Button'  260x123  HORI gap=10 pad=(10.0, 15.0, 10.0, 15.0)
+  [TEXT] 'After Clicking the play button a video pop-up will be visible. apply your preference to design the pop-up'  230x96  «After Clicking the play button a video pop-up will be visible. apply your preference to design the pop-up» Bricolage Grotesque w400 18.0px lh=24
+
+====================================================================================================
+[FRAME] 'Note for header menu'  260x123  HORI gap=10 pad=(10.0, 15.0, 10.0, 15.0)
+  [TEXT] 'Modern Mega Menu appears when the mouse hovers over the navigation items "Solutions”'  230x96  «Modern Mega Menu appears when the mouse hovers over the navigation items "Solutions”» Bricolage Grotesque w400 18.0px lh=24
+
+====================================================================================================
+[FRAME] 'Note for Hover view'  260x127  HORI gap=10 pad=(10.0, 15.0, 10.0, 15.0)
+  [TEXT] 'Image preview will be shown individually when hovering over each solution option.'  230x72  «Image preview will be shown individually when hovering over each solution option.» Bricolage Grotesque w400 18.0px lh=24

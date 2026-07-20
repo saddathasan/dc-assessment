@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- MetaTech mark: the wordmark's own "M" glyph (footer node 1:262, subpath 0)
+       in accent green on the brand's ink tile. -->
+  <rect width="256" height="256" rx="60" fill="#161616"/>
+  <path transform="translate(53.55 55.2) scale(0.6414)" fill="#33f987" d="M0 222.635L0 4.36538L75.8167 4.36538L113.261 194.571L118.831 194.571L156.275 4.36538L232.092 4.36538L232.092 222.635L192.482 222.635L192.482 34.6113L186.911 34.6113L149.777 222.635L82.3153 222.635L45.1806 34.6113L39.6104 34.6113L39.6104 222.635L0 222.635Z"/>
+</svg>
