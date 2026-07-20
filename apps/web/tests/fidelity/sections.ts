@@ -186,4 +186,25 @@ export const targets: FidelityTarget[] = [
     clip: { x: 0, y: 2823, width: 393, height: 900 },
     noiseTextured: true,
   },
+  // Tech Stack — desktop: the white band closing the Solutions sticky scope
+  // (node 1:166, y=3530..4380 — one artboard px under the showcase's 3529 end,
+  // frame 1:143's itemSpacing, reproduced on the page). Copy block over the
+  // three marquee rows, which the gate sees static at their drawn phases
+  // because reduced motion is forced (D-029.3).
+  {
+    id: 'tech-stack-desktop',
+    source: '1-34.png',
+    crop: { x: 0, y: 3530, width: 1440, height: 850 },
+    clip: { x: 0, y: 3530, width: 1440, height: 850 },
+  },
+  // Tech Stack — mobile: heading block 1:410 (350) + marquee 2:37 (360, the
+  // rows packed top over 40px of slack) = 710 at y=3780, flush under the
+  // showcase's 2880+900; page clip y = render − 57 (the excluded status bar),
+  // contiguous with solution-showcase-mobile's clip end 2823+900=3723.
+  {
+    id: 'tech-stack-mobile',
+    source: '1-279.png',
+    crop: { x: 0, y: 3780, width: 393, height: 710 },
+    clip: { x: 0, y: 3723, width: 393, height: 710 },
+  },
 ]
