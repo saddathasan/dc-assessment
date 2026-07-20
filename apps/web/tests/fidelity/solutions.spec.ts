@@ -10,8 +10,38 @@
  * height and releases where the Section ends — Tech Stack per note 1:277, whose
  * exact seam MS-9 verifies once the panel's cards (MS-7) and showcase (MS-8) land.
  */
+import { readFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { test, expect, type Page } from '@playwright/test'
+import { PNG } from 'pngjs'
 import { targets } from './sections.ts'
+
+/** Mean colour of every blk x blk block — cancels the design's per-pixel noise. */
+function blockAverage(png: PNG, blk: number) {
+  const w = Math.floor(png.width / blk)
+  const h = Math.floor(png.height / blk)
+  const out = new Float64Array(w * h * 3)
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      let r = 0, g = 0, b = 0
+      for (let dy = 0; dy < blk; dy++) {
+        for (let dx = 0; dx < blk; dx++) {
+          const i = (png.width * (y * blk + dy) + (x * blk + dx)) << 2
+          r += png.data[i]
+          g += png.data[i + 1]
+          b += png.data[i + 2]
+        }
+      }
+      const n = blk * blk
+      const k = (y * w + x) * 3
+      out[k] = r / n
+      out[k + 1] = g / n
+      out[k + 2] = b / n
+    }
+  }
+  return { w, h, data: out }
+}
 
 /**
  * Clips the page to a manifest region and diffs it against the Section's Baseline.
@@ -22,7 +52,25 @@ async function expectBaseline(page: Page, id: string): Promise<void> {
   const target = targets.find((t) => t.id === id)
   if (!target) throw new Error(`no fidelity target '${id}'`)
   const shot = await page.screenshot({ clip: target.clip, animations: 'disabled', fullPage: true })
-  expect(shot).toMatchSnapshot(`${id}.png`)
+  if (!target.noiseTextured) {
+    expect(shot).toMatchSnapshot(`${id}.png`)
+    return
+  }
+  // Noise-textured band: diff the 8x8 block averages instead (see sections.ts).
+  const here = dirname(fileURLToPath(import.meta.url))
+  const base = blockAverage(PNG.sync.read(readFileSync(join(here, 'baselines', `${id}.png`))), 8)
+  const shotAvg = blockAverage(PNG.sync.read(shot), 8)
+  expect({ w: shotAvg.w, h: shotAvg.h }).toEqual({ w: base.w, h: base.h })
+  let over = 0
+  for (let i = 0; i < base.data.length; i += 3) {
+    const delta =
+      Math.abs(base.data[i] - shotAvg.data[i]) +
+      Math.abs(base.data[i + 1] - shotAvg.data[i + 1]) +
+      Math.abs(base.data[i + 2] - shotAvg.data[i + 2])
+    if (delta > 48) over++
+  }
+  const ratio = over / (base.data.length / 3)
+  expect(ratio, `${id} averaged diff ${(ratio * 100).toFixed(2)}%`).toBeLessThan(0.05)
 }
 
 /** Fractional design coords (1:124's 147.2067 vector et al.) — assert within half a pixel. */
@@ -62,13 +110,18 @@ const bar = (page: Page) => page.getByTestId('solutions-tab-bar')
 const tabRow = (page: Page) => page.getByRole('tablist')
 const tab = (page: Page, name: string) => page.getByRole('tab', { name })
 const panel = (page: Page) => page.getByRole('tabpanel')
-const numeralBox = (page: Page) => panel(page).locator('div[aria-hidden]')
+// First child only: the showcase's scrim is aria-hidden too.
+const numeralBox = (page: Page) => panel(page).locator('> div').first().locator('div[aria-hidden]')
 const heading = (page: Page) => panel(page).getByRole('heading', { level: 2 })
-// Scoped to the intro block: the card row adds its own paragraphs to the panel.
-const body = (page: Page) => panel(page).locator('> div p')
+// Scoped to the intro block: the card row and the showcase each add their own
+// paragraphs to the panel, so this must target the panel's first child only.
+const body = (page: Page) => panel(page).locator('> div').first().locator('p')
 const cta = (page: Page) => panel(page).getByRole('link', { name: 'Book a consultation' })
+const band = (page: Page) => panel(page).locator('> div').last()
+const bandCta = (page: Page) => band(page).getByRole('link', { name: /Explore more/ })
+const dots = (page: Page) => band(page).locator('ul').last().locator('span')
 
-const cardRow = (page: Page) => panel(page).locator('ul')
+const cardRow = (page: Page) => page.getByTestId('solution-cards')
 const cards = (page: Page) => cardRow(page).locator('li')
 const cardTitle = (page: Page, i: number) => cards(page).nth(i).getByRole('heading', { level: 3 })
 const cardBody = (page: Page, i: number) => cards(page).nth(i).locator('p')
@@ -137,9 +190,10 @@ test.describe('Solutions @1440', () => {
 
   test('the panel intro is design-exact', async ({ page }) => {
     // Panel body starts flush under the 100px band: the design's intro block
-    // 1:120 occupies 1936..2306 and the card row 2306..2756, so the panel spans
-    // 820 — with one panel on screen the page matches the artboard 1:1 (D-028).
-    expect(await panel(page).boundingBox()).toMatchObject({ y: 1936, height: 820 })
+    // The panel is the tab's whole body: intro 1936..2306, cards 2306..2756, a
+    // 73px gray gap, then the showcase 2829..3529 — 1593 in all. With one panel
+    // on screen the page matches the artboard 1:1 (D-028).
+    expect(await panel(page).boundingBox()).toMatchObject({ y: 1936, height: 1593 })
 
     // Numeral: the 147.2x116.79 flattened vector box at (20,2022) (node 1:124);
     // the box is fixed so the copy column holds x=487.2 whatever Chromium's
@@ -337,6 +391,56 @@ test.describe('Solutions @1440', () => {
     expectBoxNear(await cards(page).nth(0).boundingBox(), { x: 18.5, y: 2306, width: 457, height: 450 })
   })
 
+  test('the showcase closes the panel and matches the Baseline', async ({ page }) => {
+    await expectBaseline(page, 'solution-showcase-desktop')
+
+    // Band 1:146: #17A955 1440x700 at y=2829 — 73px of gray canvas below the
+    // card row. (The design token named `showcase` was a mobile-sampled #21A356;
+    // both artboards' node fill is this green, so that token is retired.)
+    expect(await band(page).boundingBox()).toMatchObject({ y: 2829, height: 700 })
+    await expect(band(page)).toHaveCSS('background-color', 'rgb(23, 169, 85)')
+
+    // Copy column 1:148 centred in the band: logo, 230 gap, then the copy stack.
+    expectBoxNear(await band(page).locator('img').first().boundingBox(), {
+      x: 30, y: 2878.5, width: 279, height: 40,
+    })
+    const h3 = band(page).getByRole('heading', { level: 3 })
+    expectBoxNear(await h3.boundingBox(), { x: 30, y: 3148.5, width: 539, height: 162 })
+    await expect(h3).toHaveCSS('font-size', '48px')
+    await expect(h3).toHaveCSS('line-height', '54px')
+    await expect(h3).toHaveCSS('letter-spacing', '-2.4px')
+    await expect(h3).toHaveCSS('color', 'rgb(255, 255, 255)')
+
+    // CTA 1:154: ghost pill, 2px white@35% inset stroke, no fill.
+    expectBoxNear(await bandCta(page).boundingBox(), { x: 30, y: 3429.5, width: 169, height: 50 })
+    await expect(bandCta(page)).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+    await expect(bandCta(page)).toHaveCSS('box-shadow', /rgba\(255, 255, 255, 0.35\) 0px 0px 0px 2px inset/)
+
+    // Media frame 1:157 at x=710 — the design keeps 30px gutters either side
+    // (30 + 680 + 700 + 30 = 1440).
+    expectBoxNear(await band(page).locator('.relative').first().boundingBox(), {
+      x: 710, y: 2854, width: 700, height: 650,
+    })
+
+    // Dot rail 1:161: the active dot is elongated, not recoloured.
+    await expect(dots(page).first()).toHaveCSS('width', '50px')
+    await expect(dots(page).nth(1)).toHaveCSS('width', '20px')
+  })
+
+  test('the showcase swaps with the tab, wordmark standing in for a missing logo', async ({ page }) => {
+    await tab(page, 'Custom Software').click()
+    await page.evaluate(() => window.scrollTo(0, 0))
+
+    await expect(band(page).getByRole('heading', { level: 3 })).toHaveText(
+      'An offline-first field operations platform',
+    )
+    // D-028.5: authored panels ship no logo bitmap, so the product name renders
+    // as a wordmark at the mark's height rather than leaving a hole.
+    await expect(band(page).locator('img')).toHaveCount(4)
+    await expect(band(page).getByText('Fieldmark')).toBeVisible()
+    expect(await band(page).boundingBox()).toMatchObject({ y: 2829, height: 700 })
+  })
+
   test('band stays capped and coherent on wide viewports', async ({ page }) => {
     // No Baseline exists beyond the design's 1440 artboard, but the content
     // caps at 1440 and centers while the gray canvas bleeds full-width (the
@@ -395,8 +499,8 @@ test.describe('Solutions @393', () => {
   test('the panel intro is design-exact', async ({ page }) => {
     // Content column 1:373: 342 centered in the 600 frame (25.5 margins),
     // uniform 20 rhythm: numeral 120 / heading 36 / body 168 / CTA 40.
-    // Panel = intro block 600 (1:371) + card block 394 (1:380).
-    expect(await panel(page).boundingBox()).toMatchObject({ y: 1800, height: 994 })
+    // Panel = intro 600 (1:371) + cards 394 (1:380) + 29 gap + showcase 900 (1:387).
+    expect(await panel(page).boundingBox()).toMatchObject({ y: 1800, height: 1923 })
 
     // Both numerals live in the DOM (the desktop one is lg-gated), so the
     // mobile assert must pick the visible node, not the first match.
@@ -484,6 +588,29 @@ test.describe('Solutions @393', () => {
     expect(await row.evaluate((el) => el.scrollWidth - el.clientWidth)).toBeGreaterThan(0)
     await expect(row).toHaveCSS('scroll-snap-type', 'x mandatory')
     await expect(cards(page).first()).toHaveCSS('scroll-snap-align', 'center')
+  })
+
+  test('the showcase closes the panel and matches the Baseline', async ({ page }) => {
+    await expectBaseline(page, 'solution-showcase-mobile')
+
+    // Band 1:387 at render 2880 → page 2823, 393x900 after a 29px gray gap.
+    expect(await band(page).boundingBox()).toMatchObject({ y: 2823, height: 900 })
+    await expect(band(page)).toHaveCSS('background-color', 'rgb(23, 169, 85)')
+
+    // Logo block 1:388 (200 tall, 40 top pad), copy block 1:392 (300, centred),
+    // media block 1:399 (400, device bottom-packed 20 from the edge).
+    expectBoxNear(await band(page).locator('img').first().boundingBox(), {
+      x: 20, y: 2863, width: 209, height: 30,
+    })
+    const h3 = band(page).getByRole('heading', { level: 3 })
+    expectBoxNear(await h3.boundingBox(), { x: 20, y: 3041, width: 353, height: 114 })
+    await expect(h3).toHaveCSS('font-size', '32px')
+    await expect(h3).toHaveCSS('line-height', '38px')
+    expectBoxNear(await bandCta(page).boundingBox(), { x: 20, y: 3265, width: 140, height: 40 })
+    await expect(bandCta(page)).toHaveCSS('border-radius', '10px')
+    expectBoxNear(await band(page).locator('.relative').first().boundingBox(), {
+      x: 15, y: 3366, width: 363, height: 337,
+    })
   })
 
   test('band stays fluid and coherent across phone and tablet widths', async ({ page }) => {

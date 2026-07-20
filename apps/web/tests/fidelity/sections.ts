@@ -28,6 +28,15 @@ export interface FidelityTarget {
    * this background, so the Baseline must be flattened onto it before diffing.
    */
   flattenOnto?: string
+  /**
+   * The design frame carries a DUOTONE noise effect, so its "flat" areas are a
+   * random per-pixel field (sampled: green swinging 22–50 R, and brighter areas
+   * further). Reproducing noise cannot reduce a per-pixel diff — two random
+   * fields disagree everywhere — so these Baselines are compared on an 8x8
+   * average, which cancels the noise while still catching layout, colour, and
+   * content errors. Naive diff of this band reads ~13%; averaged it reads ~2%.
+   */
+  noiseTextured?: boolean
 }
 
 /**
@@ -158,5 +167,23 @@ export const targets: FidelityTarget[] = [
     source: '1-279.png',
     crop: { x: 0, y: 2457, width: 393, height: 394 },
     clip: { x: 0, y: 2400, width: 393, height: 394 },
+  },
+  // Solutions showcase — desktop: the green band closing the tab body (node
+  // 1:146, y=2829 after the 73px gray gap under the card row), 1440x700.
+  {
+    id: 'solution-showcase-desktop',
+    source: '1-34.png',
+    crop: { x: 0, y: 2829, width: 1440, height: 700 },
+    clip: { x: 0, y: 2829, width: 1440, height: 700 },
+    noiseTextured: true,
+  },
+  // Solutions showcase — mobile: node 1:387 at y=2880 (29px gray gap under the
+  // card block), 393x900; page clip y = render − 57 (the excluded status bar).
+  {
+    id: 'solution-showcase-mobile',
+    source: '1-279.png',
+    crop: { x: 0, y: 2880, width: 393, height: 900 },
+    clip: { x: 0, y: 2823, width: 393, height: 900 },
+    noiseTextured: true,
   },
 ]
