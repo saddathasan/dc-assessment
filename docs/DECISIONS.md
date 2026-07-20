@@ -464,13 +464,81 @@ wrong model never reaches the `feat → dev` human gate.
 
 ---
 
+## D-029 — The Tech Stack marquee scrolls horizontally; the artboard is one frame of it
+
+**Context:** designer note 2:5 reads "The Logo Blocks will be scrolling **vertically**. top & bottom
+row will scroll from same direction & the middle row will scroll from opposite direction." The axis
+word contradicts the rest of its own sentence ("top & bottom row", "middle row") and contradicts the
+artboard, which draws three 1440x150 strips. EXTRACTION.md open question 2 proposed horizontal rows
+but was never ratified; MS-9 cannot be built without settling it.
+
+A first reading of the geometry appears to *refute* the marquee: every row's tiles sum to exactly
+1440 (mobile 393), `clipsContent` is false everywhere, and no node in the region is wider than the
+artboard. There is no overflowing strip and no mask.
+
+**The geometry actually proves the opposite.** Interior tiles are all exactly 250x150; only the
+first and last of each row deviate, and they decode as a single uniform strip sampled at three
+different phases:
+
+| Row | End tiles | Phase | Reconstruction (tile 250, gap 10, pitch 260) |
+|-----|-----------|-------|-----------------------------------------------|
+| 1 (top) | 214 … 176 | 36 | 214, 250, 250, 250, 250, 176 ✓ |
+| 2 (middle) | 174 … 216 | 76 | 174, 250, 250, 250, 250, 216 ✓ |
+| 3 (bottom) | 216 … 174 | 34 | 216, 250, 250, 250, 250, 174 ✓ |
+
+Three independent confirmations: (a) every interior logo is centred in its 250px tile to the pixel;
+(b) the *trimmed* tiles' logos are centred on the reconstructed 250px tile, not the visible remnant
+— React's optical centre is x=89 and a phase-36 tile centres at exactly 89, mobile React at x=83
+against a phase-42 centre of 83; (c) the trimmed tiles carry asymmetric `rectangleCornerRadii`
+(`[0,15,15,0]`), squared on the cut side only — a tile deliberately drawn as clipped. Rows 1 and 3
+sit at near-identical phases (36/34) while row 2 is displaced (76): the note's direction contrast,
+frozen mid-animation.
+
+**Decision:**
+1. The three logo rows are horizontal marquees. Rows 1 and 3 travel one way, row 2 the opposite,
+   per note 2:5's direction contrast. The note's word "vertically" is treated as loose phrasing for
+   scrolling with the page, and is superseded by its own row language plus the geometry above.
+2. The rendered strip is a uniform repeat of 250x150 tiles (mobile 250x100), `#f8f8f8`, radius 15,
+   gap 10, each logo centred at its design box. Zero tiles are hand-trimmed in the build — the
+   artboard's trimmed tiles are reproduced by clipping the row, which is what they depict.
+3. Under `prefers-reduced-motion` the rows render static **at the artboard's phases** (36/76/34
+   desktop, 42/82/40 mobile). This is what makes the Fidelity Gate possible at all: the gate forces
+   `reducedMotion: 'reduce'`, so the Baseline it diffs is the settled state, and the settled state
+   must be the drawn frame.
+4. Overflow is clipped per row at build time. The design has no mask node, so the marquee viewport
+   is ours to add; it stays inside the Tech Stack Section so it cannot become a scroll container for
+   the Solutions sticky scope (which `overflow-x-clip` on the page root already protects).
+5. WCAG 2.2.2 is met by hover/focus pause plus a visually-hidden pause control that reveals on
+   focus. The design draws no pause affordance and the design owner declined visible pause chrome;
+   a focus-revealed control keeps the mechanism reachable by keyboard and AT at zero cost to the
+   Baseline.
+
+**Why superior:** the vertical reading cannot be built without contradicting the artboard — three
+rows sliding vertically past one another would break the row grid into overlaps and gaps, and it
+leaves the mobile edge-bleed (T9.2) unexplained, since bleed only exists on X. The horizontal
+reading is also already load-bearing elsewhere: `apps/api/src/data/tech-stack.json` has shipped
+`direction: left/right/left` since MS-1, and `apps/api/test/content.test.ts` has been pinning the
+invariant `top === bottom && middle !== top` green ever since. This ADR ratifies the model the
+content layer already asserts rather than introducing a new one.
+
+**Trade-off accepted:** the six end tiles the artboards draw are hand-composed — their logos are
+positioned by eye rather than centred, and mobile logo scales are inconsistent (React and Go at
+1.0, Python 0.94, Next.js/Django/Laravel ~0.8165). The build centres every logo uniformly and
+pins the six mobile sizes the artboard fixes, deriving the other twelve at 0.8165. Small diffs
+against the hand-placed end tiles are accepted rather than special-casing positions that only
+exist in one frame of a moving strip.
+
+**Status:** Accepted (MS-9, 2026-07-20). Resolves EXTRACTION.md open question 2; takes the
+marquee half of open question 3 (30s linear).
+
+---
+
 ## Open questions (tracked; each resolves into a numbered decision)
 
 1. Hamburger menu open state (undesigned) — proposed: full-screen dark-green overlay in brand style,
    staggered link reveal; proceeding on this documented recommendation unless vetoed.
-2. Marquee axis (note says "vertically", layout reads horizontal strips) — proposed: horizontal rows
-   with alternating directions (honors the note's direction-contrast intent + matches mobile bleed).
-3. Motion system (durations/easings unspecified) — proposed: 200–300ms ease-out standard, marquee
-   30s linear, documented as the motion scale.
+2. ~~Marquee axis~~ — **resolved by [[#D-029]]**: horizontal rows, alternating direction.
+3. Motion system (durations/easings unspecified) — proposed: 200–300ms ease-out standard, documented
+   as the motion scale. The marquee's 30s linear is settled by [[#D-029]]; the rest stands open.
 4. Cloudflare deployment specifics (Workers static assets vs Pages, monorepo config, custom domain)
    — research in flight; resolves into D-011 config notes.

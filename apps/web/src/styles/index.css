@@ -82,3 +82,66 @@
     }
   }
 }
+
+/*
+ * Tech Stack marquee (D-029). Each row is one frame of a uniform strip: tiles
+ * are 250 wide on a 260 pitch, so six of them make a 1560px cycle that repeats
+ * seamlessly — after travelling exactly one cycle, tile n+6 sits where tile n
+ * was. The base offset parks the strip at the phase its artboard frame was
+ * drawn at (--phase-*, set per row), which is the state the Fidelity Gate
+ * screenshots, since the gate forces reduced motion.
+ *
+ * Motion is opt-in via prefers-reduced-motion: no-preference, matching the app's
+ * motion-safe convention — reduced-motion users get the static drawn frame.
+ * Left- and right-travelling rows get separate keyframes rather than one set
+ * with animation-direction: reverse, so both begin at the same resting offset
+ * and neither jumps when the animation starts.
+ */
+.marquee-strip {
+  --cycle: 1560px;
+  --phase: var(--phase-mobile);
+  transform: translateX(calc(-1 * (var(--cycle) + var(--phase))));
+}
+
+@media (width >= 64rem) {
+  .marquee-strip {
+    --phase: var(--phase-desktop);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .marquee-strip {
+    animation: marquee-left 30s linear infinite;
+  }
+
+  [data-direction='right'] .marquee-strip {
+    animation-name: marquee-right;
+  }
+
+  /* Hover stops the row you are reading; the Section's pause control stops all
+     three. There is deliberately no :focus-within rule — a row holds only
+     images, so nothing inside one can take focus, and the keyboard path to
+     stopping the marquee is the pause control (WCAG 2.2.2, D-029.5). */
+  .marquee-row:hover .marquee-strip,
+  [data-paused='true'] .marquee-strip {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes marquee-left {
+  from {
+    transform: translateX(calc(-1 * (var(--cycle) + var(--phase))));
+  }
+  to {
+    transform: translateX(calc(-1 * (2 * var(--cycle) + var(--phase))));
+  }
+}
+
+@keyframes marquee-right {
+  from {
+    transform: translateX(calc(-1 * (var(--cycle) + var(--phase))));
+  }
+  to {
+    transform: translateX(calc(-1 * var(--phase)));
+  }
+}

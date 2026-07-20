@@ -84,18 +84,6 @@ function expectBoxNear(
   }
 }
 
-/**
- * Appends a 2000px stand-in for the Sections that follow Solutions, so scroll
- * states past today's page tail are reachable. Provisional until MS-9 lands the
- * real Tech Stack and T9.3 verifies the release seam against it.
- */
-function extendPageTail(page: Page) {
-  return page.evaluate(() => {
-    const spacer = document.createElement('div')
-    spacer.style.height = '2000px'
-    document.querySelector('main')!.appendChild(spacer)
-  })
-}
 
 /** Viewport-relative rects for scrolled states, where boundingBox conventions get murky. */
 function viewportRect(page: Page, selector: string) {
@@ -281,8 +269,6 @@ test.describe('Solutions @1440', () => {
   })
 
   test('the tab bar pins while the panel scrolls under it', async ({ page }) => {
-    await extendPageTail(page)
-
     await page.evaluate(() => window.scrollTo(0, 2000))
     expect(await viewportRect(page, BAR_SELECTOR)).toMatchObject({ top: 0 })
 
@@ -293,28 +279,39 @@ test.describe('Solutions @1440', () => {
     expect((await viewportRect(page, BAR_SELECTOR)).top).toBe(0)
   })
 
-  test('bar releases with the Section end — provisional until MS-9', async ({ page }) => {
-    // The Section currently ends after the intro because the panel's cards
-    // (MS-7) and showcase (MS-8) are not built; the synthetic tail stands in
-    // for what follows. MS-9 T9.3 re-verifies against the real Tech Stack.
-    await extendPageTail(page)
-    // Section extent measured at rest — it is 470 tall today (shorter than the
-    // viewport), so both scroll targets are derived from it rather than assumed.
+  test('bar releases with the Section end, at the real Tech Stack seam', async ({ page }) => {
+    // Verified against the real page tail since MS-9 (T9.3): the Section now
+    // runs its full 1836→3529 and Tech Stack follows it, so the release happens
+    // where note 1:277 says it does instead of against a synthetic spacer.
     const box = (await section(page).boundingBox())!
+    const bottom = box.y + box.height
 
     // Still pinned while the Section has room below the bar…
     await page.evaluate((y) => window.scrollTo(0, y), box.y + 100)
     expect((await viewportRect(page, BAR_SELECTOR)).top).toBe(0)
 
     // …and pushed out with the Section bottom once it passes: the bar's bottom
-    // edge rides the Section's bottom edge exactly (note 1:277 release).
-    await page.evaluate((y) => window.scrollTo(0, y), box.y + box.height - 40)
+    // edge rides the Section's bottom edge exactly (note 1:277 release). The
+    // target sits 60 short of the seam so it stays clear of the document's
+    // maximum scroll — the release must be observed, not clamped into.
+    await page.evaluate((y) => window.scrollTo(0, y), bottom - 60)
     const [barRect, sectionRect] = await Promise.all([
       viewportRect(page, BAR_SELECTOR),
       viewportRect(page, 'section#solutions'),
     ])
     expect(barRect.bottom).toBe(sectionRect.bottom)
     expect(barRect.top).toBeLessThan(0)
+
+    // And it never re-pins: scrolled as far as the page goes, the bar is still
+    // riding the Section's bottom edge rather than back at top 0. It does not
+    // leave the viewport outright yet — Tech Stack's 850 tail is shorter than
+    // the 900 viewport, so ~49px of the bar is still on screen at maximum
+    // scroll. MS-10's Footer lengthens the page past that, which is when note
+    // 1:277's "no longer required" becomes literally true.
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))
+    const released = await viewportRect(page, BAR_SELECTOR)
+    expect(released.top).toBeLessThan(0)
+    expect(released.bottom).toBe((await viewportRect(page, 'section#solutions')).bottom)
   })
 
   test('value cards match the Baseline and the light-state design', async ({ page }) => {
@@ -588,7 +585,6 @@ test.describe('Solutions @393', () => {
     await expect(heading(page)).toHaveText('Tech Staff Augmentation')
 
     // Sticky pin, mobile: mid-panel scroll pins the band at 0.
-    await extendPageTail(page)
     await page.evaluate(() => window.scrollTo(0, 2000))
     expect((await viewportRect(page, BAR_SELECTOR)).top).toBe(0)
   })

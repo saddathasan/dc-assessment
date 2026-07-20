@@ -1,6 +1,7 @@
 import { Hero } from '../sections/Hero/Hero'
 import { Navigation } from '../sections/Navigation/Navigation'
 import { Solutions } from '../sections/Solutions/Solutions'
+import { TechStack } from '../sections/TechStack/TechStack'
 import { TrustedBy } from '../sections/TrustedBy/TrustedBy'
 import { WeAre } from '../sections/WeAre/WeAre'
 
@@ -26,6 +27,17 @@ export function LandingPage() {
         <section id="solutions" aria-label="Solutions" className="bg-surface-2">
           <Solutions />
         </section>
+        {/* The desktop artboard separates the showcase from Tech Stack by
+            exactly 1px — frame 1:143 carries itemSpacing=1 over a white fill,
+            so the gap is invisible but real. Built rather than dropped so every
+            y below stays on the artboard (Tech Stack 3530, Footer 4380); the
+            mobile stack has no such spacing and is flush. */}
+        <div aria-hidden className="hidden h-px bg-white lg:block" />
+        {/* Tech Stack opens exactly where Solutions closes (y=3530 / 3780), and
+            that seam is the sticky tab bar's release: the bar is bound by the
+            Section above, so this sibling landing here is what ends the pin
+            (note 1:277, D-028.6). */}
+        <TechStack />
       </main>
     </div>
   )
