@@ -252,13 +252,27 @@ describe('content endpoints', () => {
     // D-017.2: "@2022-2026" corrected to the real copyright symbol
     expect(joined(footer.copyright)).toBe('©2022-2026 MetaTech LLC // All Rights Reserved')
     expect(footer.copyright.filter((s) => s.accent).map((s) => s.text)).toEqual(['MetaTech LLC '])
-    expect(footer.legalLinks.map((l) => l.label)).toEqual(['Privacy Policy', 'Terms of Use'])
+    // D-030: both artboards draw Terms of Use before Privacy Policy (desktop
+    // 1:256 at x=625 vs 1:255 at x=733; mobile 1:446 at y=0 vs 1:447 at y=44).
+    expect(footer.legalLinks.map((l) => l.label)).toEqual(['Terms of Use', 'Privacy Policy'])
     expect(footer.socialLinks.map((l) => l.label)).toEqual([
       'Facebook',
       'Linkedin',
       'Instagram',
       'Youtube',
     ])
+    // D-030: the mobile artboard reorders the socials (1:450..1:453), so one
+    // list cannot drive both breakpoints — same shape as logosMobile (D-017.4).
+    expect(footer.socialLinksMobile.map((l) => l.label)).toEqual([
+      'Linkedin',
+      'Youtube',
+      'Instagram',
+      'Facebook',
+    ])
+    // The reorder is a permutation, not a different set: same labels, same hrefs.
+    expect([...footer.socialLinksMobile].sort((a, b) => a.label.localeCompare(b.label))).toEqual(
+      [...footer.socialLinks].sort((a, b) => a.label.localeCompare(b.label)),
+    )
     expect(footer.showWordmark).toBe(true)
   })
 

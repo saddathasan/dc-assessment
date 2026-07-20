@@ -366,10 +366,7 @@ test.describe('Solutions sticky release at the Tech Stack seam (T9.3)', () => {
     expect(top).toBe(isMobile ? 3723 : 3530)
   })
 
-  test('the Section makes the release position reachable without clamping', async ({
-    page,
-    isMobile,
-  }) => {
+  test('the Section makes the release position reachable without clamping', async ({ page }) => {
     // The bar's release is asserted in solutions.spec.ts, which owns the sticky
     // behaviour. What MS-9 owes it is a real tail: before this Section landed,
     // the document ended at the Solutions Section, so no scroll position could
@@ -377,12 +374,12 @@ test.describe('Solutions sticky release at the Tech Stack seam (T9.3)', () => {
     // now-deleted extendPageTail). This pins the property that made it real —
     // the page can actually scroll far enough to push the bar off its perch.
     //
-    // Desktop only, and the margin is thin on purpose: Tech Stack's 850 tail is
-    // shorter than the 900 viewport, so the release clears by ~51px. Mobile
-    // cannot reach it at all yet (710 of tail against an 852 viewport) and
-    // becomes observable when MS-10 lands the Footer.
-    test.skip(isMobile, 'mobile release needs the Footer (MS-10) to be reachable')
-
+    // Runs at both widths since MS-10. Tech Stack's tail alone was not enough:
+    // desktop cleared by 21px (not the ~51 this comment used to claim — the
+    // measure below takes the 70px pill, not the 100px sticky band) and mobile
+    // fell 102px short, which is why this was desktop-only. The Footer's 358 /
+    // 482 take the margin to 379 desktop (3838 max scroll against a 3459
+    // release) and 380 mobile (4063 against 3683).
     const { maxScroll, releaseAt } = await page.evaluate(() => {
       const solutions = document.querySelector('section#solutions')!.getBoundingClientRect()
       const bar = document.querySelector('[role="tablist"]')!.getBoundingClientRect()

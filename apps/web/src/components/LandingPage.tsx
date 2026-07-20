@@ -1,3 +1,4 @@
+import { Footer } from '../sections/Footer/Footer'
 import { Hero } from '../sections/Hero/Hero'
 import { Navigation } from '../sections/Navigation/Navigation'
 import { Solutions } from '../sections/Solutions/Solutions'
@@ -39,6 +40,11 @@ export function LandingPage() {
             (note 1:277, D-028.6). */}
         <TechStack />
       </main>
+      {/* Flush under Tech Stack at both widths (3530 + 850 = 4380 desktop,
+          3780 + 710 = 4490 mobile), so unlike the seam above there is no
+          spacer here. Outside <main> on purpose: a <footer> nested in main is
+          a section footer, not the page's, and silently loses contentinfo. */}
+      <Footer />
     </div>
   )
 }
