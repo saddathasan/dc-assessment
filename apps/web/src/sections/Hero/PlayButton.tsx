@@ -24,7 +24,7 @@ export function PlayButton({ variant, onClick }: PlayButtonProps) {
       data-testid="hero-play"
       onClick={onClick}
       style={{ width: size.outer, height: size.outer }}
-      className="grid cursor-pointer place-items-center rounded-full bg-[rgba(51,249,135,0.25)] motion-safe:transition-transform motion-safe:hover:scale-105"
+      className="relative grid cursor-pointer place-items-center rounded-full bg-[rgba(51,249,135,0.25)] motion-safe:transition-transform motion-safe:hover:scale-105"
     >
       <span
         style={{ width: size.middle, height: size.middle }}
@@ -44,6 +44,16 @@ export function PlayButton({ variant, onClick }: PlayButtonProps) {
           </svg>
         </span>
       </span>
+      {/* Heartbeat ripple: an accent ring that pulses out of the button to invite
+          the click. Appended last so it never precedes the rings the Fidelity
+          Gate reads as span:first; absolute + opacity-0 so at rest it changes
+          neither the button box nor the Baseline. Motion-safe-gated, so the gate
+          (forced reduced motion) sees only this transparent resting state. */}
+      <span
+        aria-hidden="true"
+        data-testid="hero-play-pulse"
+        className="pointer-events-none absolute inset-0 rounded-full border-2 border-accent opacity-0 motion-safe:animate-heartbeat"
+      />
     </button>
   )
 }

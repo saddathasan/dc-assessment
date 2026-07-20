@@ -60,6 +60,11 @@
   /* Motion scale (open Q3 default): 200–300ms ease-out; disabled via motion-safe gates. */
   --animate-menu-in: menu-in 200ms ease-out;
   --animate-rise-in: rise-in 300ms ease-out both;
+  /* Hero play-button heartbeat: an accent ring that swells out of the button and
+     fades, then rests. Longer than the UI scale on purpose — it is ambient, not a
+     response. Decorative and motion-safe-gated, so the Fidelity Baseline (forced
+     reduced motion) never sees it. */
+  --animate-heartbeat: heartbeat 3s ease-out infinite;
 
   @keyframes menu-in {
     from {
@@ -79,6 +84,26 @@
     to {
       opacity: 1;
       transform: none;
+    }
+  }
+  /* Swells from the button edge to 1.6x while fading, then holds clear for the
+     rest of the cycle — the gap between beats is what makes it read as a pulse
+     rather than a spinner. */
+  @keyframes heartbeat {
+    0% {
+      transform: scale(1);
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.3;
+    }
+    55% {
+      transform: scale(1.4);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1.4);
+      opacity: 0;
     }
   }
 }

@@ -106,6 +106,19 @@ test.describe('Hero @1440', () => {
     })
   })
 
+  test('the play pulse is decorative and invisible at rest, so the Baseline is untouched', async ({
+    page,
+  }) => {
+    // The heartbeat ripple is not in the artboard; it must not shift the Fidelity
+    // Baseline. Motion-safe-gated, so under the gate's forced reduced motion it
+    // stays fully transparent and out of flow: the button box is still 130 and
+    // the at-rest pixels are the design's.
+    const pulse = visiblePlay(page).getByTestId('hero-play-pulse')
+    await expect(pulse).toHaveCSS('opacity', '0')
+    await expect(pulse).toHaveAttribute('aria-hidden', 'true')
+    expect(await visiblePlay(page).boundingBox()).toMatchObject({ width: 130, height: 130 })
+  })
+
   test('band stays capped and coherent on wide viewports', async ({ page }) => {
     // No Baseline exists beyond the design's 1440 artboard, but the layout must
     // degrade coherently there: the band caps at 1440 and centers (the nav's
