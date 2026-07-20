@@ -124,7 +124,12 @@ const dots = (page: Page) => band(page).locator('ul').last().locator('span')
 const cardRow = (page: Page) => page.getByTestId('solution-cards')
 const cards = (page: Page) => cardRow(page).locator('li')
 const cardTitle = (page: Page, i: number) => cards(page).nth(i).getByRole('heading', { level: 3 })
-const cardBody = (page: Page, i: number) => cards(page).nth(i).locator('p')
+// The light and dark states are separate cross-fading layers (see SolutionCards):
+// the light one is presentational, so its heading is a <p> inside an aria-hidden box.
+const lightLayer = (page: Page, i: number) => cards(page).nth(i).locator('div[aria-hidden]')
+const darkLayer = (page: Page, i: number) => cards(page).nth(i).locator(':scope > div').nth(1)
+const cardRestTitle = (page: Page, i: number) => lightLayer(page, i).locator('p')
+const cardBody = (page: Page, i: number) => darkLayer(page, i).locator('p')
 
 const BAR_SELECTOR = '[data-testid="solutions-tab-bar"]'
 
@@ -332,7 +337,7 @@ test.describe('Solutions @1440', () => {
     // Titles 1:136/1:139/1:142: centered ink Bricolage 800 32, ls -1.6, and the
     // content column is the full 397 (padding 30 either side of 457).
     for (const i of [0, 1, 2]) {
-      const title = cardTitle(page, i)
+      const title = cardRestTitle(page, i)
       expectBoxNear(await title.boundingBox(), { x: [48.5, 521.5, 994.5][i], width: 397 })
       await expect(title).toHaveCSS('font-family', /Bricolage/)
       await expect(title).toHaveCSS('font-size', '32px')
@@ -344,23 +349,57 @@ test.describe('Solutions @1440', () => {
     // The two wrapping titles sit exactly where the design puts them; line-height
     // is held at the design's 42 through the flip rather than dropping to the
     // dark state's 36, so the heading never reflows mid-animation.
-    expectBoxNear(await cardTitle(page, 1).boundingBox(), { y: 2489, height: 84 })
-    expectBoxNear(await cardTitle(page, 2).boundingBox(), { y: 2489, height: 84 })
+    expectBoxNear(await cardRestTitle(page, 1).boundingBox(), { y: 2489, height: 84 })
+    expectBoxNear(await cardRestTitle(page, 2).boundingBox(), { y: 2489, height: 84 })
 
-    // Body copy is in the DOM but collapsed at rest (note 2:3 reveals it).
-    await expect(cardBody(page, 0)).toHaveCSS('opacity', '0')
+    // At rest the light layer is opaque and the dark one fully faded out; the
+    // body copy stays in the DOM for search and assistive tech either way.
+    await expect(lightLayer(page, 0)).toHaveCSS('opacity', '1')
+    await expect(darkLayer(page, 0)).toHaveCSS('opacity', '0')
   })
 
   test('a card flips light to dark on hover, revealing its body (note 2:3)', async ({ page }) => {
     const card = cards(page).first()
+    // hover() scrolls the card into view, so settle the scroll BEFORE sampling —
+    // otherwise the "did it move" comparison just measures the scroll.
+    await card.scrollIntoViewIfNeeded()
+    // Geometry of both layers before the flip: the reveal is a cross-fade like
+    // the mega-menu tiles, so neither may move (mutating text-align or
+    // justify-content instead snapped the heading on frame 1 — see SolutionCards).
+    const restBefore = await cardRestTitle(page, 0).boundingBox()
+    const darkBefore = await cardTitle(page, 0).boundingBox()
+
     await card.hover()
 
     // Frame 2:36: bg #032019, title accent green and left-aligned, body white.
     await expect(card).toHaveCSS('background-color', 'rgb(3, 32, 25)')
+    await expect(lightLayer(page, 0)).toHaveCSS('opacity', '0')
+    await expect(darkLayer(page, 0)).toHaveCSS('opacity', '1')
     await expect(cardTitle(page, 0)).toHaveCSS('color', 'rgb(51, 249, 135)')
-    await expect(cardTitle(page, 0)).toHaveCSS('text-align', 'left')
+    await expect(cardTitle(page, 0)).toHaveCSS('text-align', 'start')
+    expect(await cardRestTitle(page, 0).boundingBox()).toEqual(restBefore)
+    expect(await cardTitle(page, 0).boundingBox()).toEqual(darkBefore)
+    // The dark layer fills the design's 397x390 content box exactly: heading at
+    // its top, body ending on its floor. Pinned because the mobile `h-full`
+    // resolves against the card, not the inset box, and silently overflowed it
+    // by 30px. Measured relative to the card, since hover() has scrolled.
+    const cardBox = (await card.boundingBox())!
+    const layerBox = (await darkLayer(page, 0).boundingBox())!
+    expect(layerBox.width).toBe(397)
+    expect(layerBox.height).toBe(390)
+    expect(layerBox.x - cardBox.x).toBe(30)
+    expect(layerBox.y - cardBox.y).toBe(30)
+
+    const titleBox = (await cardTitle(page, 0).boundingBox())!
+    expect(titleBox.y - cardBox.y).toBe(30)
+    expect(titleBox.height).toBe(42)
+
     const body = cardBody(page, 0)
-    await expect(body).toHaveCSS('opacity', '1')
+    const bodyBox = (await body.boundingBox())!
+    expect(bodyBox.width).toBe(397)
+    expect(bodyBox.height).toBe(120)
+    // Body floor == content-box floor: card 450 − 30 padding.
+    expect(bodyBox.y + bodyBox.height - cardBox.y).toBe(420)
     await expect(body).toHaveCSS('color', 'rgb(255, 255, 255)')
     await expect(body).toHaveCSS('font-family', /Manrope/)
     await expect(body).toHaveCSS('font-size', '18px')
@@ -369,7 +408,7 @@ test.describe('Solutions @1440', () => {
 
     // Scoped to the hovered card only — "each card individually".
     await expect(cards(page).nth(1)).toHaveCSS('background-color', 'rgb(255, 255, 255)')
-    await expect(cardBody(page, 1)).toHaveCSS('opacity', '0')
+    await expect(darkLayer(page, 1)).toHaveCSS('opacity', '0')
 
     // The stroke survives the flip (render-verified on the dark cards).
     await expect(card).toHaveCSS('box-shadow', /rgb\(227, 227, 227\) 0px 0px 0px 1px inset/)
@@ -378,7 +417,7 @@ test.describe('Solutions @1440', () => {
   test('keyboard focus mirrors the hover reveal (D-010 parity)', async ({ page }) => {
     await cards(page).first().focus()
     await expect(cards(page).first()).toHaveCSS('background-color', 'rgb(3, 32, 25)')
-    await expect(cardBody(page, 0)).toHaveCSS('opacity', '1')
+    await expect(darkLayer(page, 0)).toHaveCSS('opacity', '1')
   })
 
   test('the card row swaps with the tab', async ({ page }) => {
@@ -386,6 +425,7 @@ test.describe('Solutions @1440', () => {
     await page.evaluate(() => window.scrollTo(0, 0))
 
     await expect(cardTitle(page, 0)).toHaveText('Engineers Screen Engineers')
+    await expect(cardRestTitle(page, 0)).toHaveText('Engineers Screen Engineers')
     // Authored copy must land in the same design boxes as the extracted set.
     expect(await cardRow(page).boundingBox()).toMatchObject({ y: 2306, height: 450 })
     expectBoxNear(await cards(page).nth(0).boundingBox(), { x: 18.5, y: 2306, width: 457, height: 450 })

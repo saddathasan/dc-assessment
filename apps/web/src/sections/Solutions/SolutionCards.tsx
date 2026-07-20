@@ -3,6 +3,7 @@
 // Light state = desktop nodes 1:132..1:142, dark state = off-artboard frame 2:36;
 // mobile (1:380/1:381) has no hover, so the dark treatment is its resting state
 // and the three cards ride a swipe carousel (D-015). Swaps with the tab (D-028).
+import { useState } from 'react'
 import type { ValueCard } from '@metatech/shared'
 
 /**
@@ -26,12 +27,25 @@ export function SolutionCards({ cards }: { cards: ValueCard[] }) {
   )
 }
 
-/** One card: white→#032019 flip on hover/focus at 1440, always dark below lg (D-015). */
+/**
+ * One card. The light and dark states are two separately-laid-out layers that
+ * cross-fade, rather than one layer whose alignment mutates: `text-align` and
+ * `justify-content` do not animate, so mutating them snapped the heading into
+ * its new place on frame 1 while the colours eased over 300ms. Cross-fading
+ * matches the mega-menu tiles' reveal (opacity only, nothing moves) and renders
+ * each design state exactly, since neither is a tween of the other. The two
+ * fades are staggered (light out over 150ms, dark in over 200ms after a 150ms
+ * delay) so the heading is never legible in both places at once — an
+ * overlapping dissolve ghosts it, which an image reveal like the mega menu's
+ * never has to contend with.
+ */
 function SolutionCardItem({ card }: { card: ValueCard }) {
+  const [revealed, setRevealed] = useState(false)
+
   return (
-    // `group` drives the flip. Mobile rests in the dark state, so the light
-    // classes are lg-only and the flip is gated to hover-capable pointers —
-    // a tap must not leave a card stuck mid-flip (D-010).
+    // State-driven like MegaMenuPanel, so pointer and keyboard drive one flag
+    // and the CSS stays a single `data-revealed` switch. Mobile rests dark, so
+    // every light/flip class is lg-gated.
     // The 1px #E3E3E3 edge is an inset ring, not a border: Figma's INSIDE stroke
     // paints over the frame without consuming padding, so a CSS border would
     // shrink the content box to 395 and shift every child 1px (measured; the
@@ -41,33 +55,40 @@ function SolutionCardItem({ card }: { card: ValueCard }) {
     // resting 23 from the card's bottom edge — honouring 28 puts the body 5px high.
     <li
       tabIndex={0}
-      className="group h-[350px] w-[353px] shrink-0 snap-center rounded-[15px] bg-deep shadow-[inset_0_0_0_1px_#e3e3e3] p-[23px] transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:h-[450px] lg:w-[457px] lg:bg-white lg:p-[30px] lg:hover:bg-deep lg:focus-visible:bg-deep"
+      data-revealed={revealed}
+      onMouseEnter={() => setRevealed(true)}
+      onMouseLeave={() => setRevealed(false)}
+      onFocus={() => setRevealed(true)}
+      onBlur={() => setRevealed(false)}
+      className="group relative h-[350px] w-[353px] shrink-0 snap-center rounded-[15px] bg-deep p-[23px] shadow-[inset_0_0_0_1px_#e3e3e3] transition-colors duration-300 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:h-[450px] lg:w-[457px] lg:bg-white lg:p-[30px] lg:data-[revealed=true]:bg-deep"
     >
-      {/* At rest the body is collapsed to zero height, so `justify-center`
-          centers the heading alone in the content box exactly as the light
-          design does; expanding the body flips the column to top/bottom
-          pinning (the design's SPACE_BETWEEN). */}
-      {/* Mobile text block is 322 wide (node 1:382), which deliberately overruns
-          the card's 23px right padding by 15px — deriving the width from padding
-          instead re-wraps the body and misses the design by whole lines. */}
-      <div className="flex h-full w-[322px] flex-col justify-between lg:w-auto lg:justify-center lg:group-hover:justify-between lg:group-focus-visible:justify-between">
-        {/* Title 1:136/1:139/1:142 → 1:267/1:271/1:275: Bricolage 800 32, ls −1.6.
-            Light is centered ink, dark is left-aligned accent green. Line-height
-            stays 42 through the flip: the design's light state uses 42 on the two
-            wrapping titles and its dark state 36 on all three, and re-flowing the
-            heading mid-animation to save 6px reads as a glitch — the resting
-            state the Baseline diffs is the one held exact. */}
-        <h3 className="font-display text-[24px]/[30px] font-extrabold tracking-[-1.2px] text-accent lg:text-center lg:text-[32px]/[42px] lg:tracking-[-1.6px] lg:text-ink lg:transition-colors lg:duration-300 lg:group-hover:text-left lg:group-hover:text-accent lg:group-focus-visible:text-left lg:group-focus-visible:text-accent">
+      {/* Light layer (nodes 1:135..1:142): heading centred in the content box,
+          ink on white. Presentational only — the dark layer below carries the
+          accessible heading and body, so this duplicate is hidden from AT. */}
+      <div
+        aria-hidden
+        className="absolute inset-[30px] hidden items-center transition-opacity duration-150 ease-out group-data-[revealed=true]:opacity-0 lg:flex"
+      >
+        <p className="w-full text-center font-display text-[32px]/[42px] font-extrabold tracking-[-1.6px] text-ink">
+          {card.heading}
+        </p>
+      </div>
+      {/* Dark layer (frame 2:36): heading pinned to the top of the content box,
+          body to the bottom. In flow below lg (the mobile resting state), an
+          absolutely-positioned cross-fade layer at 1440 — where `h-auto` must
+          undo the mobile `h-full`, which otherwise resolves against the card
+          and overflows the inset box by the padding (measured: body 30px past
+          the card's bottom edge). */}
+      <div className="flex h-full flex-col justify-between lg:absolute lg:inset-[30px] lg:h-auto lg:opacity-0 lg:transition-opacity lg:delay-150 lg:duration-200 lg:ease-out lg:group-data-[revealed=true]:opacity-100">
+        {/* Mobile text block is 322 wide (node 1:382), which deliberately overruns
+            the card's 23px right padding by 15px — deriving the width from padding
+            instead re-wraps the body and misses the design by whole lines. */}
+        <h3 className="w-[322px] font-display text-[24px]/[30px] font-extrabold tracking-[-1.2px] text-accent lg:w-auto lg:text-[32px]/[42px] lg:tracking-[-1.6px]">
           {card.heading}
         </h3>
-        {/* Body reveal via grid-rows 0fr→1fr (D-010's chosen CSS-only pattern):
-            it animates a real height without a magic pixel value, and the copy
-            stays in the DOM for search and assistive tech at every state. */}
-        <div className="grid grid-rows-[1fr] lg:grid-rows-[0fr] lg:transition-[grid-template-rows] lg:duration-300 lg:group-hover:grid-rows-[1fr] lg:group-focus-visible:grid-rows-[1fr]">
-          <p className="overflow-hidden font-sans text-[18px]/[24px] font-medium text-white lg:opacity-0 lg:transition-opacity lg:duration-300 lg:group-hover:opacity-100 lg:group-focus-visible:opacity-100">
-            {card.body}
-          </p>
-        </div>
+        <p className="w-[322px] font-sans text-[18px]/[24px] font-medium text-white lg:w-auto">
+          {card.body}
+        </p>
       </div>
     </li>
   )
