@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+/* Anchor navigation (Solutions tabs, header links) glides only when motion is
+   allowed — the fidelity gate and reduced-motion users get instant jumps. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 /*
  * Design tokens extracted 1:1 from the Figma pull (design/EXTRACTION.md).
  * Text sizes carry their paired line-heights from the design; the scale grows
