@@ -7,8 +7,10 @@
  *
  * The bar is a content SWITCHER, not anchor navigation: one panel renders at a
  * time and the whole panel swaps on selection. It stays pinned for the panel's
- * height and releases where the Section ends — Tech Stack per note 1:277, whose
- * exact seam MS-9 verifies once the panel's cards (MS-7) and showcase (MS-8) land.
+ * height and releases where the Section ends — Tech Stack per note 1:277, the
+ * seam MS-9 verified. Since MS-10 put the Footer under Tech Stack the page
+ * finally outruns that release, so the bar leaves the viewport outright rather
+ * than stalling part-way off it.
  */
 import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
@@ -292,8 +294,9 @@ test.describe('Solutions @1440', () => {
 
     // …and pushed out with the Section bottom once it passes: the bar's bottom
     // edge rides the Section's bottom edge exactly (note 1:277 release). The
-    // target sits 60 short of the seam so it stays clear of the document's
-    // maximum scroll — the release must be observed, not clamped into.
+    // target sits 60 short of the seam so the release is observed rather than
+    // clamped into. That margin used to be the binding constraint — 11px before
+    // MS-10 — but the Footer moved maximum scroll to 3838, well past this 3469.
     await page.evaluate((y) => window.scrollTo(0, y), bottom - 60)
     const [barRect, sectionRect] = await Promise.all([
       viewportRect(page, BAR_SELECTOR),
@@ -303,14 +306,17 @@ test.describe('Solutions @1440', () => {
     expect(barRect.top).toBeLessThan(0)
 
     // And it never re-pins: scrolled as far as the page goes, the bar is still
-    // riding the Section's bottom edge rather than back at top 0. It does not
-    // leave the viewport outright yet — Tech Stack's 850 tail is shorter than
-    // the 900 viewport, so ~49px of the bar is still on screen at maximum
-    // scroll. MS-10's Footer lengthens the page past that, which is when note
-    // 1:277's "no longer required" becomes literally true.
+    // riding the Section's bottom edge rather than back at top 0.
+    //
+    // It is also gone. MS-9 could only record that the bar does not re-pin,
+    // because Tech Stack's 850 tail was shorter than the 900 viewport and left
+    // ~49px of it on screen at maximum scroll. MS-10's Footer takes the page to
+    // 4738, so maximum scroll (3838) now outruns the Section's 3529 end and the
+    // bar clears the top edge by 309px — note 1:277's "no longer required" is
+    // literally true, and asserted as such rather than deferred again.
     await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))
     const released = await viewportRect(page, BAR_SELECTOR)
-    expect(released.top).toBeLessThan(0)
+    expect(released.bottom).toBeLessThan(0)
     expect(released.bottom).toBe((await viewportRect(page, 'section#solutions')).bottom)
   })
 
