@@ -118,17 +118,18 @@ export const targets: FidelityTarget[] = [
     crop: { x: 0, y: 1385, width: 393, height: 370 },
     clip: { x: 0, y: 1328, width: 393, height: 370 },
   },
-  // Solutions — desktop band: tab bar (100) + block 01 (370) on the gray canvas
-  // (node 1:105, abs y=1836 — flush under We Are's 1491+345). The design band
-  // continues into the value-card row at 2306 (MS-7); blocks 02/03 are Authored
-  // Content below the crop (D-016), so the Baseline covers the designed region only.
+  // Solutions — desktop: the tab bar (100) + the active panel's intro block
+  // (370) on the gray canvas (node 1:105, abs y=1836 — flush under We Are's
+  // 1491+345). One panel renders at a time (D-028), so page y ≡ artboard y and
+  // clip ≡ crop. The panel continues past this crop into the value-card row at
+  // 2306 (MS-7) and the showcase at 2829 (MS-8), each getting its own Baseline.
   {
     id: 'solutions-desktop',
     source: '1-34.png',
     crop: { x: 0, y: 1836, width: 1440, height: 470 },
     clip: { x: 0, y: 1836, width: 1440, height: 470 },
   },
-  // Solutions — mobile band: tab row (80) + block 01 (600), node 1:362 at
+  // Solutions — mobile: tab row (80) + intro block (600), node 1:362 at
   // y=1777 — the artboard leaves a 22.24px white strip under We Are's
   // 1384.76+370 end (render-verified white→gray at exactly 1777), built as
   // 22px; page clip y = render − 57 = we-are-mobile's clip end 1698 + the strip.
