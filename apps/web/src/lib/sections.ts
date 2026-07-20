@@ -4,23 +4,23 @@ import type {
   FooterContent,
   HeroContent,
   NavigationContent,
-  ShowcaseContent,
   SolutionsContent,
   TechStackContent,
   TrustedByContent,
-  ValueCardsContent,
   WeAreContent,
 } from '@metatech/shared'
 
-/** Endpoint slug → payload type, one per Section (D-007). */
+/**
+ * Endpoint slug → payload type, one per Section (D-007). Solutions is the tabbed
+ * Section, so its value cards and showcase ride in its payload rather than having
+ * endpoints of their own (D-028.4).
+ */
 export interface SectionPayloads {
   navigation: NavigationContent
   hero: HeroContent
   'trusted-by': TrustedByContent
   'we-are': WeAreContent
   solutions: SolutionsContent
-  'value-cards': ValueCardsContent
-  showcase: ShowcaseContent
   'tech-stack': TechStackContent
   footer: FooterContent
 }

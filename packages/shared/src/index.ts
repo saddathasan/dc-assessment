@@ -96,28 +96,10 @@ export interface SolutionTab {
   label: string
 }
 
-export interface SolutionBlock {
-  id: SolutionId
-  number: string
-  heading: string
-  body: string
-  cta: Cta
-  /** True for Authored Content we wrote where the design is silent (D-016). */
-  authored?: boolean
-}
-
-export interface SolutionsContent {
-  tabs: SolutionTab[]
-  blocks: SolutionBlock[]
-}
-
 export interface ValueCard {
   heading: string
+  /** Revealed by the light→dark hover flip (designer note 2:3). */
   body: string
-}
-
-export interface ValueCardsContent {
-  cards: ValueCard[]
 }
 
 export interface ShowcaseSlide {
@@ -125,11 +107,38 @@ export interface ShowcaseSlide {
 }
 
 export interface ShowcaseContent {
-  logo: ImageAsset
+  /**
+   * Product mark. Optional because only the designed panel ships an exported
+   * logo — Authored panels fall back to a typographic wordmark of `name` (D-028.5).
+   */
+  logo?: ImageAsset
+  name: string
   heading: string
   body: string
   cta: Cta
   slides: ShowcaseSlide[]
+}
+
+/**
+ * One tab's entire body — intro block, value cards, and product showcase all swap
+ * together when the tab changes (D-028). `number` is the tab's index as drawn (01/02/03).
+ */
+export interface SolutionPanel {
+  id: SolutionId
+  number: string
+  heading: string
+  body: string
+  cta: Cta
+  cards: ValueCard[]
+  showcase: ShowcaseContent
+  /** True for Authored Content we wrote where the design is silent (D-016). */
+  authored?: boolean
+}
+
+/** The whole tabbed Section in one payload, so switching tabs never waits on a fetch (D-028.4). */
+export interface SolutionsContent {
+  tabs: SolutionTab[]
+  panels: SolutionPanel[]
 }
 
 export type MarqueeDirection = 'left' | 'right'
