@@ -533,6 +533,81 @@ marquee half of open question 3 (30s linear).
 
 ---
 
+## D-030 — Footer link order comes from the artboards; the mobile socials get their own list
+
+**Chosen over:** keeping the shipped payload order and reversing/reordering in the Footer's JSX.
+**Context:** `/api/footer` has shipped since MS-1 with `legalLinks: [Privacy Policy, Terms of Use]`
+and one `socialLinks` list, pinned green by `content.test.ts`. Building MS-10 against the artboards
+showed both disagree with what is drawn. Desktop draws Terms of Use at x=625 and Privacy Policy at
+x=733; mobile draws Terms at y=0 and Privacy at y=44 — Terms first at **both** widths. The payload
+had captured Figma's child order, which for node 1:254 is the reverse of its drawn order. Separately
+the socials are ordered `Facebook, Linkedin, Instagram, Youtube` on desktop (1:258..1:261) but
+`Linkedin, Youtube, Instagram, Facebook` on mobile (1:450..1:453) — a permutation, same four links.
+
+**Decision:**
+1. `legalLinks` is stored in drawn order (Terms of Use, Privacy Policy). The artboard is the
+   authority on order, as it already is on text — the same reasoning that made the rendered
+   characters beat the stale "DataCrunch LLC" layer name (D-017.2).
+2. `FooterContent` gains `socialLinksMobile`, carrying the mobile artboard's permutation. The
+   contract test asserts both orders **and** that the two are permutations of one another, so a
+   future edit cannot quietly diverge the sets while keeping the orders green.
+
+**Why superior:** the Fidelity Gate cannot pass without reproducing both orders, so the only real
+question was where the knowledge lives. In the payload it is one declarative list per breakpoint,
+pinned by a contract test and visible to anyone reading the content; in JSX it would be a
+`.reverse()` and an index map (`[1,3,2,0]`) whose only justification is a comment. `logosMobile`
+already set this precedent for Trusted By (D-017.4), whose docstring says the same thing: one list
+cannot drive both breakpoints.
+
+**Trade-off accepted:** MS-10 was scoped as a web-only slice and this reaches into
+`packages/shared`, `apps/api/src/data`, and the API contract test. Taken deliberately — the
+alternative hides design truth in the presentation layer, and the API half of the Footer was
+otherwise complete.
+
+**Status:** Accepted (MS-10, 2026-07-20). Confirmed by the design owner before implementation.
+
+---
+
+## D-031 — The Footer wordmark is a two-colour VECTOR under a tilted scrim, not gradient type
+
+**Chosen over:** rendering it as text and back-solving a font size (the MS-6 approach for the
+Solutions numeral); treating the mark as a gradient fill; treating the scrim as a vertical fade.
+**Context:** the plan and `EXTRACTION.md:75` both describe "a giant gradient METATECH wordmark
+bleeding off the bottom". Three parts of that are wrong, and the node tree alone does not correct
+them — the render is what settles it.
+
+**Decision:**
+1. The mark is a `VECTOR` at both widths (1:262 desktop, 1:457 mobile), so its eight glyph subpaths
+   ship as `fillGeometry` verbatim and there is no font to match. `targetAspectRatio` is 164:26 on
+   both and mobile reconstructs as desktop x 0.273045 to the pixel, so **one viewBox drives both
+   breakpoints**.
+2. It is **not** a gradient. The node's `fills` reads solid white; the per-glyph colour lives in
+   `fillOverrideTable`, which paints subpaths 0..3 (META) `--color-accent` and leaves 4..7 (TECH)
+   white. Reading `fills` alone yields an all-white mark that still passes a careless review.
+3. It does **not** bleed. Desktop 131+227 = 358 and mobile 420+62 = 482 both land flush on the
+   band's bottom edge, and the glyphs are complete. The impression of bleeding is the scrim.
+4. The scrim (1:264) is **desktop-only** — the mobile artboard draws none, which is why its mark
+   stays crisp — and it is **tilted**. Its handles read (0.534,1.0) → (0.535,0.128); denormalised as
+   (dx·W, dy·H) that is a 1px lean over 198px, i.e. vertical. Denormalising a direction out of
+   Figma's unit square needs the box aspect, so the horizontal term carries a further W/H = 6.34 and
+   the true axis is (6.40, −198.0). Over a 1432-wide mark that swings alpha by ~0.2 across the band.
+5. The mark is decorative (`aria-hidden`): the nav logo and the copyright line already say the name.
+
+**Why superior:** every part is falsifiable against the committed render rather than the node dump.
+Recovering alpha from the glyphs (`a = (255 − observed)/233` on the white half, `(249 − observed)/227`
+on the green) reproduces the model to within 0.007 across the full width, and correcting the tilt
+took the mark region from 9.82% to **0.07%** against the design render.
+
+**Trade-off accepted:** the tilt is invisible at a glance and the gate's 5% budget absorbed it
+comfortably — it was only caught because the per-slice independent diff is run every milestone.
+The CSS carries three derived constants (181.85deg, 50.45px, 248.56px) that cannot be read back off
+the node, so the derivation is written out where they are used.
+
+**Status:** Accepted (MS-10, 2026-07-20). Corrects the "gradient wordmark bleeding off bottom"
+phrasing in the plan and `EXTRACTION.md:75`.
+
+---
+
 ## Open questions (tracked; each resolves into a numbered decision)
 
 1. Hamburger menu open state (undesigned) — proposed: full-screen dark-green overlay in brand style,
