@@ -7,7 +7,7 @@ export function SolutionsSkeleton() {
   return (
     <div aria-hidden className="animate-pulse">
       <div className="mx-auto h-20 max-w-[1440px] pt-5 lg:h-[100px] lg:pt-[30px]">
-        <div className="mx-5 h-10 rounded-[5px] bg-white/60 lg:mx-0 lg:ml-[490px] lg:h-[70px] lg:w-[612px] lg:rounded-[15px]" />
+        <div className="mx-5 h-10 rounded-[5px] bg-white/60 lg:mx-0 lg:ml-[490px] lg:h-[70px] lg:w-[612px] lg:rounded-card" />
       </div>
       <div className="mx-auto flex h-[600px] max-w-[1440px] items-center justify-center px-5 lg:h-[370px] lg:items-end lg:justify-start lg:pb-[50px]">
         <div className="h-[424px] w-full max-w-[342px] rounded-card bg-black/10 lg:h-[234px] lg:w-[1078px] lg:max-w-none" />

@@ -63,7 +63,7 @@ export function SolutionShowcase({ showcase }: { showcase: ShowcaseContent }) {
             {/* CTA 1:154/1:397: ghost pill, 2px white@35% inset stroke. */}
             <a
               href={showcase.cta.href}
-              className="mt-[30px] inline-flex h-10 w-[140px] items-center justify-center rounded-[10px] font-sans text-[14px]/[24px] font-bold tracking-[-0.7px] text-[#efefef] shadow-[inset_0_0_0_2px_rgba(255,255,255,0.35)] transition-colors hover:bg-white/10 lg:mt-[50px] lg:h-[50px] lg:w-[169px] lg:rounded-[15px]"
+              className="mt-[30px] inline-flex h-10 w-[140px] items-center justify-center rounded-[10px] font-sans text-[14px]/[24px] font-bold tracking-[-0.7px] text-line shadow-[inset_0_0_0_2px_rgba(255,255,255,0.35)] transition-colors hover:bg-white/10 lg:mt-[50px] lg:h-[50px] lg:w-[169px] lg:rounded-card"
             >
               {showcase.cta.label}
             </a>
@@ -93,7 +93,7 @@ function ShowcaseCarousel({
   return (
     // Media frame 1:157/1:400: 700x650 at 1440, 363x337 below — the device art
     // is a crop of one capture (D-023.1 reuses it across the slides).
-    <div className="relative h-[337px] w-[363px] shrink-0 overflow-hidden rounded-[15px] lg:mt-0 lg:h-[650px] lg:w-[700px] lg:rounded-[25px]">
+    <div className="relative h-[337px] w-[363px] shrink-0 overflow-hidden rounded-card lg:mt-0 lg:h-[650px] lg:w-[700px] lg:rounded-bar">
       <ul
         onScroll={(event) => {
           const el = event.currentTarget
@@ -132,7 +132,7 @@ function ShowcaseCarousel({
           <li key={index}>
             <span
               aria-hidden
-              className={`block h-[6px] rounded-[25px] transition-all lg:h-[10px] ${
+              className={`block h-[6px] rounded-bar transition-all lg:h-[10px] ${
                 index === active ? 'w-[50px] bg-white' : 'w-5 bg-white/50'
               }`}
             />

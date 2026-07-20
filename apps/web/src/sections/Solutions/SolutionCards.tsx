@@ -60,7 +60,7 @@ function SolutionCardItem({ card }: { card: ValueCard }) {
       onMouseLeave={() => setRevealed(false)}
       onFocus={() => setRevealed(true)}
       onBlur={() => setRevealed(false)}
-      className="group relative h-[350px] w-[353px] shrink-0 snap-center rounded-[15px] bg-deep p-[23px] shadow-[inset_0_0_0_1px_#e3e3e3] transition-colors duration-300 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:h-[450px] lg:w-[457px] lg:bg-white lg:p-[30px] lg:data-[revealed=true]:bg-deep"
+      className="group relative h-[350px] w-[353px] shrink-0 snap-center rounded-card bg-deep p-[23px] shadow-[inset_0_0_0_1px_#e3e3e3] transition-colors duration-300 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:h-[450px] lg:w-[457px] lg:bg-white lg:p-[30px] lg:data-[revealed=true]:bg-deep"
     >
       {/* Light layer (nodes 1:135..1:142): heading centred in the content box,
           ink on white. Presentational only — the dark layer below carries the

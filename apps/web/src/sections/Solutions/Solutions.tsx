@@ -71,7 +71,7 @@ function SolutionsTabs({ content }: { content: SolutionsContent }) {
             aria-label="Solution categories"
             aria-orientation="horizontal"
             onKeyDown={onKeyDown}
-            className="pointer-events-auto flex h-10 items-center gap-[5px] overflow-x-auto px-5 [scrollbar-width:none] lg:ml-[490px] lg:h-[70px] lg:w-[612px] lg:gap-0 lg:overflow-visible lg:rounded-[15px] lg:bg-white lg:px-[6px] [&::-webkit-scrollbar]:hidden"
+            className="pointer-events-auto flex h-10 items-center gap-[5px] overflow-x-auto px-5 [scrollbar-width:none] lg:ml-[490px] lg:h-[70px] lg:w-[612px] lg:gap-0 lg:overflow-visible lg:rounded-card lg:bg-white lg:px-[6px] [&::-webkit-scrollbar]:hidden"
           >
             {content.tabs.map((tab, index) => (
               <SolutionsTab
@@ -176,7 +176,7 @@ function SolutionIntro({ panel }: { panel: SolutionPanel }) {
               design centers the label in a fixed box, not padding-hugged. */}
           <a
             href={panel.cta.href}
-            className="inline-flex h-10 w-[170px] items-center justify-center rounded-[10px] bg-ink font-sans text-[14px]/[24px] font-bold tracking-[-0.7px] text-[#efefef] lg:h-[50px] lg:w-[192px] lg:rounded-[15px]"
+            className="inline-flex h-10 w-[170px] items-center justify-center rounded-[10px] bg-ink font-sans text-[14px]/[24px] font-bold tracking-[-0.7px] text-line lg:h-[50px] lg:w-[192px] lg:rounded-card"
           >
             {panel.cta.label}
           </a>
