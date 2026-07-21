@@ -649,6 +649,37 @@ kept-22px-strip alternatives were both presented and declined/confirmed respecti
 
 ---
 
+## D-033 — Mega-menu tiles deep-link to a Solutions tab via a URL param + event
+
+**Chosen over:** a lifted React context wrapping both sections; a session-only custom event with no
+URL; refactoring the tab bar onto the router's search state.
+**Context:** the mega-menu tiles carry a `SolutionId` (D-028) but hardcoded `href="#solutions"`, so
+every tile opened the default tab. Navigation and Solutions are separate `SectionBoundary` islands
+with no shared React state, so the tile cannot simply call the tab bar's setter. The nav "Showcase"
+link (and every panel's Explore-more CTA) pointed at a `#showcase` that did not exist.
+
+**Decision:**
+1. A tile opens its tab through **both** a URL param and a custom event (`lib/solutionDeepLink.ts`):
+   `?solution=<id>` is shareable and survives reload (the tab bar hydrates its initial tab from it),
+   and a `metatech:select-solution` event nudges the already-mounted tab bar live — necessary
+   because `history.pushState` fires no `popstate`. Back/forward replays the param.
+2. The showcase band carries `id="showcase"`. Only the active panel renders, so exactly one target
+   exists; the nav link and CTAs scroll to the current tab's showcase.
+
+**Why superior:** the URL param makes a tab genuinely linkable/bookmarkable — the property a
+context or bare event cannot give — while the event keeps it live without a full router refactor.
+The default tab is unchanged when no param is present, so the Fidelity Gate (which never drives the
+mega-menu) sees identical Baselines; three interaction tests pin the tile→tab flow, the shared-link
+hydration, and the Showcase target.
+
+**Trade-off accepted:** two channels rather than one (URL for share, event for live), and a
+stringly-typed event detail validated against `content.tabs`. The alternative — router search
+state — would couple the tab model to the router and reconcile the async `SectionBoundary` load.
+
+**Status:** Accepted (MS-11 polish, 2026-07-21).
+
+---
+
 ## Open questions (tracked; each resolves into a numbered decision)
 
 1. Hamburger menu open state (undesigned) — proposed: full-screen dark-green overlay in brand style,
@@ -658,3 +689,17 @@ kept-22px-strip alternatives were both presented and declined/confirmed respecti
    as the motion scale. The marquee's 30s linear is settled by [[#D-029]]; the rest stands open.
 4. Cloudflare deployment specifics (Workers static assets vs Pages, monorepo config, custom domain)
    — research in flight; resolves into D-011 config notes.
+5. **Showcase-band & nav-CTA contrast (MS-11).** Two AA color-contrast gaps remain, both inherited
+   verbatim from Figma: the product showcase's light text on `green-700`, and the nav "Book a
+   meeting" pill (white on 25%-white over deep green, computed 4.04:1 vs 4.5). Raising either
+   changes the design's colours and breaks a Baseline, so it is a design-owner call — accept as a
+   documented assumption, or approve a deviation. Scoped out of the axe gate meanwhile
+   (`a11y.spec.ts`), not silently patched.
+6. **Mobile performance (MS-11).** Lighthouse: desktop 94/96/100/92 (all ≥90); mobile
+   75/96/100/92, the perf gap entirely LCP=9.1s from the 444KB hero PNG (CLS 0, TBT 0). Reaching
+   ≥90 on mobile needs the hero image optimised (webp + responsive sizes) — a build-pipeline
+   addition (ask-first) that also re-encodes a gate-baselined asset. Deferred pending approval.
+7. **Solutions mid-width reflow (MS-11).** The tabbed region's fixed 710+700 showcase columns, the
+   3×457 card row, and the 490+612 tab pill clip between 1024 and 1440 — a band no artboard covers.
+   We Are / Tech Stack were fixed with shrinkable gutters; Solutions needs a strategy call (scale
+   the device, stack the columns, or clamp) since there is no design truth for it.

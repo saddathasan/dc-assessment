@@ -24,7 +24,7 @@ export function SolutionShowcase({ showcase }: { showcase: ShowcaseContent }) {
     // The gray canvas shows through above the band: the artboard leaves 73px
     // between the card row's end (2756) and the band's start (2829), and 29px
     // on mobile (2851 → 2880).
-    <div className="mt-[29px] bg-green-700 lg:mt-[73px]">
+    <div id="showcase" className="mt-[29px] bg-green-700 lg:mt-[73px]">
       <div className="mx-auto max-w-[1440px] lg:flex lg:h-[700px] lg:items-center">
         {/* Copy column 1:147: 680 wide at x=30, so it occupies 30..710 and the
             media column starts at exactly 710 — modelled as a 710-wide column
@@ -95,6 +95,11 @@ function ShowcaseCarousel({
     // is a crop of one capture (D-023.1 reuses it across the slides).
     <div className="relative h-[337px] w-[363px] shrink-0 overflow-hidden rounded-card lg:mt-0 lg:h-[650px] lg:w-[700px] lg:rounded-bar">
       <ul
+        // Keyboard-reachable so the scroll region isn't pointer-only (WCAG 2.1.1;
+        // axe scrollable-region-focusable): tabindex lets it take focus and arrow
+        // keys scroll it, and the label names what the slides are.
+        tabIndex={0}
+        aria-label={`${showcase.name} product screens`}
         onScroll={(event) => {
           const el = event.currentTarget
           onActive(Math.round(el.scrollLeft / el.clientWidth))
@@ -132,7 +137,7 @@ function ShowcaseCarousel({
           <li key={index}>
             <span
               aria-hidden
-              className={`block h-[6px] rounded-bar transition-all lg:h-[10px] ${
+              className={`block h-[6px] rounded-bar motion-safe:transition-all lg:h-[10px] ${
                 index === active ? 'w-[50px] bg-white' : 'w-5 bg-white/50'
               }`}
             />

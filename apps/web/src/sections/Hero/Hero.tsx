@@ -13,7 +13,7 @@ import { VideoModal } from './VideoModal'
 export function Hero() {
   const query = useSectionQuery('hero')
   return (
-    <section className="bg-deep text-white">
+    <section aria-label="Introduction" className="bg-deep text-white">
       <SectionBoundary query={query} skeleton={<HeroSkeleton />}>
         {(hero) => <HeroLayout content={hero} />}
       </SectionBoundary>
@@ -105,6 +105,7 @@ function HeroLayout({ content }: { content: HeroContent }) {
             src={content.media.image.src}
             alt={content.media.image.alt}
             data-testid="hero-photo"
+            fetchPriority="high"
             className="absolute top-[-5%] left-[-0.7895%] h-[127.5%] w-[100.7895%] max-w-none object-cover lg:top-[-95px] lg:left-[calc(50%-702px)] lg:h-[934px] lg:w-[1402px]"
           />
           {/* Diagonal dark→green→dark wash over the photo (nodes 2:15/2:30). */}

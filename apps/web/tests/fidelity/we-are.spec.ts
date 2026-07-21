@@ -116,6 +116,21 @@ test.describe('We Are @1440', () => {
       height: 195,
     })
   })
+
+  test('the statement never clips in the 1024–1440 band the artboards skip', async ({ page }) => {
+    // The gate only pins 1440/393, and the root overflow-x-clip hides a horizontal
+    // overrun rather than scrolling it — so a rigid 400px gutter clipped the 680px
+    // statement off the right edge on small laptops (was +24@1152 … +152@1024). The
+    // gutter is now a shrinkable spacer; the statement must stay in-frame at every
+    // width, while x=496 stays exact where there is room (≥1280).
+    for (const width of [1280, 1152, 1088, 1024]) {
+      await page.setViewportSize({ width, height: 900 })
+      const box = (await statement(page).boundingBox())!
+      expect(box.width).toBe(680)
+      expect(box.x + box.width).toBeLessThanOrEqual(width)
+      if (width >= 1280) expect(box.x).toBe(496)
+    }
+  })
 })
 
 test.describe('We Are @393', () => {
