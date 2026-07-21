@@ -58,7 +58,7 @@ test.describe('Navigation @1440', () => {
     const cta = page.getByRole('link', { name: 'Book a meeting' })
     expect(await cta.boundingBox()).toMatchObject({ height: 50 })
     await expect(cta).toHaveCSS('border-radius', '15px')
-    await expect(cta).toHaveCSS('background-color', 'rgba(255, 255, 255, 0.25)')
+    await expect(cta).toHaveCSS('background-color', 'rgba(0, 0, 0, 0.32)') // D-034: dark pill for AA
     await expect(cta).toHaveCSS('padding', '10px 25px')
     await expect(cta).toHaveCSS('font-weight', '800')
   })

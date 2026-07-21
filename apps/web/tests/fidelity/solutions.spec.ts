@@ -101,7 +101,9 @@ const tabRow = (page: Page) => page.getByRole('tablist')
 const tab = (page: Page, name: string) => page.getByRole('tab', { name })
 const panel = (page: Page) => page.getByRole('tabpanel')
 // First child only: the showcase's scrim is aria-hidden too.
-const numeralBox = (page: Page) => panel(page).locator('> div').first().locator('div[aria-hidden]')
+// .first(): the numeral box precedes the D-035 shrinkable gutter spacer, which is also aria-hidden.
+const numeralBox = (page: Page) =>
+  panel(page).locator('> div').first().locator('div[aria-hidden]').first()
 const heading = (page: Page) => panel(page).getByRole('heading', { level: 2 })
 // Scoped to the intro block: the card row and the showcase each add their own
 // paragraphs to the panel, so this must target the panel's first child only.
@@ -441,7 +443,7 @@ test.describe('Solutions @1440', () => {
     // card row. (The design token named `showcase` was a mobile-sampled #21A356;
     // both artboards' node fill is this green, so that token is retired.)
     expect(await band(page).boundingBox()).toMatchObject({ y: 2829, height: 700 })
-    await expect(band(page)).toHaveCSS('background-color', 'rgb(23, 169, 85)')
+    await expect(band(page)).toHaveCSS('background-color', 'rgb(14, 124, 59)') // D-034: darkened for AA
 
     // Copy column 1:148 centred in the band: logo, 230 gap, then the copy stack.
     expectBoxNear(await band(page).locator('img').first().boundingBox(), {
@@ -637,7 +639,7 @@ test.describe('Solutions @393', () => {
 
     // Band 1:387 at render 2880 → page 2823, 393x900 after a 29px gray gap.
     expect(await band(page).boundingBox()).toMatchObject({ y: 2823, height: 900 })
-    await expect(band(page)).toHaveCSS('background-color', 'rgb(23, 169, 85)')
+    await expect(band(page)).toHaveCSS('background-color', 'rgb(14, 124, 59)') // D-034: darkened for AA
 
     // Logo block 1:388 (200 tall, 40 top pad), copy block 1:392 (300, centred),
     // media block 1:399 (400, device bottom-packed 20 from the edge).
@@ -678,6 +680,47 @@ test.describe('Solutions @393', () => {
         return solutions.getBoundingClientRect().top - weAre.getBoundingClientRect().bottom
       })
       expect(seam).toBe(22)
+    }
+  })
+})
+
+test.describe('Solutions holds the 1024–1440 laptop band (D-035)', () => {
+  test.skip(({ isMobile }) => isMobile, 'desktop-only: the two-column panel is an lg layout')
+
+  test('the tab pill, showcase device and card row never clip below 1440', async ({ page }) => {
+    // No artboard covers 1024–1440; the fixed 490+612 pill, the 710+700 showcase
+    // columns and the 3×457 card row clipped under overflow-x-clip. Shrinkable
+    // spacers, a shrinking device column and a scrolling card row hold them in
+    // frame, while 1440 stays pixel-exact (pill x=490, device ends at 1410).
+    const exact = await page.evaluate(() => {
+      const R = (s: string) => Math.round(document.querySelector(s)!.getBoundingClientRect().right)
+      const L = (s: string) => Math.round(document.querySelector(s)!.getBoundingClientRect().left)
+      return {
+        pillL: L('[role="tablist"]'),
+        deviceR: R('#showcase [class*="overflow-hidden"][class*="rounded"]'),
+      }
+    })
+    expect(exact).toEqual({ pillL: 490, deviceR: 1410 })
+
+    for (const width of [1366, 1280, 1152, 1024]) {
+      await page.setViewportSize({ width, height: 900 })
+      const m = await page.evaluate((vw) => {
+        const R = (s: string) => Math.round(document.querySelector(s)!.getBoundingClientRect().right)
+        const row = document.querySelector('[data-testid="solution-cards"]')!
+        return {
+          pillClip: R('[role="tablist"]') > vw,
+          deviceClip: R('#showcase [class*="overflow-hidden"][class*="rounded"]') > vw,
+          cardsInFrameOrScrollable:
+            row.getBoundingClientRect().right <= vw || row.scrollWidth > row.clientWidth,
+          noHScroll: document.documentElement.scrollWidth <= vw,
+        }
+      }, width)
+      expect(m).toEqual({
+        pillClip: false,
+        deviceClip: false,
+        cardsInFrameOrScrollable: true,
+        noHScroll: true,
+      })
     }
   })
 })

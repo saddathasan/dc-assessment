@@ -72,7 +72,7 @@ export function SolutionShowcase({ showcase }: { showcase: ShowcaseContent }) {
         </div>
         {/* Media block 1:399: 400 tall below lg with the device bottom-packed
             20 from the edge; at 1440 the carousel sits in the 700-wide column. */}
-        <div className="flex h-[400px] items-end justify-center pb-5 lg:block lg:h-auto lg:pb-0">
+        <div className="flex h-[400px] items-end justify-center pb-5 lg:block lg:h-auto lg:w-[700px] lg:min-w-0 lg:shrink lg:pb-0">
           <ShowcaseCarousel showcase={showcase} active={active} onActive={setActive} />
         </div>
       </div>
@@ -93,7 +93,7 @@ function ShowcaseCarousel({
   return (
     // Media frame 1:157/1:400: 700x650 at 1440, 363x337 below — the device art
     // is a crop of one capture (D-023.1 reuses it across the slides).
-    <div className="relative h-[337px] w-[363px] shrink-0 overflow-hidden rounded-card lg:mt-0 lg:h-[650px] lg:w-[700px] lg:rounded-bar">
+    <div className="relative h-[337px] w-[363px] shrink-0 overflow-hidden rounded-card lg:mt-0 lg:h-[650px] lg:w-full lg:rounded-bar">
       <ul
         // Keyboard-reachable so the scroll region isn't pointer-only (WCAG 2.1.1;
         // axe scrollable-region-focusable): tabindex lets it take focus and arrow
