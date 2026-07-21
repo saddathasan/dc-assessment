@@ -711,6 +711,39 @@ against a rendered preview before committing.
 
 ---
 
+## D-035 — Hold the 1024–1440 laptop band the artboards never cover (MS-11)
+
+**Chosen over:** stacking the columns at a new mid breakpoint; transform-scaling the whole panel;
+leaving the clip (invisible to the gate, which only checks 1440/393).
+**Context:** the artboards specify 1440 and 393 only, and the page root's `overflow-x-clip` *hides* a
+horizontal overrun rather than scrolling it — so fixed-width lg content clipped silently between
+1024 and 1440 (common laptops). Found in five places: We Are's 400px gutter, Tech Stack's 358px
+gutter, the Solutions intro's 320px gutter, its tab pill's 490px offset, its 710+700 showcase
+columns, and the 3×457 card row.
+
+**Decision:** clamp/shrink to fit, keeping 1440 pixel-exact.
+- Fixed **gutters** become shrinkable spacers (`w-[Npx] shrink`, sibling of the fixed columns): they
+  hold their px where there is room (so 1440 is unchanged) and collapse below it — We Are 400, Tech
+  Stack 358, Solutions intro 320, tab-pill offset 490.
+- The **showcase device** column shrinks (`w-[700px] shrink min-w-0`, carousel `w-full`): the device
+  scales down instead of clipping; at 1440 the 30px right gutter absorbs, so it stays 700.
+- The **card row** switches to `[justify-content:safe_center]` + `overflow-x-auto`: centered while
+  the three 457px cards fit (≤1440), start-aligned and scrollable when they don't — cards keep their
+  size, nothing clips.
+
+**Why superior:** the whole page now degrades cleanly across every width a real visitor uses, while
+every 1440 Baseline is byte-identical (no gate churn — verified). Stacking would invent an
+un-designed layout; transform-scaling blurs text. Regression tests pin no-clip across 1366/1280/1152/1024
+with the 1440 anchors exact.
+
+**Trade-off accepted:** below 1440 the showcase device is smaller and the card row can scroll —
+appearances the artboards never specified, chosen to be coherent rather than pixel-frozen.
+
+**Status:** Accepted (MS-11 polish, 2026-07-21). Resolves open question 7; We Are / Tech Stack
+shipped under the same pattern earlier in the pass.
+
+---
+
 ## Open questions (tracked; each resolves into a numbered decision)
 
 1. Hamburger menu open state (undesigned) — proposed: full-screen dark-green overlay in brand style,
@@ -730,7 +763,7 @@ against a rendered preview before committing.
    75/96/100/92, the perf gap entirely LCP=9.1s from the 444KB hero PNG (CLS 0, TBT 0). Reaching
    ≥90 on mobile needs the hero image optimised (webp + responsive sizes) — a build-pipeline
    addition (ask-first) that also re-encodes a gate-baselined asset. Deferred pending approval.
-7. **Solutions mid-width reflow (MS-11).** The tabbed region's fixed 710+700 showcase columns, the
+7. ~~Solutions mid-width reflow~~ — **resolved by [[#D-035]]** (clamp/shrink to fit). Original: The tabbed region's fixed 710+700 showcase columns, the
    3×457 card row, and the 490+612 tab pill clip between 1024 and 1440 — a band no artboard covers.
    We Are / Tech Stack were fixed with shrinkable gutters; Solutions needs a strategy call (scale
    the device, stack the columns, or clamp) since there is no design truth for it.
