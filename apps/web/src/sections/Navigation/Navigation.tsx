@@ -152,7 +152,7 @@ function NavigationBar({ content }: { content: NavigationContent }) {
           </div>
           <a
             href={content.cta.href}
-            className="hidden h-[50px] items-center rounded-card bg-[rgba(255,255,255,0.25)] px-[25px] py-[10px] font-sans text-ui font-extrabold tracking-[-0.05em] text-white transition-colors hover:bg-[rgba(255,255,255,0.35)] lg:inline-flex"
+            className="hidden h-[50px] items-center rounded-card bg-[rgba(0,0,0,0.32)] px-[25px] py-[10px] font-sans text-ui font-extrabold tracking-[-0.05em] text-white transition-colors hover:bg-[rgba(0,0,0,0.45)] lg:inline-flex"
           >
             {content.cta.label}
           </a>

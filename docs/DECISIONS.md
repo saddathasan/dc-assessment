@@ -680,6 +680,70 @@ state — would couple the tab model to the router and reconcile the async `Sect
 
 ---
 
+## D-034 — Deviate from the artboard colours to earn WCAG AA contrast (MS-11)
+
+**Chosen over:** keeping the Figma colours and accepting the AA gaps (the pixel-faithful default,
+consistent with the x=88 / h-22 / footer-flush calls).
+**Context:** two AA contrast gaps were inherited verbatim from the design — the product showcase's
+white/`#efefef` text on `green-700 #17a955` (3.06 and 2.66:1), and the nav "Book a meeting" CTA,
+white on a 25%-white glass pill over the deep-green hero (4.04:1). Neither can be fixed *minimally*:
+white text on the bright green needs the green materially darker, and a light translucent pill can
+never carry white text to 4.5:1 over a variable background.
+
+**Decision (design owner's call, MS-11):** deviate.
+1. `--color-green-700` darkens `#17a955 → #0e7c3b` (white text clears ~5:1). Used only on the
+   showcase band, so nothing else moves.
+2. The nav CTA becomes a dark glass pill (`rgba(0,0,0,0.32)`, hover `0.45`) instead of light —
+   white text clears AA on any hero background.
+The axe gate (`a11y.spec.ts`) now enforces **full** colour-contrast with nothing scoped out. The
+three affected Baselines (`navigation-desktop`, `solution-showcase-desktop/-mobile`) are build-sourced
+via the `deviated` flag (D-032's mechanism), and the numeric asserts pin the new colours.
+
+**Why superior:** accessibility is a shipped-product property the design owner is authoritative on,
+and the alternative left two "serious" axe violations standing. The changes are contained (one token,
+one pill) and read cleanly — a deeper brand green, a dark CTA button.
+
+**Trade-off accepted:** three more build-sourced Baselines (four with D-032), a real but bounded
+erosion of the design-sourced gate, and a visibly darker showcase green than the artboard. Confirmed
+against a rendered preview before committing.
+
+**Status:** Accepted (MS-11 polish, 2026-07-21). Resolves open question 5.
+
+---
+
+## D-035 — Hold the 1024–1440 laptop band the artboards never cover (MS-11)
+
+**Chosen over:** stacking the columns at a new mid breakpoint; transform-scaling the whole panel;
+leaving the clip (invisible to the gate, which only checks 1440/393).
+**Context:** the artboards specify 1440 and 393 only, and the page root's `overflow-x-clip` *hides* a
+horizontal overrun rather than scrolling it — so fixed-width lg content clipped silently between
+1024 and 1440 (common laptops). Found in five places: We Are's 400px gutter, Tech Stack's 358px
+gutter, the Solutions intro's 320px gutter, its tab pill's 490px offset, its 710+700 showcase
+columns, and the 3×457 card row.
+
+**Decision:** clamp/shrink to fit, keeping 1440 pixel-exact.
+- Fixed **gutters** become shrinkable spacers (`w-[Npx] shrink`, sibling of the fixed columns): they
+  hold their px where there is room (so 1440 is unchanged) and collapse below it — We Are 400, Tech
+  Stack 358, Solutions intro 320, tab-pill offset 490.
+- The **showcase device** column shrinks (`w-[700px] shrink min-w-0`, carousel `w-full`): the device
+  scales down instead of clipping; at 1440 the 30px right gutter absorbs, so it stays 700.
+- The **card row** switches to `[justify-content:safe_center]` + `overflow-x-auto`: centered while
+  the three 457px cards fit (≤1440), start-aligned and scrollable when they don't — cards keep their
+  size, nothing clips.
+
+**Why superior:** the whole page now degrades cleanly across every width a real visitor uses, while
+every 1440 Baseline is byte-identical (no gate churn — verified). Stacking would invent an
+un-designed layout; transform-scaling blurs text. Regression tests pin no-clip across 1366/1280/1152/1024
+with the 1440 anchors exact.
+
+**Trade-off accepted:** below 1440 the showcase device is smaller and the card row can scroll —
+appearances the artboards never specified, chosen to be coherent rather than pixel-frozen.
+
+**Status:** Accepted (MS-11 polish, 2026-07-21). Resolves open question 7; We Are / Tech Stack
+shipped under the same pattern earlier in the pass.
+
+---
+
 ## Open questions (tracked; each resolves into a numbered decision)
 
 1. Hamburger menu open state (undesigned) — proposed: full-screen dark-green overlay in brand style,
@@ -689,7 +753,7 @@ state — would couple the tab model to the router and reconcile the async `Sect
    as the motion scale. The marquee's 30s linear is settled by [[#D-029]]; the rest stands open.
 4. Cloudflare deployment specifics (Workers static assets vs Pages, monorepo config, custom domain)
    — research in flight; resolves into D-011 config notes.
-5. **Showcase-band & nav-CTA contrast (MS-11).** Two AA color-contrast gaps remain, both inherited
+5. ~~Showcase-band & nav-CTA contrast~~ — **resolved by [[#D-034]]** (deviated to pass AA). Original: Two AA color-contrast gaps remain, both inherited
    verbatim from Figma: the product showcase's light text on `green-700`, and the nav "Book a
    meeting" pill (white on 25%-white over deep green, computed 4.04:1 vs 4.5). Raising either
    changes the design's colours and breaks a Baseline, so it is a design-owner call — accept as a
@@ -699,7 +763,7 @@ state — would couple the tab model to the router and reconcile the async `Sect
    75/96/100/92, the perf gap entirely LCP=9.1s from the 444KB hero PNG (CLS 0, TBT 0). Reaching
    ≥90 on mobile needs the hero image optimised (webp + responsive sizes) — a build-pipeline
    addition (ask-first) that also re-encodes a gate-baselined asset. Deferred pending approval.
-7. **Solutions mid-width reflow (MS-11).** The tabbed region's fixed 710+700 showcase columns, the
+7. ~~Solutions mid-width reflow~~ — **resolved by [[#D-035]]** (clamp/shrink to fit). Original: The tabbed region's fixed 710+700 showcase columns, the
    3×457 card row, and the 490+612 tab pill clip between 1024 and 1440 — a band no artboard covers.
    We Are / Tech Stack were fixed with shrinkable gutters; Solutions needs a strategy call (scale
    the device, stack the columns, or clamp) since there is no design truth for it.

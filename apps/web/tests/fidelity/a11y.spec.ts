@@ -17,32 +17,14 @@ test.beforeEach(async ({ page }) => {
   await page.getByTestId('footer-wordmark').waitFor()
 })
 
-test('no axe violations across the page (WCAG 2.1 A/AA, contrast checked separately)', async ({
+test('no axe violations across the page (WCAG 2.1 A/AA, incl. full colour-contrast)', async ({
   page,
 }) => {
+  // Full AA, nothing scoped out: D-034 darkened the showcase green and the nav
+  // CTA pill so every surface clears the ratio (previously the two were inherited
+  // AA gaps from Figma, deviated from to earn compliance).
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-    .disableRules(['color-contrast'])
-    .analyze()
-  expect(results.violations).toEqual([])
-})
-
-test('contrast is AA everywhere but the two design-inherited spots', async ({ page }) => {
-  // Exactly two AA contrast gaps remain, both inherited verbatim from Figma, so
-  // raising either changes the design's colours and breaks a Baseline — a
-  // design-owner decision (tracked as an open question), scoped out here rather
-  // than silently patched:
-  //   1. #showcase — the product band's light text on green-700.
-  //   2. the nav "Book a meeting" CTA — white on a 25%-white pill over deep
-  //      green, computed 4.04:1 vs the 4.5 threshold (0.46 short).
-  // Every other surface clears comfortably (white on ink/deep 17–18:1, accent
-  // on ink 13:1), which this still guards.
-  const results = await new AxeBuilder({ page })
-    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-    .include('body')
-    .exclude('#showcase')
-    .exclude('a[href="#contact"]')
-    .options({ runOnly: ['color-contrast'] })
     .analyze()
   expect(results.violations).toEqual([])
 })

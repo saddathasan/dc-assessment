@@ -85,7 +85,11 @@ function SolutionsTabs({ content }: { content: SolutionsContent }) {
         data-testid="solutions-tab-bar"
         className="pointer-events-none sticky top-0 z-30 h-20 lg:h-[100px]"
       >
-        <div className="mx-auto h-full max-w-[1440px] pt-5 lg:pt-[30px]">
+        <div className="mx-auto h-full max-w-[1440px] pt-5 lg:flex lg:pt-[30px]">
+          {/* The pill's 490px left offset as a shrinkable spacer (D-035): holds
+              490 at 1440 so the pill stays at x=490, collapses between 1024 and
+              1440 so the 612px pill isn't clipped off the right. */}
+          <div aria-hidden className="hidden lg:block lg:w-[490px] lg:shrink" />
           {/* Desktop: the white 612x70 r15 pill at x=490 (1:111/1:112 — deliberately
               off the 1440 center); side padding nets to 6px because the 3x200 tab
               row overflows the design's 592 inner frame by 4px per side. Mobile:
@@ -97,7 +101,7 @@ function SolutionsTabs({ content }: { content: SolutionsContent }) {
             aria-label="Solution categories"
             aria-orientation="horizontal"
             onKeyDown={onKeyDown}
-            className="pointer-events-auto flex h-10 items-center gap-[5px] overflow-x-auto px-5 [scrollbar-width:none] lg:ml-[490px] lg:h-[70px] lg:w-[612px] lg:gap-0 lg:overflow-visible lg:rounded-card lg:bg-white lg:px-[6px] [&::-webkit-scrollbar]:hidden"
+            className="pointer-events-auto flex h-10 items-center gap-[5px] overflow-x-auto px-5 [scrollbar-width:none] lg:h-[70px] lg:w-[612px] lg:shrink-0 lg:gap-0 lg:overflow-visible lg:rounded-card lg:bg-white lg:px-[6px] [&::-webkit-scrollbar]:hidden"
           >
             {content.tabs.map((tab, index) => (
               <SolutionsTab
@@ -174,7 +178,7 @@ function SolutionIntro({ panel }: { panel: SolutionPanel }) {
     // 1440 band bottom-pins its content 50px up (primaryAxis=MAX), so authored
     // copy of a different length grows upward, never reflows below.
     <div className="mx-auto flex h-[600px] max-w-[1440px] items-center justify-center px-5 lg:h-[370px] lg:items-end lg:justify-start lg:pb-[50px]">
-      <div className="flex w-full max-w-[342px] flex-col gap-5 lg:w-auto lg:max-w-none lg:flex-row lg:items-start lg:gap-[320px]">
+      <div className="flex w-full max-w-[342px] flex-col gap-5 lg:w-auto lg:max-w-none lg:flex-row lg:items-start lg:gap-0">
         {/* Desktop numeral: the design flattened it to a 147.2x116.79 vector
             (1:124), which back-solves to Bricolage w800 @~170.7px with the
             -5% tracking (ratios measured from the mobile 120px numeral's
@@ -189,6 +193,10 @@ function SolutionIntro({ panel }: { panel: SolutionPanel }) {
         <div className="font-display text-[120px]/[120px] font-extrabold tracking-[-6px] text-black lg:hidden">
           {panel.number}
         </div>
+        {/* The 320px gutter as a shrinkable spacer (D-035): at 1440 it holds 320
+            so the copy stays at x=487, and between 1024 and 1440 it collapses
+            instead of clipping the copy off the right under overflow-x-clip. */}
+        <div aria-hidden className="hidden lg:block lg:w-[320px] lg:shrink" />
         {/* display: contents below lg — the copy joins the mobile column's
             uniform 20px rhythm (1:373) without an extra box. */}
         <div className="contents lg:flex lg:w-[610px] lg:shrink-0 lg:flex-col lg:gap-5">
