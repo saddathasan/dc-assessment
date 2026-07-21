@@ -44,8 +44,8 @@ they keep their own milestones (a slice each, per D-025) but are not standalone 
 | 5b | ↳ per-tab Showcase (carousel) | MS-8 | #13 | ✅ PR #37 |
 | 6 | Tech Stack (marquee) — sticky releases here | MS-9 | #14 | ✅ PR #41 |
 | 7 | Footer (two-colour VECTOR mark + tilted scrim, D-031) | MS-10 | #15 | ✅ PR #43 |
-| — | Page polish (a11y/perf/SEO/x-browser) | MS-11 | #16 | ⬜ |
-| — | Ship | MS-12 | #17 | ⬜ |
+| — | Page polish (a11y/perf/SEO/x-browser) | MS-11 | #16 | ✅ #47/#48 + #49/#50 (D-032…035) |
+| — | Ship | MS-12 | #17 | ✅ #51/#52/#53 — main holds submission state |
 
 ---
 
