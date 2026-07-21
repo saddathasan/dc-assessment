@@ -53,11 +53,15 @@ export interface FidelityTarget {
  */
 export const targets: FidelityTarget[] = [
   // Navigation — desktop band: 20px frame padding + the 1400x80 floating bar (tree-desktop 'Frame 52').
+  // DEVIATED (D-034): the "Book a meeting" CTA is a dark glass pill, not the design's
+  // light 25%-white one, so white text clears WCAG AA (4.04 → passing). Baseline is
+  // build-sourced; the rest of the bar is unchanged from the artboard.
   {
     id: 'navigation-desktop',
     source: '1-34.png',
     crop: { x: 0, y: 0, width: 1440, height: 120 },
     clip: { x: 0, y: 0, width: 1440, height: 120 },
+    deviated: 'D-034',
   },
   // Navigation — open mega-menu: the full 1400x444 panel frame (1:459), which on the
   // page sits at the bar's position (20,20) over the deep-green hero background.
@@ -178,21 +182,27 @@ export const targets: FidelityTarget[] = [
   },
   // Solutions showcase — desktop: the green band closing the tab body (node
   // 1:146, y=2829 after the 73px gray gap under the card row), 1440x700.
+  // DEVIATED (D-034): the band's green is darkened (#17a955 → #0e7c3b) so its
+  // white body/CTA text clears WCAG AA (was 3.06/2.66). Baseline is build-sourced;
+  // noiseTextured is moot now (the build has no duotone noise) but harmless.
   {
     id: 'solution-showcase-desktop',
     source: '1-34.png',
     crop: { x: 0, y: 2829, width: 1440, height: 700 },
     clip: { x: 0, y: 2829, width: 1440, height: 700 },
     noiseTextured: true,
+    deviated: 'D-034',
   },
   // Solutions showcase — mobile: node 1:387 at y=2880 (29px gray gap under the
   // card block), 393x900; page clip y = render − 57 (the excluded status bar).
+  // DEVIATED (D-034): darker green for AA, as desktop above.
   {
     id: 'solution-showcase-mobile',
     source: '1-279.png',
     crop: { x: 0, y: 2880, width: 393, height: 900 },
     clip: { x: 0, y: 2823, width: 393, height: 900 },
     noiseTextured: true,
+    deviated: 'D-034',
   },
   // Tech Stack — desktop: the white band closing the Solutions sticky scope
   // (node 1:166, y=3530..4380 — one artboard px under the showcase's 3529 end,

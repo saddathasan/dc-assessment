@@ -441,7 +441,7 @@ test.describe('Solutions @1440', () => {
     // card row. (The design token named `showcase` was a mobile-sampled #21A356;
     // both artboards' node fill is this green, so that token is retired.)
     expect(await band(page).boundingBox()).toMatchObject({ y: 2829, height: 700 })
-    await expect(band(page)).toHaveCSS('background-color', 'rgb(23, 169, 85)')
+    await expect(band(page)).toHaveCSS('background-color', 'rgb(14, 124, 59)') // D-034: darkened for AA
 
     // Copy column 1:148 centred in the band: logo, 230 gap, then the copy stack.
     expectBoxNear(await band(page).locator('img').first().boundingBox(), {
@@ -637,7 +637,7 @@ test.describe('Solutions @393', () => {
 
     // Band 1:387 at render 2880 → page 2823, 393x900 after a 29px gray gap.
     expect(await band(page).boundingBox()).toMatchObject({ y: 2823, height: 900 })
-    await expect(band(page)).toHaveCSS('background-color', 'rgb(23, 169, 85)')
+    await expect(band(page)).toHaveCSS('background-color', 'rgb(14, 124, 59)') // D-034: darkened for AA
 
     // Logo block 1:388 (200 tall, 40 top pad), copy block 1:392 (300, centred),
     // media block 1:399 (400, device bottom-packed 20 from the edge).
