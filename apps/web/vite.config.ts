@@ -7,11 +7,50 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 
+/**
+ * Preloads the hero-weight display font (D-005): Fontsource ships Bricolage as a
+ * hashed woff2, so the <link rel=preload> can't be static in index.html — this
+ * finds the emitted latin variable file at build time and injects it. Build-only,
+ * so the dev-served Fidelity Gate (which awaits document.fonts.ready) is untouched.
+ */
+function preloadHeroFont() {
+  return {
+    name: 'preload-hero-font',
+    apply: 'build' as const,
+    transformIndexHtml: {
+      order: 'post' as const,
+      handler(html: string, ctx: { bundle?: Record<string, unknown> }) {
+        const file = Object.keys(ctx.bundle ?? {}).find((f) =>
+          /bricolage-grotesque-latin-wght-normal-[^/]*\.woff2$/.test(f),
+        )
+        if (!file) return html
+        return {
+          html,
+          tags: [
+            {
+              tag: 'link',
+              attrs: {
+                rel: 'preload',
+                as: 'font',
+                type: 'font/woff2',
+                href: `/${file}`,
+                crossorigin: '',
+              },
+              injectTo: 'head-prepend' as const,
+            },
+          ],
+        }
+      },
+    },
+  }
+}
+
 export default defineConfig({
   plugins: [
     tanstackRouter({ target: 'react', autoCodeSplitting: true }),
     react(),
     tailwindcss(),
+    preloadHeroFont(),
   ],
   server: {
     // Dev serves same-origin: /api proxies to the local Express app, so no

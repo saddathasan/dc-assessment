@@ -11,7 +11,7 @@ import { WeAreSkeleton } from './WeAreSkeleton'
 export function WeAre() {
   const query = useSectionQuery('we-are')
   return (
-    <section className="bg-white text-ink">
+    <section aria-label="Who we are" className="bg-white text-ink">
       <SectionBoundary query={query} skeleton={<WeAreSkeleton />}>
         {(weAre) => <WeAreLayout content={weAre} />}
       </SectionBoundary>

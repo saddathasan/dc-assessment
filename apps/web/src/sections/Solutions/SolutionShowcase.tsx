@@ -132,7 +132,7 @@ function ShowcaseCarousel({
           <li key={index}>
             <span
               aria-hidden
-              className={`block h-[6px] rounded-bar transition-all lg:h-[10px] ${
+              className={`block h-[6px] rounded-bar motion-safe:transition-all lg:h-[10px] ${
                 index === active ? 'w-[50px] bg-white' : 'w-5 bg-white/50'
               }`}
             />

@@ -12,7 +12,7 @@ import { TechStackSkeleton } from './TechStackSkeleton'
 export function TechStack() {
   const query = useSectionQuery('tech-stack')
   return (
-    <section id="tech-stack" className="bg-white text-ink">
+    <section id="tech-stack" aria-label="Technology stack" className="bg-white text-ink">
       <SectionBoundary query={query} skeleton={<TechStackSkeleton />}>
         {(techStack) => <TechStackLayout content={techStack} />}
       </SectionBoundary>
