@@ -59,6 +59,13 @@ export default defineConfig({
       '/api': { target: 'http://localhost:3001', changeOrigin: true },
     },
   },
+  // `vite preview` mirrors the same-origin topology so a production build can be
+  // measured (Lighthouse) against real API content, not just the dev bundle.
+  preview: {
+    proxy: {
+      '/api': { target: 'http://localhost:3001', changeOrigin: true },
+    },
+  },
   test: {
     globals: true,
     environment: 'happy-dom',

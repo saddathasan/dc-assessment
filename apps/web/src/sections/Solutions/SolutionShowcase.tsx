@@ -95,6 +95,11 @@ function ShowcaseCarousel({
     // is a crop of one capture (D-023.1 reuses it across the slides).
     <div className="relative h-[337px] w-[363px] shrink-0 overflow-hidden rounded-card lg:mt-0 lg:h-[650px] lg:w-[700px] lg:rounded-bar">
       <ul
+        // Keyboard-reachable so the scroll region isn't pointer-only (WCAG 2.1.1;
+        // axe scrollable-region-focusable): tabindex lets it take focus and arrow
+        // keys scroll it, and the label names what the slides are.
+        tabIndex={0}
+        aria-label={`${showcase.name} product screens`}
         onScroll={(event) => {
           const el = event.currentTarget
           onActive(Math.round(el.scrollLeft / el.clientWidth))
