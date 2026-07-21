@@ -41,7 +41,7 @@ function TechStackLayout({ content }: { content: TechStackContent }) {
       <div className="mx-auto flex h-[350px] w-full max-w-[1440px] flex-col justify-end pb-[50px] pl-5 pr-[26px] lg:h-[297px] lg:pr-5">
         {/* items-start at lg: the eyebrow is a 24-tall label beside the 147-tall
             copy column, not a stretched sibling of it. */}
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-[358px]">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-0">
           {/* Eyebrow swaps family per breakpoint like every other Section's:
               Bricolage 600 18/24 on mobile (1:413), Manrope 600 18/24 at lg
               (1:169). Fixed at 115 wide at lg so the copy column lands on the
@@ -49,6 +49,11 @@ function TechStackLayout({ content }: { content: TechStackContent }) {
           <p className="font-display text-[18px]/[24px] font-semibold tracking-[-0.9px] lg:w-[115px] lg:shrink-0 lg:font-sans lg:whitespace-nowrap">
             {content.eyebrow}
           </p>
+          {/* The 358px gutter as a shrinkable spacer (see WeAre for the rationale):
+              rigid, it pushed the 681px copy column off the right edge between
+              1024 and 1440. Basis 358, shrink to 0 — at 1440 it holds 358 so the
+              copy stays at x=493; below, it collapses instead of clipping the body. */}
+          <div aria-hidden className="hidden lg:block lg:w-[358px] lg:shrink" />
           <div className="flex flex-col gap-5 lg:w-[681px] lg:shrink-0 lg:gap-[30px]">
             {/* 28/34 over two lines on mobile (1:414), 32/36 on one at lg (1:171). */}
             <h2 className="font-display text-[28px]/[34px] font-extrabold tracking-[-1.4px] lg:text-[32px]/[36px] lg:tracking-[-1.6px]">

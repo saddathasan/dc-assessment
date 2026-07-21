@@ -157,6 +157,20 @@ test.describe('Tech Stack @1440', () => {
     const last = await tiles.nth((await tiles.count()) - 1).boundingBox()
     expect(last!.x + last!.width).toBeGreaterThan(2000)
   })
+
+  test('the copy column never clips in the 1024–1440 band the artboards skip', async ({ page }) => {
+    // The rigid 358px gutter clipped the 681px copy column off the right edge on
+    // small laptops under overflow-x-clip (was +22@1152 … +150@1024). Now a
+    // shrinkable spacer: the copy stays in-frame at every width, x=493 exact
+    // where there is room (≥1280). The marquee below is FILL and bleeds by design.
+    for (const width of [1280, 1152, 1088, 1024]) {
+      await page.setViewportSize({ width, height: 900 })
+      const box = (await heading(page).boundingBox())!
+      expect(box.width).toBe(681)
+      expect(box.x + box.width).toBeLessThanOrEqual(width)
+      if (width >= 1280) expect(box.x).toBe(493)
+    }
+  })
 })
 
 test.describe('Tech Stack @393', () => {
