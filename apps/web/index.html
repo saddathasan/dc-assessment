@@ -3,8 +3,55 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MetaTech</title>
+    <meta name="theme-color" content="#161616" />
+
+    <!-- Hero photo is the LCP element (D-005): fetch it before the JS renders it.
+         The hashed hero-weight font is preloaded by a Vite plugin (vite.config.ts). -->
+    <link rel="preload" as="image" href="/images/hero-photo.png" fetchpriority="high" />
+
+    <title>MetaTech — Custom Software, Data &amp; AI, Tech Staffing</title>
+    <meta
+      name="description"
+      content="MetaTech integrates custom software engineering, advanced data and AI systems, and strategic staff augmentation to power scalable, high impact digital transformation."
+    />
+    <link rel="canonical" href="https://metatech.saddathasan.dev/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MetaTech" />
+    <meta property="og:title" content="MetaTech — Custom Software, Data & AI, Tech Staffing" />
+    <meta
+      property="og:description"
+      content="MetaTech integrates custom software engineering, advanced data and AI systems, and strategic staff augmentation to power scalable, high impact digital transformation."
+    />
+    <meta property="og:url" content="https://metatech.saddathasan.dev/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://metatech.saddathasan.dev/images/og-card.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="MetaTech — custom software, data & AI, and tech staffing" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MetaTech — Custom Software, Data & AI, Tech Staffing" />
+    <meta
+      name="twitter:description"
+      content="MetaTech integrates custom software engineering, advanced data and AI systems, and strategic staff augmentation to power scalable, high impact digital transformation."
+    />
+    <meta name="twitter:image" content="https://metatech.saddathasan.dev/images/og-card.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "MetaTech",
+        "url": "https://metatech.saddathasan.dev/",
+        "logo": "https://metatech.saddathasan.dev/favicon.svg",
+        "description": "MetaTech integrates custom software engineering, advanced data and AI systems, and strategic staff augmentation to power scalable, high impact digital transformation."
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

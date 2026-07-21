@@ -11,7 +11,7 @@ import { TrustedBySkeleton } from './TrustedBySkeleton'
 export function TrustedBy() {
   const query = useSectionQuery('trusted-by')
   return (
-    <section className="bg-deep text-white">
+    <section aria-label="Trusted by" className="bg-deep text-white">
       <SectionBoundary query={query} skeleton={<TrustedBySkeleton />}>
         {(trustedBy) => <TrustedByLayout content={trustedBy} />}
       </SectionBoundary>

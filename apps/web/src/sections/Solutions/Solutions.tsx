@@ -3,10 +3,11 @@
 // 1:110..1:131 desktop / 1:363..1:379 mobile for the parts built here. The bar
 // pins for the panel's whole height and releases at Tech Stack (note 1:277);
 // the sticky scope is the <section> wrapper in LandingPage.
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { SolutionId, SolutionPanel, SolutionTab, SolutionsContent } from '@metatech/shared'
 import { SectionBoundary } from '../../components/ui/SectionBoundary'
 import { useSectionQuery } from '../../hooks/useSectionQuery'
+import { SOLUTION_EVENT, readSolutionParam } from '../../lib/solutionDeepLink'
 import { SolutionCards } from './SolutionCards'
 import { SolutionShowcase } from './SolutionShowcase'
 import { SolutionsSkeleton } from './SolutionsSkeleton'
@@ -26,9 +27,34 @@ const panelId = (id: SolutionId) => `solution-panel-${id}`
 
 /** WAI-ARIA tabs over the panel stack: pointer or keyboard selects, one panel renders at a time. */
 function SolutionsTabs({ content }: { content: SolutionsContent }) {
-  const [activeId, setActiveId] = useState<SolutionId>(content.tabs[0].id)
+  const isTab = (id: string | null): id is SolutionId => content.tabs.some((tab) => tab.id === id)
+  // Hydrate from ?solution=<id> so a shared/reloaded deep-link opens its tab (D-033).
+  const [activeId, setActiveId] = useState<SolutionId>(() => {
+    const param = readSolutionParam()
+    return isTab(param) ? param : content.tabs[0].id
+  })
   const tabRefs = useRef(new Map<SolutionId, HTMLButtonElement>())
   const active = content.panels.find((panel) => panel.id === activeId) ?? content.panels[0]
+
+  // A mega-menu tile (a separate island) selects a tab through a custom event —
+  // pushState is silent — and back/forward replays it from the URL (D-033).
+  useEffect(() => {
+    const onSelect = (event: Event) => {
+      const id = (event as CustomEvent<SolutionId>).detail
+      if (isTab(id)) setActiveId(id)
+    }
+    const onPopState = () => {
+      const param = readSolutionParam()
+      if (isTab(param)) setActiveId(param)
+    }
+    window.addEventListener(SOLUTION_EVENT, onSelect)
+    window.addEventListener('popstate', onPopState)
+    return () => {
+      window.removeEventListener(SOLUTION_EVENT, onSelect)
+      window.removeEventListener('popstate', onPopState)
+    }
+    // content.tabs is stable per payload; isTab closes over it.
+  }, [content.tabs]) // eslint-disable-line react-hooks/exhaustive-deps
 
   /**
    * Automatic activation (the APG's default): arrows move focus and select in one

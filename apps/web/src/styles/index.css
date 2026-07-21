@@ -10,6 +10,19 @@
   }
 }
 
+/* Page-wide keyboard focus (MS-11 a11y): one accent ring for every control, so
+   no interactive element can ship without a visible focus indicator. Reuses the
+   accent/2px/offset-2 convention the value cards already set (D-010). :focus-visible
+   scopes it to keyboard focus, so pointer clicks stay ringless — and the Fidelity
+   Gate, which never tabs, never paints it into a Baseline. Modern engines follow
+   border-radius on outline, so it traces pills and the circular play button. The
+   accent green reads on every band (13:1 on ink, on white, and on the green
+   showcase); the offset gives it breathing room on filled buttons. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 /*
  * Design tokens extracted 1:1 from the Figma pull (design/EXTRACTION.md).
  * Text sizes carry their paired line-heights from the design; the scale grows
