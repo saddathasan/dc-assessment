@@ -178,3 +178,34 @@ test.describe('Navigation @393', () => {
     await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden')
   })
 })
+
+test.describe('Mega-menu deep-link to Solutions tabs (D-033)', () => {
+  test.skip(({ isMobile }) => isMobile, 'desktop-only: the mega-menu is a hover/lg affordance')
+
+  test('a tile opens Solutions on its own tab and records it in the URL', async ({ page }) => {
+    // The tiles carry a SolutionId (D-028); clicking one deep-links to that tab
+    // rather than the default, across the Navigation/Solutions island boundary.
+    await page.getByRole('link', { name: 'Solutions' }).hover()
+    const secondTile = page.getByTestId('mega-menu-tile').nth(1)
+    await secondTile.click()
+
+    // The tab bar switches to the tile's tab…
+    await expect(page.locator('[role="tab"][aria-selected="true"]')).toHaveText('Data + AI')
+    // …the menu closes…
+    await expect(page.getByTestId('mega-menu-panel')).toBeHidden()
+    // …and the choice is in the URL so it can be shared.
+    expect(new URL(page.url()).searchParams.get('solution')).toBe('data-ai')
+  })
+
+  test('a shared ?solution= link hydrates that tab on load', async ({ page }) => {
+    await page.goto('/?solution=tech-staffing')
+    await page.waitForLoadState('networkidle')
+    await expect(page.locator('[role="tab"][aria-selected="true"]')).toHaveText('Tech Staffing')
+  })
+
+  test('the Showcase nav link has an in-page target', async ({ page }) => {
+    // #showcase resolves to the active panel's showcase band (one renders at a
+    // time, so the id is unique); the nav link and panel CTAs now land somewhere.
+    await expect(page.locator('#showcase')).toHaveCount(1)
+  })
+})

@@ -5,7 +5,14 @@ import { useState } from 'react'
 import type { MegaMenuTile, SolutionId } from '@metatech/shared'
 
 /** Open-state panel with per-tile image reveal on hover/focus (D-010: CSS transitions, small React state). */
-export function MegaMenuPanel({ tiles }: { tiles: MegaMenuTile[] }) {
+export function MegaMenuPanel({
+  tiles,
+  onSelect,
+}: {
+  tiles: MegaMenuTile[]
+  /** Opens Solutions on the tile's tab and closes the menu (D-033). */
+  onSelect: (id: SolutionId) => void
+}) {
   const [revealed, setRevealed] = useState<SolutionId | null>(null)
 
   return (
@@ -22,6 +29,12 @@ export function MegaMenuPanel({ tiles }: { tiles: MegaMenuTile[] }) {
             href="#solutions"
             data-testid="mega-menu-tile"
             data-revealed={revealed === tile.solution}
+            onClick={(event) => {
+              // Deep-link to this tile's tab rather than the default (D-033);
+              // onSelect handles the URL, the tab nudge, the scroll, and closing.
+              event.preventDefault()
+              onSelect(tile.solution)
+            }}
             onMouseEnter={() => setRevealed(tile.solution)}
             onMouseLeave={() => setRevealed(null)}
             onFocus={() => setRevealed(tile.solution)}

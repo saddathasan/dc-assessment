@@ -2,9 +2,10 @@
 // Solutions mega-menu (notes 1:512/1:514), and the Authored hamburger overlay.
 // Geometry and fills come verbatim from Figma nodes 1:40..1:53 and 1:301..1:305.
 import { useEffect, useRef, useState } from 'react'
-import type { NavigationContent } from '@metatech/shared'
+import type { NavigationContent, SolutionId } from '@metatech/shared'
 import { SectionBoundary } from '../../components/ui/SectionBoundary'
 import { useSectionQuery } from '../../hooks/useSectionQuery'
+import { selectSolution } from '../../lib/solutionDeepLink'
 import { HamburgerOverlay } from './HamburgerOverlay'
 import { MegaMenuPanel } from './MegaMenu'
 import { NavigationSkeleton } from './NavigationSkeleton'
@@ -68,7 +69,15 @@ function NavigationBar({ content }: { content: NavigationContent }) {
           if (!event.currentTarget.contains(event.relatedTarget as Node)) setMegaOpen(false)
         }}
       >
-        {megaOpen && <MegaMenuPanel tiles={content.megaMenu.tiles} />}
+        {megaOpen && (
+          <MegaMenuPanel
+            tiles={content.megaMenu.tiles}
+            onSelect={(id: SolutionId) => {
+              setMegaOpen(false)
+              selectSolution(id)
+            }}
+          />
+        )}
         {/* Bar: white @25% pill (1:41/1:302); its fill yields to the open panel below it. */}
         <div
           data-testid="nav-bar"
